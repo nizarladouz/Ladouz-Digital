@@ -717,9 +717,7 @@ function Hero() {
             <Reveal delay={80}>
               <h1 className="mt-6 max-w-[15ch] text-[clamp(2.4rem,4.9vw,3.9rem)] font-bold leading-[1.03] tracking-[-0.038em]">
                 Frameworks für{" "}
-                <span className="bg-[linear-gradient(96deg,#b6e57a_0%,#ffffff_62%)] bg-clip-text text-transparent">
-                  digitale &amp;&nbsp;KI-Strategien
-                </span>
+                <span className="ld-silber">digitale &amp;&nbsp;KI-Strategien</span>
               </h1>
             </Reveal>
 
@@ -1567,6 +1565,33 @@ function GlobalStyles() {
     }
     @keyframes ldZoom { from { transform: scale(1); } to { transform: scale(1.13); } }
 
+    /* ── Silber ────────────────────────────────────────────────
+       Gebürstetes Metall statt Flächenfarbe: fünf Stopps erzeugen
+       den Materialeindruck – Kante hell, Mitte kühl, Reflex weiss.
+       Die Stopps liegen um das CI-Silber #a9bcd3 herum, das Silber
+       bleibt also markeneigen und ist keine Fremdfarbe.
+       Der Glanz wandert sehr langsam, damit es edel bleibt und
+       nicht nach Effekt aussieht.
+       ──────────────────────────────────────────────────────── */
+    .ld-silber {
+      background-image: linear-gradient(
+        96deg,
+        #8fa3bd 0%,
+        #ffffff 22%,
+        #cdd9e8 40%,
+        #ffffff 58%,
+        #a9bcd3 76%,
+        #eef3f9 100%
+      );
+      background-size: 220% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+              background-clip: text;
+      color: transparent;
+      animation: ldGlanz 14s ease-in-out infinite alternate;
+    }
+    @keyframes ldGlanz { to { background-position: 100% 50%; } }
+
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
     @media (prefers-contrast: more) {
@@ -1578,6 +1603,7 @@ function GlobalStyles() {
       .ld-reveal { opacity: 1; transform: none; transition: none; }
       .ld-btn .ld-sweep { display: none; }
       .ld-pulse, .ld-kenburns { animation: none; }
+      .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
     }
   `;
