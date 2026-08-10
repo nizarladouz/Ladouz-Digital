@@ -704,16 +704,7 @@ function Hero() {
   const slide = insights[i];
 
   return (
-    <section
-      id="top"
-      className="relative overflow-hidden pt-[110px] text-white"
-      style={{
-        /* Navy oben links, ins Tiefschwarz auslaufend – gibt dem
-           Hero Tiefe, ohne dass reines Schwarz eingesetzt wird. */
-        background:
-          "linear-gradient(158deg, #16235f 0%, #0e1740 38%, #080d24 68%, #04060f 100%)",
-      }}
-    >
+    <section id="top" className="relative overflow-hidden bg-[#0b1233] pt-[110px] text-white">
       <div className="relative mx-auto grid max-w-[1240px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
         <div className="relative z-10 px-6 py-[76px] lg:py-[104px]">
           <DotWave />
@@ -812,10 +803,7 @@ function Hero() {
           {insights.map((s, idx) => (
             <Visual key={s.titel} variant={s.variant} src={s.bild} priority={idx === 0} alt={s.titel} className={`absolute inset-0 transition-opacity duration-[900ms] ${idx === i ? "opacity-100" : "opacity-0"}`} />
           ))}
-          {/* Übergang zur Textspalte */}
-          <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#04060f_0%,transparent_40%)]" />
-          {/* Abdunklung nach unten und zur Aussenkante – dieselbe Tiefe wie im Sektionsverlauf */}
-          <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(200deg,transparent_20%,rgba(4,6,15,.55)_72%,rgba(4,6,15,.9)_100%)]" />
+          <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0b1233_0%,transparent_38%)]" />
         </div>
       </div>
     </section>
