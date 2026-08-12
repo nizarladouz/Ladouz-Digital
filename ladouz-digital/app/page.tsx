@@ -11,14 +11,16 @@
    Auszeichnung über ruhiger Serifenschrift. Beide sind variable Fonts,
    frei lizenziert und werden selbst gehostet.
 
-   BILDER
-   <Visual/> rendert ohne `src` eine CI-Grafik, mit `src` ein Foto –
-   beides mit Ken-Burns-Zoom. Motive: 2400 × 1600 px, ruhige Bildmitte.
+   HERO
+   Hero und Perspektiven-Rail liegen als Server Components in
+   components/sections/. Bildmotive werden zentral in lib/media.ts
+   gepflegt – siehe docs/bildbriefing.md.
 
-   BARRIEREFREIHEIT
-   Karussell mit Pause-Steuerung (WCAG 2.2.2), Mega-Menü per Tastatur,
-   statische H1, Live-Regionen für Formularmeldungen, Skip-Link,
-   vollständige prefers-reduced-motion-Abdeckung.
+   OFFEN
+   Diese Datei trägt noch "use client". Dadurch werden auch die
+   importierten Server Components clientseitig gerendert. Sobald die
+   interaktiven Teile (Kopfbereich, BedarfsDialog, Referenzen,
+   Newsletter, Kontakt) ausgelagert sind, kann das "use client" weg.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 import {
@@ -26,6 +28,8 @@ import {
   type FormEvent, type ReactNode,
 } from "react";
 import Image from "next/image";
+import { Hero } from "@/components/sections/hero";
+import { InsightRail } from "@/components/sections/insight-rail";
 
 const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
 const MAIL = "management@ladouz.digital";
@@ -73,34 +77,6 @@ const hauptmenue: MenuEintrag[] = [
   },
   { label: "Über uns", href: "#leitbild" },
 ];
-
-/* Bildflächen: `bild` leer lassen → CI-Grafik.
-   Sobald ein Motiv vorliegt: bild: "/hero-ki.jpg" */
-const insights = [
-  {
-    kicker: "Analyse",
-    titel: "KI im Mittelstand: warum Pilotprojekte selten produktiv werden",
-    text: "Die Mehrheit der KI-Initiativen scheitert nicht an der Technologie, sondern an fehlender Prozessverankerung.",
-    variant: "wave" as const,
-    bild: undefined as string | undefined,
-  },
-  {
-    kicker: "Framework",
-    titel: "Digitale Strategie als Architektur – nicht als Maßnahmenliste",
-    text: "Einzelmaßnahmen verpuffen, Strukturen bleiben. Wie ein dokumentiertes Framework ein steuerbares System schafft.",
-    variant: "grid" as const,
-    bild: undefined as string | undefined,
-  },
-  {
-    kicker: "Standpunkt",
-    titel: "Produktivität durch Qualität. Qualität durch System.",
-    text: "Warum methodisches Vorgehen Fehler und Reibungsverluste reduziert – und die Leistungsfähigkeit ganzer Organisationen erhöht.",
-    variant: "orbit" as const,
-    bild: undefined as string | undefined,
-  },
-];
-
-const heroChips = ["Systemisch statt isoliert", "Qualität als Standard", "Messbar & skalierbar"];
 
 const branchen = [
   "Maschinen- und Anlagenbau", "Handel & E-Commerce", "Logistik & Transport",
@@ -386,63 +362,6 @@ function Visual({
   );
 }
 
-/* ══════════════════════════ Dot-Wave ══════════════════════════ */
-
-function DotWave() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { ref: wrapRef, inView } = useInView<HTMLDivElement>(0, false);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    // Rechnet nur, solange der Hero sichtbar ist – spart Akku.
-    if (reduced || !inView) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
-
-    let w = 0, h = 0, raf = 0, t = 0;
-    let dots: { x: number; y: number; ph: number }[] = [];
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    const resize = () => {
-      w = canvas.width = canvas.offsetWidth * dpr;
-      h = canvas.height = canvas.offsetHeight * dpr;
-      dots = [];
-      const gap = 34 * dpr;
-      for (let x = 0; x < w + gap; x += gap)
-        for (let y = 0; y < h + gap; y += gap)
-          dots.push({ x, y, ph: x * 0.006 + y * 0.004 });
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      t += 0.016;
-      const cx = w * 0.76, cy = h * 0.3;
-      for (const d of dots) {
-        const wv = Math.sin(t * 1.1 + d.ph) * 0.5 + 0.5;
-        const dist = Math.hypot(d.x - cx, d.y - cy) / (w * 0.7);
-        const a = Math.max(0, 1 - dist) * (0.08 + wv * 0.22);
-        if (a < 0.015) continue;
-        ctx.beginPath();
-        ctx.arc(d.x, d.y + Math.sin(t + d.ph) * 3 * dpr, (0.6 + wv * 1.7) * dpr, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${a})`;
-        ctx.fill();
-      }
-      raf = requestAnimationFrame(draw);
-    };
-
-    resize(); draw();
-    window.addEventListener("resize", resize);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, [reduced, inView]);
-
-  return (
-    <div ref={wrapRef} aria-hidden className="pointer-events-none absolute inset-0">
-      <canvas ref={canvasRef} className="h-full w-full" />
-    </div>
-  );
-}
-
 function Counter({ ziel, suffix }: { ziel: number | null; suffix: string }) {
   const { ref, inView } = useInView<HTMLSpanElement>(0.6);
   const [wert, setWert] = useState(0);
@@ -480,6 +399,7 @@ export default function Home() {
         <Kopfbereich />
         <main id="main">
           <Hero />
+          <InsightRail />
           <KompetenzMatrix />
           <BedarfsDialog />
           <Referenzen />
@@ -678,135 +598,6 @@ function SucheIcon() {
       <circle cx="11" cy="11" r="7" />
       <path d="m20 20-3.6-3.6" />
     </svg>
-  );
-}
-
-/* ══════════════════════════ Hero ══════════════════════════
-   Eine feste H1 als Marken-Anker (SEO), darunter das rotierende
-   Insight-Modul mit Pause-Steuerung (WCAG 2.2.2).
-   ═══════════════════════════════════════════════════════════ */
-
-function Hero() {
-  const [i, setI] = useState(0);
-  const [laeuft, setLaeuft] = useState(true);
-  const [hover, setHover] = useState(false);
-  const reduced = useReducedMotion();
-  const anzahl = insights.length;
-
-  const aktivesAutoplay = laeuft && !hover && !reduced;
-
-  useEffect(() => {
-    if (!aktivesAutoplay) return;
-    const iv = setInterval(() => setI((v) => (v + 1) % anzahl), 7000);
-    return () => clearInterval(iv);
-  }, [aktivesAutoplay, anzahl]);
-
-  const slide = insights[i];
-
-  return (
-    <section id="top" className="relative overflow-hidden bg-[#0b1233] pt-[110px] text-white">
-      <div className="relative mx-auto grid max-w-[1240px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
-        <div className="relative z-10 px-6 py-[76px] lg:py-[104px]">
-          <DotWave />
-
-          <div className="relative">
-            <Reveal>
-              <Eyebrow tone="light">Agentur für digitale Systemarchitektur</Eyebrow>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <h1 className="mt-6 max-w-[15ch] text-[clamp(2.4rem,4.9vw,3.9rem)] font-bold leading-[1.03] tracking-[-0.038em]">
-                Frameworks für{" "}
-                <span className="ld-silber">digitale &amp;&nbsp;KI-Strategien</span>
-              </h1>
-            </Reveal>
-
-            <Reveal delay={160}>
-              <p className="ld-serif mt-6 max-w-[48ch] text-[1.15rem] leading-[1.7] text-[#c7d6f5]">
-                Die Infrastruktur hinter Ihrer digitalen Unternehmensstrategie, KI-Implementierung
-                und Ihrem Online-Marketing. Systemisch gedacht, präzise gebaut, messbar skaliert.
-              </p>
-            </Reveal>
-
-            <Reveal delay={240}>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <CtaButton href={BOOKING_URL}>Erstberatung</CtaButton>
-                <CtaButton href="#framework" variant="ghost">Unser Framework</CtaButton>
-              </div>
-            </Reveal>
-
-            <Reveal delay={320}>
-              <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6">
-                {heroChips.map((c) => (
-                  <li key={c} className="flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.18em] text-[#a7b4d6]">
-                    <span aria-hidden className="ld-pulse block h-1.5 w-1.5 rounded-full bg-[#8dc63f]" />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
-
-            {/* Insight-Modul */}
-            <div
-              className="mt-12 border-t border-white/15 pt-8"
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              onFocusCapture={() => setHover(true)}
-              onBlurCapture={() => setHover(false)}
-            >
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[#7b88ad]">
-                  Aktuelle Perspektiven
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setLaeuft((l) => !l)}
-                  aria-label={laeuft ? "Automatischen Wechsel pausieren" : "Automatischen Wechsel fortsetzen"}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#8dc63f] hover:bg-white/10"
-                >
-                  <span aria-hidden className="text-[10px] leading-none">{laeuft ? "❙❙" : "▶"}</span>
-                </button>
-              </div>
-
-              <div aria-live="polite" aria-atomic="true" className="mt-5 min-h-[104px]">
-                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">{slide.kicker}</p>
-                <h2 className="mt-2 max-w-[34ch] text-[1.22rem] font-semibold leading-[1.3] tracking-[-0.018em] text-white">
-                  <a href="#publikationen" className="transition-colors hover:text-[#b6e57a]">{slide.titel}</a>
-                </h2>
-                <p className="ld-serif mt-2 max-w-[46ch] text-[0.98rem] leading-[1.62] text-[#96a3c8]">{slide.text}</p>
-              </div>
-
-              <div className="mt-6 flex items-center gap-4">
-                {insights.map((s, idx) => (
-                  <button
-                    key={s.titel}
-                    type="button"
-                    onClick={() => setI(idx)}
-                    aria-label={`Perspektive ${idx + 1} von ${anzahl}: ${s.titel}`}
-                    aria-current={idx === i ? "true" : undefined}
-                    className="group flex items-center gap-3"
-                  >
-                    <span className={`ld-num text-[11px] font-semibold transition-colors ${idx === i ? "text-[#b6e57a]" : "text-[#5d6a94] group-hover:text-[#a7b4d6]"}`}>
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <span aria-hidden className="relative block h-[2px] w-14 overflow-hidden bg-white/15">
-                      <span className={`absolute inset-y-0 left-0 bg-[#8dc63f] transition-all duration-500 ${idx === i ? "w-full" : "w-0"}`} />
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative min-h-[300px] lg:min-h-[720px]">
-          {insights.map((s, idx) => (
-            <Visual key={s.titel} variant={s.variant} src={s.bild} priority={idx === 0} alt={s.titel} className={`absolute inset-0 transition-opacity duration-[900ms] ${idx === i ? "opacity-100" : "opacity-0"}`} />
-          ))}
-          <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0b1233_0%,transparent_38%)]" />
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -1502,13 +1293,13 @@ function GlobalStyles() {
        offene Zeilen, eng getrackte Headlines.
        ─────────────────────────────────────────────────────── */
     body, input, textarea, select, button {
-      font-family: var(--font-jost, 'Jost'), system-ui, -apple-system, sans-serif;
+      font-family: var(--font-jost), system-ui, -apple-system, sans-serif;
       font-feature-settings: "kern" 1, "liga" 1;
     }
     body { font-size: 17px; letter-spacing: .004em; }
 
     .ld-serif {
-      font-family: var(--font-serif, 'Source Serif 4'), Georgia, 'Times New Roman', serif;
+      font-family: var(--font-source-serif), Georgia, 'Times New Roman', serif;
       letter-spacing: 0;
     }
     .ld-num { font-variant-numeric: tabular-nums lining-nums; }
