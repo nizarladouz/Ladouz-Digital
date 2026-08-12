@@ -105,10 +105,25 @@ const insights = [
   },
 ];
 
-/* Hero-Motiv: leer lassen → CI-Grafik als Platzhalter.
-   Sobald ein Foto vorliegt: "/motive/hero.jpg" (2880 × 1620 px,
-   ruhige linke Bildhälfte, dort liegt der Text). */
-const heroMotiv: string | undefined = undefined;
+/* ═══════════════════════════════════════════════════════════════
+   HERO-HINTERGRUND – die einzige Stelle, die du zum Bildwechsel
+   anfassen musst.
+
+   bild   Pfad unter /public. undefined → CI-Grafik als Platzhalter.
+          Zielmaß 2880 × 1620 px, JPEG oder PNG. Keine vorkomprimierten
+          WebP-Dateien: Next.js erzeugt AVIF und WebP selbst und liefert
+          jedem Gerät nur die Breite aus, die es wirklich braucht.
+   fokus  Welcher Punkt des Motivs beim Beschnitt erhalten bleibt.
+          "50% 40%" = mittig, leicht oberhalb. Format wie object-position.
+
+   Der Farbschleier darüber ist unabhängig vom Motiv und bleibt in
+   jedem Fall bestehen – siehe .ld-hero-veil in den globalen Styles.
+   Dort werden auch seine Farbwerte gepflegt.
+   ═══════════════════════════════════════════════════════════════ */
+const HERO = {
+  bild: undefined as string | undefined,
+  fokus: "50% 40%",
+} as const;
 
 const heroClaims = [
   { titel: "Systemisch statt isoliert", text: "Wir optimieren Wertschöpfungsketten, nicht Einzelmaßnahmen." },
@@ -240,26 +255,50 @@ function useInView<T extends HTMLElement>(threshold = 0.16, once = true) {
   return { ref, inView };
 }
 
+/* Der Fortschrittsbalken wird direkt am DOM-Knoten geschrieben, nicht
+   über State. Die Vorfassung rief setProgress bei jedem Scroll-Frame
+   auf – das rendert den kompletten Kopfbereich inklusive aller drei
+   Mega-Menüs sechzigmal pro Sekunde neu.
+
+   scaleX statt width: eine Transformation läuft im Compositor, eine
+   Breitenänderung löst Layout und Paint aus. */
 function useScrollState() {
-  const [progress, setProgress] = useState(0);
+  const balken = useRef<HTMLSpanElement | null>(null);
   const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     let ticking = false;
+    let letzter = false;
+
+    const messen = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      const anteil = h > 0 ? Math.min(window.scrollY / h, 1) : 0;
+      if (balken.current) balken.current.style.transform = `scaleX(${anteil})`;
+
+      const jetzt = window.scrollY > 40;
+      if (jetzt !== letzter) {
+        letzter = jetzt;
+        setScrolled(jetzt); // nur bei echtem Wechsel, also zweimal statt dauernd
+      }
+      ticking = false;
+    };
+
     const on = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(() => {
-        const h = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
-        setScrolled(window.scrollY > 40);
-        ticking = false;
-      });
+      requestAnimationFrame(messen);
     };
+
     on();
     window.addEventListener("scroll", on, { passive: true });
-    return () => window.removeEventListener("scroll", on);
+    window.addEventListener("resize", on, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
   }, []);
-  return { progress, scrolled };
+
+  return { balken, scrolled };
 }
 
 /* ══════════════════════════ Bausteine ══════════════════════════ */
@@ -336,13 +375,15 @@ function CtaButton({
 
 function Visual({
   variant, className = "", src, alt = "", priority = false, flat = false,
-  sizes = "(max-width:1024px) 100vw, 50vw",
+  sizes = "(max-width:1024px) 100vw, 50vw", fokus,
 }: {
   variant: "wave" | "grid" | "orbit" | "stack";
   className?: string; src?: string; alt?: string; priority?: boolean;
   /* flat: unterdrückt die eingebaute Abdunklung. Im Hero liegt
      bereits ein eigener Verlauf darüber – sonst wird es zu dunkel. */
   flat?: boolean;
+  /* Bildausschnitt, der beim Beschnitt erhalten bleibt (object-position). */
+  fokus?: string;
   /* Pflichtangabe für jedes neue Motiv: ohne passendes `sizes` lädt
      der Browser auf dem Handy die Desktop-Variante. */
   sizes?: string;
@@ -356,7 +397,7 @@ function Visual({
   if (src) {
     return (
       <div className={`relative overflow-hidden bg-[#0b1233] ${className}`}>
-        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className="ld-kenburns object-cover" />
+        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} style={fokus ? { objectPosition: fokus } : undefined} className="ld-kenburns object-cover" />
         {!flat && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(11,18,51,.55)_0%,rgba(11,18,51,.10)_60%)]" />}
       </div>
     );
@@ -474,7 +515,7 @@ export default function Home() {
 /* ══════════════════════════ Kopfbereich ══════════════════════════ */
 
 function Kopfbereich() {
-  const { progress, scrolled } = useScrollState();
+  const { balken, scrolled } = useScrollState();
   const [offen, setOffen] = useState<string | null>(null);
   const [mobil, setMobil] = useState(false);
   const [suche, setSuche] = useState(false);
@@ -497,15 +538,18 @@ function Kopfbereich() {
 
   return (
     <>
-      <div className="fixed inset-x-0 top-0 z-[80] h-[3px]">
-        <div className="h-full bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-[width] duration-150 ease-out" style={{ width: `${progress}%` }} />
+      <div aria-hidden className="fixed inset-x-0 top-0 z-[80] h-[3px]">
+        <span
+          ref={balken}
+          className="block h-full origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)]"
+        />
       </div>
 
       <header
         ref={headerRef}
         onMouseLeave={() => setOffen(null)}
         onBlurCapture={onBlurCapture}
-        className={`fixed inset-x-0 top-0 z-[70] transition-all duration-300 ${dunkel ? "bg-transparent" : "border-b border-[#e7ecf5] bg-white/92 backdrop-blur-xl"}`}
+        className={`fixed inset-x-0 top-0 z-[70] transition-all duration-300 ${dunkel ? "bg-transparent" : "border-b border-[#e7ecf5] bg-white/[0.94] backdrop-blur-md"}`}
       >
         <div className={`hidden border-b transition-colors duration-300 lg:block ${dunkel ? "border-white/12" : "border-[#edf1f7]"}`}>
           <div className="mx-auto flex h-9 max-w-[1240px] items-center justify-end gap-7 px-6">
@@ -655,67 +699,83 @@ function SucheIcon() {
 }
 
 /* ══════════════════════════ Hero ══════════════════════════
-   Vollflächiges Motiv, vier Elemente, darunter eine Claim-Leiste.
+   Aufbau in drei Schichten:
+     1. Motiv        – austauschbar über HERO.bild ganz oben
+     2. Farbschleier – .ld-hero-veil, liegt immer darüber
+     3. Inhalt       – vier Elemente, darunter die Claim-Leiste
 
-   Bewusst geändert gegenüber der Vorfassung:
-   · Kein <Reveal> um H1 und Lead. Beide starteten bei opacity:0
-     und wurden erst nach der Hydration sichtbar – das grösste
-     Textelement der Seite war damit künstlich verzögert (LCP).
-   · Kein Canvas-Punkteteppich mehr. Über einem Motiv ist er
-     unsichtbar, kostete aber eine dauerhafte rAF-Schleife.
-   · Das Perspektiven-Modul steht jetzt als eigene Sektion darunter.
+   Zur Ladeleistung:
+   · Die H1 wird ohne Animation ausgeliefert. Jede Einblendung über
+     opacity verzögert den Largest Contentful Paint, weil ein Element
+     mit opacity:0 nicht als gemalt zählt.
+   · Die begleitenden Elemente kommen über eine reine CSS-Choreografie
+     mit gestaffelten Verzögerungen – kein JavaScript, kein Observer.
+   · Genau ein Bild der Seite trägt `priority`: dieses.
    ═══════════════════════════════════════════════════════════ */
 
 function Hero() {
   return (
     <section id="top" className="relative isolate bg-[#0b1233] text-white">
-      {/* Motiv: einziges priority-Bild der Seite. Solange heroMotiv
-          leer ist, rendert die CI-Grafik als Platzhalter. */}
-      <div className="absolute inset-0 -z-10">
-        <Visual variant="stack" src={heroMotiv} sizes="100vw" priority flat alt="" className="h-full w-full" />
+      <div className="absolute inset-0 -z-20">
+        <Visual
+          variant="stack"
+          src={HERO.bild}
+          fokus={HERO.fokus}
+          sizes="100vw"
+          priority
+          flat
+          alt=""
+          className="h-full w-full"
+        />
       </div>
-      <span aria-hidden className="ld-hero-scrim absolute inset-0 -z-10" />
-      <span aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-[linear-gradient(to_top,#0b1233,transparent)]" />
 
-      <div className="mx-auto flex min-h-[clamp(600px,86svh,940px)] max-w-[1240px] flex-col justify-end px-6 pt-[clamp(150px,22vh,230px)]">
-        <div className="max-w-[46rem] pb-[clamp(56px,9vh,104px)]">
-          <p className="flex items-center gap-3.5">
-            <span aria-hidden className="block h-px w-8 flex-none bg-[#8dc63f]" />
-            <span className="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-[#9fc65f]">
+      {/* Farbschleier in den Markenfarben – unabhängig vom Motiv.
+          Farbwerte werden in .ld-hero-veil gepflegt, nicht hier. */}
+      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+      <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
+
+      <div className="mx-auto flex min-h-[clamp(600px,88svh,960px)] max-w-[1240px] flex-col justify-end px-6 pt-[clamp(150px,22vh,230px)]">
+        <div className="max-w-[47rem] pb-[clamp(60px,9vh,112px)]">
+          <p className="flex items-center gap-4">
+            <span aria-hidden className="ld-rule block h-px w-10 flex-none bg-[#8dc63f]" />
+            <span className="ld-enter ld-d1 text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[#9fc65f]">
               Digitale Systemarchitektur
             </span>
           </p>
 
-          <h1 className="mt-7 text-[clamp(2.5rem,6.4vw,4.4rem)] font-bold leading-[1.02] tracking-[-0.038em]">
+          {/* Ohne Einblendung: das ist das LCP-Element. */}
+          <h1 className="mt-8 text-[clamp(2.55rem,6.6vw,4.6rem)] font-bold leading-[1.01] tracking-[-0.04em]">
             Frameworks für digitale<br className="hidden sm:block" />{" "}
             <span className="ld-silber">&amp; KI-Strategien</span>
           </h1>
 
-          <p className="ld-serif mt-7 max-w-[46ch] text-[clamp(1.05rem,2.1vw,1.3rem)] leading-[1.62] text-[#c7d6f5]">
+          <p className="ld-serif ld-enter ld-d2 mt-7 max-w-[46ch] text-[clamp(1.06rem,2.1vw,1.32rem)] leading-[1.62] text-[#c7d6f5]">
             Wir bauen die Infrastruktur hinter Ihrer Unternehmensstrategie, Ihrer
             KI-Implementierung und Ihrem Marketing. Als ein System, nicht als drei Projekte.
           </p>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <div className="ld-enter ld-d3 mt-11 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <CtaButton href={BOOKING_URL}>Erstberatung vereinbaren</CtaButton>
             <CtaButton href="#framework" variant="ghost">Framework ansehen</CtaButton>
           </div>
         </div>
 
-        {/* Claim-Leiste: eigener Block am unteren Rand statt vierte
-            Zeile im Textblock. Die Haarlinien entstehen über gap-px. */}
-        <div className="grid gap-px border-t border-white/15 bg-white/10 md:grid-cols-3">
+        {/* Claim-Leiste: eigener Block am unteren Rand. Die Haarlinien
+            entstehen über gap-px, nicht über Rahmen – dadurch keine
+            doppelten Kanten an den Übergängen. */}
+        <ul className="ld-enter ld-d4 grid gap-px border-t border-white/15 bg-white/10 md:grid-cols-3">
           {heroClaims.map((c) => (
-            <div key={c.titel} className="bg-[#0b1233]/45 py-7 md:px-7">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#9fc65f]">{c.titel}</p>
+            <li key={c.titel} className="bg-[#0b1233]/50 py-7 md:px-7">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f]">{c.titel}</p>
               <p className="ld-serif mt-2 max-w-[34ch] text-[0.95rem] leading-[1.6] text-[#9aa8cc]">{c.text}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
 }
+
 
 /* ══════════════════════════ Perspektiven ══════════════════════════
    Ersetzt das automatisch rotierende Karussell im Hero.
@@ -1483,10 +1543,12 @@ function GlobalStyles() {
     }
     .ld-skip:focus { left: 0; }
 
+    /* Kein will-change: es liegt auf rund dreissig Elementen gleichzeitig
+       und hält für jedes davon dauerhaft eine eigene Compositing-Ebene
+       vor. Der Browser promotet während der Transition ohnehin selbst. */
     .ld-reveal {
-      opacity: 0; transform: translateY(36px);
-      transition: opacity .85s cubic-bezier(.16,.84,.28,1), transform .85s cubic-bezier(.16,.84,.28,1);
-      will-change: opacity, transform;
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .8s cubic-bezier(.16,.84,.28,1), transform .8s cubic-bezier(.16,.84,.28,1);
     }
     .ld-reveal.is-visible { opacity: 1; transform: none; }
 
@@ -1528,14 +1590,55 @@ function GlobalStyles() {
     }
     @keyframes ldZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
 
-    /* Abdunklung des Hero-Motivs: links kräftig für die Lesbarkeit,
-       nach rechts auslaufend, damit das Bild sichtbar bleibt. */
-    .ld-hero-scrim {
-      background: linear-gradient(100deg,
-        rgba(7,13,36,.94) 0%,
-        rgba(7,13,36,.82) 34%,
-        rgba(11,18,51,.42) 68%,
-        rgba(11,18,51,.10) 100%);
+    /* ── Hero-Farbschleier ────────────────────────────────────
+       Hier werden die Farbwerte über dem Hintergrundbild gepflegt.
+       Er liegt unabhängig vom Motiv darüber, damit ein Bildwechsel
+       niemals die Lesbarkeit oder die Markenanmutung verändert.
+
+       Drei Lagen, von unten nach oben:
+         1. Diagonale Abdunklung  #070d24 → #0b1233, links kräftig
+         2. Markenblau als Lichtstimmung oben rechts (#2f5bd7)
+         3. Ein Hauch Signalgrün unten links (#8dc63f), sehr schwach
+
+       Wer den Schleier heller möchte: die Alphawerte in Lage 1
+       senken. Unter etwa .70 im linken Bereich wird weisser Text
+       auf hellen Motiven unlesbar – dort liegt die Grenze.
+       ───────────────────────────────────────────────────────── */
+    .ld-hero-veil {
+      background:
+        radial-gradient(78% 62% at 84% 10%, rgba(47,91,215,.30), transparent 62%),
+        radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.10), transparent 60%),
+        linear-gradient(100deg,
+          rgba(7,13,36,.95)  0%,
+          rgba(8,14,40,.88) 28%,
+          rgba(11,18,51,.62) 58%,
+          rgba(11,18,51,.30) 82%,
+          rgba(11,18,51,.16) 100%);
+    }
+
+    /* Weicher Übergang in die Folgesektion – ohne sichtbare Kante. */
+    .ld-hero-fuss {
+      background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%);
+    }
+
+    /* ── Ladechoreografie ─────────────────────────────────────
+       Reines CSS, keine Observer, kein State. Die H1 ist bewusst
+       nicht dabei: sie ist das LCP-Element und wird sofort gemalt.
+       ───────────────────────────────────────────────────────── */
+    @keyframes ldRise {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes ldRule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    .ld-enter { animation: ldRise .8s cubic-bezier(.16,.84,.28,1) both; }
+    .ld-d1 { animation-delay: .10s; }
+    .ld-d2 { animation-delay: .22s; }
+    .ld-d3 { animation-delay: .32s; }
+    .ld-d4 { animation-delay: .42s; }
+    .ld-rule {
+      transform-origin: left center;
+      animation: ldRule .9s cubic-bezier(.16,.84,.28,1) both;
     }
 
     /* Perspektiven-Rail: native Snap-Punkte statt JS-Karussell. */
@@ -1585,15 +1688,19 @@ function GlobalStyles() {
       .ld-reveal { opacity: 1; transform: none; }
     }
 
+    @media (prefers-contrast: more) {
+      .ld-hero-veil { background: linear-gradient(100deg, rgba(7,13,36,.97) 0%, rgba(11,18,51,.86) 70%, rgba(11,18,51,.72) 100%); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .ld-reveal { opacity: 1; transform: none; transition: none; }
       .ld-btn .ld-sweep { display: none; }
       .ld-pulse, .ld-kenburns { animation: none; }
+      .ld-enter, .ld-rule { animation: none; opacity: 1; transform: none; }
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
     }
   `;
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }
-
