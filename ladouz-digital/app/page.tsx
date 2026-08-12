@@ -15,19 +15,14 @@
    <Visual/> rendert ohne `src` eine CI-Grafik, mit `src` ein Foto –
    beides mit Ken-Burns-Zoom. Motive: 2400 × 1600 px, ruhige Bildmitte.
 
-   HERO
-   Vollflächiges Motiv über <Visual/>. Platzhalter: heroMotiv leer
-   lassen, dann rendert die CI-Grafik. Perspektiven liegen als
-   eigene Sektion darunter, als Scroll-Rail ohne Auto-Play.
-
    BARRIEREFREIHEIT
-   Mega-Menü per Tastatur, statische H1 ohne Einblendverzögerung,
-   Live-Regionen für Formularmeldungen, Skip-Link, vollständige
-   prefers-reduced-motion-Abdeckung, Kontraste ab 4.5:1.
+   Karussell mit Pause-Steuerung (WCAG 2.2.2), Mega-Menü per Tastatur,
+   statische H1, Live-Regionen für Formularmeldungen, Skip-Link,
+   vollständige prefers-reduced-motion-Abdeckung.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 import {
-  useCallback, useEffect, useId, useRef, useState, useSyncExternalStore,
+  useCallback, useEffect, useId, useRef, useState,
   type FormEvent, type ReactNode,
 } from "react";
 import Image from "next/image";
@@ -105,31 +100,7 @@ const insights = [
   },
 ];
 
-/* ═══════════════════════════════════════════════════════════════
-   HERO-HINTERGRUND – die einzige Stelle, die du zum Bildwechsel
-   anfassen musst.
-
-   bild   Pfad unter /public. undefined → CI-Grafik als Platzhalter.
-          Zielmaß 2880 × 1620 px, JPEG oder PNG. Keine vorkomprimierten
-          WebP-Dateien: Next.js erzeugt AVIF und WebP selbst und liefert
-          jedem Gerät nur die Breite aus, die es wirklich braucht.
-   fokus  Welcher Punkt des Motivs beim Beschnitt erhalten bleibt.
-          "50% 40%" = mittig, leicht oberhalb. Format wie object-position.
-
-   Der Farbschleier darüber ist unabhängig vom Motiv und bleibt in
-   jedem Fall bestehen – siehe .ld-hero-veil in den globalen Styles.
-   Dort werden auch seine Farbwerte gepflegt.
-   ═══════════════════════════════════════════════════════════════ */
-const HERO = {
-  bild: undefined as string | undefined,
-  fokus: "50% 40%",
-} as const;
-
-const heroClaims = [
-  { titel: "Systemisch statt isoliert", text: "Wir optimieren Wertschöpfungsketten, nicht Einzelmaßnahmen." },
-  { titel: "Qualität als Standard", text: "Jedes Projekt folgt derselben dokumentierten Architektur." },
-  { titel: "Messbar & skalierbar", text: "Kennzahlen von der ersten Woche an, nicht erst im Rückblick." },
-];
+const heroChips = ["Systemisch statt isoliert", "Qualität als Standard", "Messbar & skalierbar"];
 
 const branchen = [
   "Maschinen- und Anlagenbau", "Handel & E-Commerce", "Logistik & Transport",
@@ -219,21 +190,16 @@ const socials: [string, string][] = [
 
 /* ══════════════════════════ Hooks ══════════════════════════ */
 
-/* useSyncExternalStore statt useState + useEffect: der Media-Query ist
-   eine externe Datenquelle. Die alte Fassung setzte State synchron im
-   Effect und löste dadurch einen zusätzlichen Renderdurchlauf aus. */
-const MQ_REDUCED = "(prefers-reduced-motion: reduce)";
-
 function useReducedMotion() {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mq = window.matchMedia(MQ_REDUCED);
-      mq.addEventListener("change", onChange);
-      return () => mq.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(MQ_REDUCED).matches,
-    () => false, // serverseitig: Bewegung erlauben, Client korrigiert
-  );
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mq.matches);
+    const on = () => setReduced(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return reduced;
 }
 
 function useInView<T extends HTMLElement>(threshold = 0.16, once = true) {
@@ -255,50 +221,26 @@ function useInView<T extends HTMLElement>(threshold = 0.16, once = true) {
   return { ref, inView };
 }
 
-/* Der Fortschrittsbalken wird direkt am DOM-Knoten geschrieben, nicht
-   über State. Die Vorfassung rief setProgress bei jedem Scroll-Frame
-   auf – das rendert den kompletten Kopfbereich inklusive aller drei
-   Mega-Menüs sechzigmal pro Sekunde neu.
-
-   scaleX statt width: eine Transformation läuft im Compositor, eine
-   Breitenänderung löst Layout und Paint aus. */
 function useScrollState() {
-  const balken = useRef<HTMLSpanElement | null>(null);
+  const [progress, setProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-
   useEffect(() => {
     let ticking = false;
-    let letzter = false;
-
-    const messen = () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      const anteil = h > 0 ? Math.min(window.scrollY / h, 1) : 0;
-      if (balken.current) balken.current.style.transform = `scaleX(${anteil})`;
-
-      const jetzt = window.scrollY > 40;
-      if (jetzt !== letzter) {
-        letzter = jetzt;
-        setScrolled(jetzt); // nur bei echtem Wechsel, also zweimal statt dauernd
-      }
-      ticking = false;
-    };
-
     const on = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(messen);
+      requestAnimationFrame(() => {
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        setProgress(h > 0 ? (window.scrollY / h) * 100 : 0);
+        setScrolled(window.scrollY > 40);
+        ticking = false;
+      });
     };
-
     on();
     window.addEventListener("scroll", on, { passive: true });
-    window.addEventListener("resize", on, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", on);
-      window.removeEventListener("resize", on);
-    };
+    return () => window.removeEventListener("scroll", on);
   }, []);
-
-  return { balken, scrolled };
+  return { progress, scrolled };
 }
 
 /* ══════════════════════════ Bausteine ══════════════════════════ */
@@ -374,19 +316,10 @@ function CtaButton({
 /* ══════════════════════════ Visual ══════════════════════════ */
 
 function Visual({
-  variant, className = "", src, alt = "", priority = false, flat = false,
-  sizes = "(max-width:1024px) 100vw, 50vw", fokus,
+  variant, className = "", src, alt = "", priority = false,
 }: {
   variant: "wave" | "grid" | "orbit" | "stack";
   className?: string; src?: string; alt?: string; priority?: boolean;
-  /* flat: unterdrückt die eingebaute Abdunklung. Im Hero liegt
-     bereits ein eigener Verlauf darüber – sonst wird es zu dunkel. */
-  flat?: boolean;
-  /* Bildausschnitt, der beim Beschnitt erhalten bleibt (object-position). */
-  fokus?: string;
-  /* Pflichtangabe für jedes neue Motiv: ohne passendes `sizes` lädt
-     der Browser auf dem Handy die Desktop-Variante. */
-  sizes?: string;
 }) {
   /* useId verhindert doppelte SVG-IDs, wenn dieselbe Variante
      mehrfach auf der Seite vorkommt. Doppelpunkte raus – die sind
@@ -397,14 +330,14 @@ function Visual({
   if (src) {
     return (
       <div className={`relative overflow-hidden bg-[#0b1233] ${className}`}>
-        <Image src={src} alt={alt} fill priority={priority} sizes={sizes} style={fokus ? { objectPosition: fokus } : undefined} className="ld-kenburns object-cover" />
-        {!flat && <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(11,18,51,.55)_0%,rgba(11,18,51,.10)_60%)]" />}
+        <Image src={src} alt={alt} fill priority={priority} sizes="(max-width:1024px) 100vw, 50vw" className="ld-kenburns object-cover" />
+        <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(0deg,rgba(11,18,51,.55)_0%,rgba(11,18,51,.10)_60%)]" />
       </div>
     );
   }
 
   return (
-    <div className={`relative overflow-hidden bg-[linear-gradient(126deg,#0b1233_0%,#131f5c_45%,#2f5bd7_100%)] ${className}`} {...(alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}>
+    <div className={`relative overflow-hidden bg-[linear-gradient(126deg,#0b1233_0%,#131f5c_45%,#2f5bd7_100%)] ${className}`} role="img" aria-label={alt || "Grafik im Ladouz-Design"}>
       <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" className="ld-kenburns absolute inset-0 h-full w-full" aria-hidden>
         <defs>
           <linearGradient id={g} x1="0" y1="0" x2="1" y2="1">
@@ -453,13 +386,71 @@ function Visual({
   );
 }
 
+/* ══════════════════════════ Dot-Wave ══════════════════════════ */
+
+function DotWave() {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const { ref: wrapRef, inView } = useInView<HTMLDivElement>(0, false);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    // Rechnet nur, solange der Hero sichtbar ist – spart Akku.
+    if (reduced || !inView) return;
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+
+    let w = 0, h = 0, raf = 0, t = 0;
+    let dots: { x: number; y: number; ph: number }[] = [];
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const resize = () => {
+      w = canvas.width = canvas.offsetWidth * dpr;
+      h = canvas.height = canvas.offsetHeight * dpr;
+      dots = [];
+      const gap = 34 * dpr;
+      for (let x = 0; x < w + gap; x += gap)
+        for (let y = 0; y < h + gap; y += gap)
+          dots.push({ x, y, ph: x * 0.006 + y * 0.004 });
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      t += 0.016;
+      const cx = w * 0.76, cy = h * 0.3;
+      for (const d of dots) {
+        const wv = Math.sin(t * 1.1 + d.ph) * 0.5 + 0.5;
+        const dist = Math.hypot(d.x - cx, d.y - cy) / (w * 0.7);
+        const a = Math.max(0, 1 - dist) * (0.08 + wv * 0.22);
+        if (a < 0.015) continue;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y + Math.sin(t + d.ph) * 3 * dpr, (0.6 + wv * 1.7) * dpr, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(draw);
+    };
+
+    resize(); draw();
+    window.addEventListener("resize", resize);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+  }, [reduced, inView]);
+
+  return (
+    <div ref={wrapRef} aria-hidden className="pointer-events-none absolute inset-0">
+      <canvas ref={canvasRef} className="h-full w-full" />
+    </div>
+  );
+}
+
 function Counter({ ziel, suffix }: { ziel: number | null; suffix: string }) {
   const { ref, inView } = useInView<HTMLSpanElement>(0.6);
   const [wert, setWert] = useState(0);
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (!inView || ziel === null || reduced) return;
+    if (!inView || ziel === null) return;
+    if (reduced) { setWert(ziel); return; }
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
@@ -471,13 +462,9 @@ function Counter({ ziel, suffix }: { ziel: number | null; suffix: string }) {
     return () => cancelAnimationFrame(raf);
   }, [inView, ziel, reduced]);
 
-  /* Bei reduzierter Bewegung wird der Zielwert direkt abgeleitet,
-     statt ihn im Effect zu setzen – kein zusätzlicher Render. */
-  const anzeige = reduced ? ziel : wert;
-
   return (
     <span ref={ref} className="ld-num bg-[linear-gradient(92deg,#b6e57a,#7ea3f0)] bg-clip-text text-[2.5rem] font-bold leading-none text-transparent">
-      {ziel === null ? suffix : `${anzeige}${suffix}`}
+      {ziel === null ? suffix : `${wert}${suffix}`}
     </span>
   );
 }
@@ -493,7 +480,6 @@ export default function Home() {
         <Kopfbereich />
         <main id="main">
           <Hero />
-          <Perspektiven />
           <KompetenzMatrix />
           <BedarfsDialog />
           <Referenzen />
@@ -515,7 +501,7 @@ export default function Home() {
 /* ══════════════════════════ Kopfbereich ══════════════════════════ */
 
 function Kopfbereich() {
-  const { balken, scrolled } = useScrollState();
+  const { progress, scrolled } = useScrollState();
   const [offen, setOffen] = useState<string | null>(null);
   const [mobil, setMobil] = useState(false);
   const [suche, setSuche] = useState(false);
@@ -538,18 +524,15 @@ function Kopfbereich() {
 
   return (
     <>
-      <div aria-hidden className="fixed inset-x-0 top-0 z-[80] h-[3px]">
-        <span
-          ref={balken}
-          className="block h-full origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)]"
-        />
+      <div className="fixed inset-x-0 top-0 z-[80] h-[3px]">
+        <div className="h-full bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-[width] duration-150 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
       <header
         ref={headerRef}
         onMouseLeave={() => setOffen(null)}
         onBlurCapture={onBlurCapture}
-        className={`fixed inset-x-0 top-0 z-[70] transition-all duration-300 ${dunkel ? "bg-transparent" : "border-b border-[#e7ecf5] bg-white/[0.94] backdrop-blur-md"}`}
+        className={`fixed inset-x-0 top-0 z-[70] transition-all duration-300 ${dunkel ? "bg-transparent" : "border-b border-[#e7ecf5] bg-white/92 backdrop-blur-xl"}`}
       >
         <div className={`hidden border-b transition-colors duration-300 lg:block ${dunkel ? "border-white/12" : "border-[#edf1f7]"}`}>
           <div className="mx-auto flex h-9 max-w-[1240px] items-center justify-end gap-7 px-6">
@@ -660,9 +643,9 @@ function Kopfbereich() {
               <label htmlFor="suche" className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">
                 Publikationen, Leistungen und Themen durchsuchen
               </label>
-              <input id="suche" type="search" placeholder="Wonach suchen Sie?" className="mt-4 w-full border-b-2 border-[#e7ecf5] bg-transparent pb-3 text-[clamp(1.2rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-[#0b1233] outline-none transition-colors placeholder:text-[#5b6b8a] focus:border-[#8dc63f]" />
+              <input id="suche" type="search" placeholder="Wonach suchen Sie?" className="mt-4 w-full border-b-2 border-[#e7ecf5] bg-transparent pb-3 text-[clamp(1.2rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-[#0b1233] outline-none transition-colors placeholder:text-[#a9bcd3] focus:border-[#8dc63f]" />
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#5b6b8a]">Häufig gesucht</span>
+                <span className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#a9bcd3]">Häufig gesucht</span>
                 {["KI-Implementierung", "Digitalstrategie", "Framework", "Automatisierung"].map((t) => (
                   <span key={t} className="rounded-full border border-[#e7ecf5] px-3.5 py-1.5 text-[0.8rem] text-[#43507a]">{t}</span>
                 ))}
@@ -699,133 +682,133 @@ function SucheIcon() {
 }
 
 /* ══════════════════════════ Hero ══════════════════════════
-   Aufbau in drei Schichten:
-     1. Motiv        – austauschbar über HERO.bild ganz oben
-     2. Farbschleier – .ld-hero-veil, liegt immer darüber
-     3. Inhalt       – vier Elemente, darunter die Claim-Leiste
-
-   Zur Ladeleistung:
-   · Die H1 wird ohne Animation ausgeliefert. Jede Einblendung über
-     opacity verzögert den Largest Contentful Paint, weil ein Element
-     mit opacity:0 nicht als gemalt zählt.
-   · Die begleitenden Elemente kommen über eine reine CSS-Choreografie
-     mit gestaffelten Verzögerungen – kein JavaScript, kein Observer.
-   · Genau ein Bild der Seite trägt `priority`: dieses.
+   Eine feste H1 als Marken-Anker (SEO), darunter das rotierende
+   Insight-Modul mit Pause-Steuerung (WCAG 2.2.2).
    ═══════════════════════════════════════════════════════════ */
 
 function Hero() {
+  const [i, setI] = useState(0);
+  const [laeuft, setLaeuft] = useState(true);
+  const [hover, setHover] = useState(false);
+  const reduced = useReducedMotion();
+  const anzahl = insights.length;
+
+  const aktivesAutoplay = laeuft && !hover && !reduced;
+
+  useEffect(() => {
+    if (!aktivesAutoplay) return;
+    const iv = setInterval(() => setI((v) => (v + 1) % anzahl), 7000);
+    return () => clearInterval(iv);
+  }, [aktivesAutoplay, anzahl]);
+
+  const slide = insights[i];
+
   return (
-    <section id="top" className="relative isolate bg-[#0b1233] text-white">
-      <div className="absolute inset-0 -z-20">
-        <Visual
-          variant="stack"
-          src={HERO.bild}
-          fokus={HERO.fokus}
-          sizes="100vw"
-          priority
-          flat
-          alt=""
-          className="h-full w-full"
-        />
-      </div>
+    <section id="top" className="relative overflow-hidden bg-[#0b1233] pt-[110px] text-white">
+      <div className="relative mx-auto grid max-w-[1240px] items-stretch lg:grid-cols-[1.02fr_0.98fr]">
+        <div className="relative z-10 px-6 py-[76px] lg:py-[104px]">
+          <DotWave />
 
-      {/* Farbschleier in den Markenfarben – unabhängig vom Motiv.
-          Farbwerte werden in .ld-hero-veil gepflegt, nicht hier. */}
-      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
-      <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
+          <div className="relative">
+            <Reveal>
+              <Eyebrow tone="light">Agentur für digitale Systemarchitektur</Eyebrow>
+            </Reveal>
 
-      <div className="mx-auto flex min-h-[clamp(600px,88svh,960px)] max-w-[1240px] flex-col justify-end px-6 pt-[clamp(150px,22vh,230px)]">
-        <div className="max-w-[47rem] pb-[clamp(60px,9vh,112px)]">
-          <p className="flex items-center gap-4">
-            <span aria-hidden className="ld-rule block h-px w-10 flex-none bg-[#8dc63f]" />
-            <span className="ld-enter ld-d1 text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-[#9fc65f]">
-              Digitale Systemarchitektur
-            </span>
-          </p>
+            <Reveal delay={80}>
+              <h1 className="mt-6 max-w-[15ch] text-[clamp(2.4rem,4.9vw,3.9rem)] font-bold leading-[1.03] tracking-[-0.038em]">
+                Frameworks für{" "}
+                <span className="ld-silber">digitale &amp;&nbsp;KI-Strategien</span>
+              </h1>
+            </Reveal>
 
-          {/* Ohne Einblendung: das ist das LCP-Element. */}
-          <h1 className="mt-8 text-[clamp(2.55rem,6.6vw,4.6rem)] font-bold leading-[1.01] tracking-[-0.04em]">
-            Frameworks für digitale<br className="hidden sm:block" />{" "}
-            <span className="ld-silber">&amp; KI-Strategien</span>
-          </h1>
+            <Reveal delay={160}>
+              <p className="ld-serif mt-6 max-w-[48ch] text-[1.15rem] leading-[1.7] text-[#c7d6f5]">
+                Die Infrastruktur hinter Ihrer digitalen Unternehmensstrategie, KI-Implementierung
+                und Ihrem Online-Marketing. Systemisch gedacht, präzise gebaut, messbar skaliert.
+              </p>
+            </Reveal>
 
-          <p className="ld-serif ld-enter ld-d2 mt-7 max-w-[46ch] text-[clamp(1.06rem,2.1vw,1.32rem)] leading-[1.62] text-[#c7d6f5]">
-            Wir bauen die Infrastruktur hinter Ihrer Unternehmensstrategie, Ihrer
-            KI-Implementierung und Ihrem Marketing. Als ein System, nicht als drei Projekte.
-          </p>
-
-          <div className="ld-enter ld-d3 mt-11 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <CtaButton href={BOOKING_URL}>Erstberatung vereinbaren</CtaButton>
-            <CtaButton href="#framework" variant="ghost">Framework ansehen</CtaButton>
-          </div>
-        </div>
-
-        {/* Claim-Leiste: eigener Block am unteren Rand. Die Haarlinien
-            entstehen über gap-px, nicht über Rahmen – dadurch keine
-            doppelten Kanten an den Übergängen. */}
-        <ul className="ld-enter ld-d4 grid gap-px border-t border-white/15 bg-white/10 md:grid-cols-3">
-          {heroClaims.map((c) => (
-            <li key={c.titel} className="bg-[#0b1233]/50 py-7 md:px-7">
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f]">{c.titel}</p>
-              <p className="ld-serif mt-2 max-w-[34ch] text-[0.95rem] leading-[1.6] text-[#9aa8cc]">{c.text}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-
-/* ══════════════════════════ Perspektiven ══════════════════════════
-   Ersetzt das automatisch rotierende Karussell im Hero.
-
-   · Auto-Rotation mit aria-live unterbrach Screenreader alle sieben
-     Sekunden. Ohne Auto-Play greift WCAG 2.2.2 gar nicht erst.
-   · Zuvor war nur ein Beitrag sichtbar, obwohl alle drei geladen
-     wurden. Jetzt sieht man drei – und deutlich mehr Bildfläche.
-   · Die Rail ist nativer Overflow-Scroll mit scroll-snap: kein
-     State, kein Interval, keine Indikatoren, die gepflegt werden
-     müssen. Funktioniert per Wisch, Trackpad und Tastatur.
-   ═══════════════════════════════════════════════════════════════ */
-
-function Perspektiven() {
-  return (
-    <section id="perspektiven" aria-labelledby="perspektiven-titel" className="bg-[#0b1233] pb-[clamp(72px,10vw,120px)] text-white">
-      <div className="mx-auto max-w-[1240px] px-6">
-        <div className="flex flex-wrap items-end justify-between gap-6 pb-10">
-          <div>
-            <Eyebrow tone="light">Aktuelle Perspektiven</Eyebrow>
-            <h2 id="perspektiven-titel" className="mt-5 max-w-[20ch] text-[clamp(1.7rem,3.4vw,2.6rem)] font-bold leading-[1.1] tracking-[-0.03em]">
-              Woran wir gerade arbeiten.
-            </h2>
-          </div>
-          <a href="#publikationen" className="inline-flex items-center gap-2 border-b-2 border-[#8dc63f] pb-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] transition-colors hover:text-[#b6e57a]">
-            Alle Publikationen <span aria-hidden>→</span>
-          </a>
-        </div>
-      </div>
-
-      <ul className="ld-rail ld-rail-inset flex gap-5 overflow-x-auto pb-4">
-        {insights.map((s, i) => (
-          <li key={s.titel} className="ld-rail-item w-[min(78vw,380px)] flex-none">
-            <a href="#publikationen" className="group block h-full overflow-hidden rounded-[20px] border border-white/10 bg-white/[0.04] transition-colors duration-300 hover:border-[#8dc63f]/45 hover:bg-white/[0.07]">
-              <Visual variant={s.variant} src={s.bild} alt="" sizes="(max-width:640px) 78vw, 380px" className="aspect-[4/3] w-full" />
-              <div className="p-7">
-                <p className="ld-num text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">
-                  {String(i + 1).padStart(2, "0")} · {s.kicker}
-                </p>
-                <h3 className="mt-3 text-[1.15rem] font-semibold leading-[1.3] tracking-[-0.018em]">{s.titel}</h3>
-                <p className="ld-serif mt-2.5 text-[0.96rem] leading-[1.6] text-[#9aa8cc]">{s.text}</p>
+            <Reveal delay={240}>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <CtaButton href={BOOKING_URL}>Erstberatung</CtaButton>
+                <CtaButton href="#framework" variant="ghost">Unser Framework</CtaButton>
               </div>
-            </a>
-          </li>
-        ))}
-      </ul>
+            </Reveal>
+
+            <Reveal delay={320}>
+              <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/15 pt-6">
+                {heroChips.map((c) => (
+                  <li key={c} className="flex items-center gap-2.5 text-[11.5px] font-semibold uppercase tracking-[0.18em] text-[#a7b4d6]">
+                    <span aria-hidden className="ld-pulse block h-1.5 w-1.5 rounded-full bg-[#8dc63f]" />
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+
+            {/* Insight-Modul */}
+            <div
+              className="mt-12 border-t border-white/15 pt-8"
+              onMouseEnter={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+              onFocusCapture={() => setHover(true)}
+              onBlurCapture={() => setHover(false)}
+            >
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-[0.66rem] font-semibold uppercase tracking-[0.26em] text-[#7b88ad]">
+                  Aktuelle Perspektiven
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setLaeuft((l) => !l)}
+                  aria-label={laeuft ? "Automatischen Wechsel pausieren" : "Automatischen Wechsel fortsetzen"}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 text-white transition-colors hover:border-[#8dc63f] hover:bg-white/10"
+                >
+                  <span aria-hidden className="text-[10px] leading-none">{laeuft ? "❙❙" : "▶"}</span>
+                </button>
+              </div>
+
+              <div aria-live="polite" aria-atomic="true" className="mt-5 min-h-[104px]">
+                <p className="text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">{slide.kicker}</p>
+                <h2 className="mt-2 max-w-[34ch] text-[1.22rem] font-semibold leading-[1.3] tracking-[-0.018em] text-white">
+                  <a href="#publikationen" className="transition-colors hover:text-[#b6e57a]">{slide.titel}</a>
+                </h2>
+                <p className="ld-serif mt-2 max-w-[46ch] text-[0.98rem] leading-[1.62] text-[#96a3c8]">{slide.text}</p>
+              </div>
+
+              <div className="mt-6 flex items-center gap-4">
+                {insights.map((s, idx) => (
+                  <button
+                    key={s.titel}
+                    type="button"
+                    onClick={() => setI(idx)}
+                    aria-label={`Perspektive ${idx + 1} von ${anzahl}: ${s.titel}`}
+                    aria-current={idx === i ? "true" : undefined}
+                    className="group flex items-center gap-3"
+                  >
+                    <span className={`ld-num text-[11px] font-semibold transition-colors ${idx === i ? "text-[#b6e57a]" : "text-[#5d6a94] group-hover:text-[#a7b4d6]"}`}>
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <span aria-hidden className="relative block h-[2px] w-14 overflow-hidden bg-white/15">
+                      <span className={`absolute inset-y-0 left-0 bg-[#8dc63f] transition-all duration-500 ${idx === i ? "w-full" : "w-0"}`} />
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="relative min-h-[300px] lg:min-h-[720px]">
+          {insights.map((s, idx) => (
+            <Visual key={s.titel} variant={s.variant} src={s.bild} priority={idx === 0} alt={s.titel} className={`absolute inset-0 transition-opacity duration-[900ms] ${idx === i ? "opacity-100" : "opacity-0"}`} />
+          ))}
+          <span aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0b1233_0%,transparent_38%)]" />
+        </div>
+      </div>
     </section>
   );
 }
-
 
 /* ══════════════════════════ Kompetenz-Matrix ══════════════════════════ */
 
@@ -846,7 +829,7 @@ function KompetenzMatrix() {
                 <li key={b} className="border-b border-[#edf1f7]">
                   <a href="#kontakt" className="group flex items-center justify-between py-3 text-[0.96rem] text-[#43507a] transition-colors hover:text-[#0b1233]">
                     {b}
-                    <span aria-hidden className="text-[#5b6b8a] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">→</span>
+                    <span aria-hidden className="text-[#a9bcd3] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">→</span>
                   </a>
                 </li>
               ))}
@@ -913,7 +896,7 @@ function BedarfsDialog() {
             <div aria-live="polite">
               {!fertig ? (
                 <div className="mt-8">
-                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#5b6b8a]">Frage {schritt + 1} von 2</p>
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#a9bcd3]">Frage {schritt + 1} von 2</p>
                   <h3 className="mt-2 text-[1.2rem] font-semibold tracking-[-0.018em] text-[#131f5c]">
                     {schritt === 0 ? "In welcher Branche sind Sie tätig?" : "Welches Thema beschäftigt Sie aktuell?"}
                   </h3>
@@ -1039,7 +1022,7 @@ function Leistungen() {
             <Reveal key={l.titel} delay={i * 110}>
               <article className="group relative flex h-full flex-col overflow-hidden rounded-[20px] border border-[#e7ecf5] bg-white p-8 shadow-[0_16px_42px_rgba(11,18,51,0.06)] transition-all duration-[380ms] hover:-translate-y-2 hover:border-[#d6dfee] hover:shadow-[0_28px_64px_rgba(11,18,51,0.12)]">
                 <span aria-hidden className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-[linear-gradient(90deg,#2f5bd7,#8dc63f)] transition-transform duration-[380ms] group-hover:scale-x-100" />
-                <span className="ld-num text-[12px] font-semibold uppercase tracking-[0.22em] text-[#5b6b8a]">{l.nr}</span>
+                <span className="ld-num text-[12px] font-semibold uppercase tracking-[0.22em] text-[#a9bcd3]">{l.nr}</span>
                 <h3 className="mt-4 text-[1.22rem] font-bold leading-snug tracking-[-0.022em] text-[#131f5c]">{l.titel}</h3>
                 <p className="ld-serif mt-3.5 flex-1 text-[1rem] leading-[1.7] text-[#43507a]">{l.text}</p>
                 <ul className="mt-6 space-y-2 border-t border-[#edf1f7] pt-5">
@@ -1300,7 +1283,7 @@ function Newsletter() {
           ) : (
             <form onSubmit={(e) => { e.preventDefault(); if (gueltig && ok) setGesendet(true); }} className="rounded-[20px] border border-[#e7ecf5] bg-white p-7">
               <label htmlFor="nl-mail" className="block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#43507a]">Ihre E-Mail-Adresse</label>
-              <input id="nl-mail" type="email" value={mail} onChange={(e) => setMail(e.target.value)} placeholder="name@unternehmen.de" className="mt-3 w-full rounded-[13px] border border-[#e7ecf5] bg-[#f7f9fc] px-4 py-3.5 text-[1rem] outline-none transition-all duration-300 placeholder:text-[#5b6b8a] focus:border-[#8dc63f] focus:bg-white focus:ring-4 focus:ring-[#8dc63f]/12" />
+              <input id="nl-mail" type="email" value={mail} onChange={(e) => setMail(e.target.value)} placeholder="name@unternehmen.de" className="mt-3 w-full rounded-[13px] border border-[#e7ecf5] bg-[#f7f9fc] px-4 py-3.5 text-[1rem] outline-none transition-all duration-300 placeholder:text-[#a9bcd3] focus:border-[#8dc63f] focus:bg-white focus:ring-4 focus:ring-[#8dc63f]/12" />
 
               <label className="ld-serif mt-5 flex cursor-pointer items-start gap-3 text-[0.88rem] leading-[1.6] text-[#43507a]">
                 <input type="checkbox" checked={ok} onChange={(e) => setOk(e.target.checked)} className="mt-1 h-4 w-4 flex-none accent-[#8dc63f]" />
@@ -1493,7 +1476,7 @@ function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-5 border-t border-white/10 py-8">
-          <span className="text-[0.78rem] leading-relaxed text-[#8695bd]">
+          <span className="text-[0.78rem] leading-relaxed text-[#6b7896]">
             © {new Date().getFullYear()} ladouz.digital – Alle Rechte vorbehalten.
           </span>
           <span className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#a9bcd3]">we create digital value</span>
@@ -1543,12 +1526,10 @@ function GlobalStyles() {
     }
     .ld-skip:focus { left: 0; }
 
-    /* Kein will-change: es liegt auf rund dreissig Elementen gleichzeitig
-       und hält für jedes davon dauerhaft eine eigene Compositing-Ebene
-       vor. Der Browser promotet während der Transition ohnehin selbst. */
     .ld-reveal {
-      opacity: 0; transform: translateY(32px);
-      transition: opacity .8s cubic-bezier(.16,.84,.28,1), transform .8s cubic-bezier(.16,.84,.28,1);
+      opacity: 0; transform: translateY(36px);
+      transition: opacity .85s cubic-bezier(.16,.84,.28,1), transform .85s cubic-bezier(.16,.84,.28,1);
+      will-change: opacity, transform;
     }
     .ld-reveal.is-visible { opacity: 1; transform: none; }
 
@@ -1578,77 +1559,11 @@ function GlobalStyles() {
     }
     .ld-navlink:hover::after, .ld-navlink:focus-visible::after { transform: scaleX(1); }
 
-    /* Ken Burns ohne will-change: eine dauerhaft beförderte
-       Compositing-Ebene über die volle Viewporthöhe kostet auf
-       Mobilgeräten spürbar Speicher. Der Browser promotet die
-       Ebene während der Animation ohnehin selbst.
-       Zoom von 1.13 auf 1.08 reduziert – bei vollflächigen Motiven
-       wandern sonst Bildkanten sichtbar aus dem Rahmen. */
     .ld-kenburns {
-      animation: ldZoom 28s ease-in-out infinite alternate;
-      transform-origin: 55% 45%;
+      animation: ldZoom 26s ease-in-out infinite alternate;
+      transform-origin: 58% 42%; will-change: transform;
     }
-    @keyframes ldZoom { from { transform: scale(1); } to { transform: scale(1.08); } }
-
-    /* ── Hero-Farbschleier ────────────────────────────────────
-       Hier werden die Farbwerte über dem Hintergrundbild gepflegt.
-       Er liegt unabhängig vom Motiv darüber, damit ein Bildwechsel
-       niemals die Lesbarkeit oder die Markenanmutung verändert.
-
-       Drei Lagen, von unten nach oben:
-         1. Diagonale Abdunklung  #070d24 → #0b1233, links kräftig
-         2. Markenblau als Lichtstimmung oben rechts (#2f5bd7)
-         3. Ein Hauch Signalgrün unten links (#8dc63f), sehr schwach
-
-       Wer den Schleier heller möchte: die Alphawerte in Lage 1
-       senken. Unter etwa .70 im linken Bereich wird weisser Text
-       auf hellen Motiven unlesbar – dort liegt die Grenze.
-       ───────────────────────────────────────────────────────── */
-    .ld-hero-veil {
-      background:
-        radial-gradient(78% 62% at 84% 10%, rgba(47,91,215,.30), transparent 62%),
-        radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.10), transparent 60%),
-        linear-gradient(100deg,
-          rgba(7,13,36,.95)  0%,
-          rgba(8,14,40,.88) 28%,
-          rgba(11,18,51,.62) 58%,
-          rgba(11,18,51,.30) 82%,
-          rgba(11,18,51,.16) 100%);
-    }
-
-    /* Weicher Übergang in die Folgesektion – ohne sichtbare Kante. */
-    .ld-hero-fuss {
-      background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%);
-    }
-
-    /* ── Ladechoreografie ─────────────────────────────────────
-       Reines CSS, keine Observer, kein State. Die H1 ist bewusst
-       nicht dabei: sie ist das LCP-Element und wird sofort gemalt.
-       ───────────────────────────────────────────────────────── */
-    @keyframes ldRise {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: none; }
-    }
-    @keyframes ldRule { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-
-    .ld-enter { animation: ldRise .8s cubic-bezier(.16,.84,.28,1) both; }
-    .ld-d1 { animation-delay: .10s; }
-    .ld-d2 { animation-delay: .22s; }
-    .ld-d3 { animation-delay: .32s; }
-    .ld-d4 { animation-delay: .42s; }
-    .ld-rule {
-      transform-origin: left center;
-      animation: ldRule .9s cubic-bezier(.16,.84,.28,1) both;
-    }
-
-    /* Perspektiven-Rail: native Snap-Punkte statt JS-Karussell. */
-    .ld-rail { scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
-    .ld-rail::-webkit-scrollbar { display: none; }
-    .ld-rail-item { scroll-snap-align: start; }
-    .ld-rail-inset { padding-inline: 1.5rem; }
-    @media (min-width: 1024px) {
-      .ld-rail-inset { padding-inline: max(1.5rem, calc((100vw - 1240px) / 2 + 1.5rem)); }
-    }
+    @keyframes ldZoom { from { transform: scale(1); } to { transform: scale(1.13); } }
 
     /* ── Silber ────────────────────────────────────────────────
        Gebürstetes Metall statt Flächenfarbe: fünf Stopps erzeugen
@@ -1683,24 +1598,15 @@ function GlobalStyles() {
       .ld-reveal { opacity: 1; transform: none; }
     }
 
-    /* Ohne JavaScript bliebe die halbe Seite unsichtbar. */
-    @media (scripting: none) {
-      .ld-reveal { opacity: 1; transform: none; }
-    }
-
-    @media (prefers-contrast: more) {
-      .ld-hero-veil { background: linear-gradient(100deg, rgba(7,13,36,.97) 0%, rgba(11,18,51,.86) 70%, rgba(11,18,51,.72) 100%); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .ld-reveal { opacity: 1; transform: none; transition: none; }
       .ld-btn .ld-sweep { display: none; }
       .ld-pulse, .ld-kenburns { animation: none; }
-      .ld-enter, .ld-rule { animation: none; opacity: 1; transform: none; }
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
     }
   `;
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }
+
