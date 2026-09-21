@@ -8,7 +8,7 @@
      Hero          Was bieten Sie an?
      Wandel        Wo stehe ich heute, wo stehe ich danach?   (#system)
      Bausteine     Was genau steht am Ende in meinem Haus?    (#leistungen)
-     Programm      Wie läuft das ab?                           (#framework)
+     Vorgehen      Wie läuft das ab?                           (#framework)
      Haltung       Warum Sie?                                  (#leitbild)
      Branchen      Passt das zu mir?                           (#branchen)
      Perspektiven  Wie denken Sie?                             (#publikationen, #newsletter)
@@ -21,10 +21,11 @@
    Solange `src` fehlt, rendert automatisch eine CI-Grafik.
 
    LEISTUNG
-   · Genau ein Bild mit priority: das Hero-Motiv (LCP).
+   · Genau ein Bild mit fetchPriority="high": das Hero-Motiv (LCP).
+     (Next.js 16 hat die frühere Eigenschaft "priority" abgelöst.)
    · Die H1 wird ohne Einblendung ausgeliefert – sie ist das LCP-Element.
    · Scroll-Effekte schreiben direkt ans DOM, nicht in den React-State.
-     Die Phasen-Sektion rendert viermal neu, nicht sechzigmal pro Sekunde.
+     Die Phasen-Sektion rendert pro Phasenwechsel neu, nicht sechzigmal pro Sekunde.
    · prefers-reduced-motion ist vollständig abgedeckt.
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -41,73 +42,83 @@ const TEL = "01577 0206552";
 /* ═══════════════════════════════════════════════════════════════════════════
    BILDER – die einzige Stelle, die du für Motive anfassen musst.
 
-   So setzt du ein Bild ein:
-     1. Datei nach /public/motive/ legen, z. B. /public/motive/hero.jpg
-     2. hier bei src eintragen:  src: "/motive/hero.jpg"
-     3. fertig. Größe, Zuschnitt und Ladeverhalten sind bereits gesetzt.
+   Jede Bildfläche hat einen festen Dateinamen. So setzt du ein Foto ein:
 
-   Format: JPEG oder PNG, lange Kante mindestens 2400 px. Keine vorkomprimierten
-   WebP-Dateien – Next.js erzeugt AVIF und WebP selbst, in jeder benötigten Breite.
+     1. Foto unter genau diesem Namen nach /public/motive/ legen
+        (z. B. ladouz-digital/public/motive/hero.jpg)
+     2. Bei der passenden Zeile "undefined" durch den Pfad ersetzen:
+          hero: { src: "/motive/hero.jpg", ...
+     3. Fertig. Größe, Zuschnitt, Abdunklung und Ladeverhalten sind gesetzt.
 
-   fokus: welcher Bildpunkt beim Beschnitt erhalten bleibt (wie object-position).
-          "50% 40%" = mittig, leicht oben. Wichtig, weil Mobilgeräte schmaler
-          beschneiden als der Desktop.
+   Wichtig: Erst den Pfad eintragen, wenn die Datei wirklich im Repo liegt.
+   Ein Pfad ohne Datei zeigt ein leeres Bild.
 
-   variante: welche CI-Grafik erscheint, solange kein Foto hinterlegt ist.
+   Format: JPEG, lange Kante mindestens 2400 px, unter 3 MB. Keine
+   vorkomprimierten WebP-Dateien – Next.js erzeugt AVIF und WebP selbst
+   und liefert jedem Gerät nur die Breite, die es braucht.
+
+   fokus: welcher Bildpunkt beim Beschnitt sichtbar bleibt (wie object-position).
+          Handys beschneiden deutlich schmaler als der Desktop.
+          "50% 50%" = Mitte, "30% 50%" = links, "50% 25%" = oben.
+
+   variante: CI-Grafik, die erscheint, solange kein Foto hinterlegt ist.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 type Variante = "wave" | "grid" | "orbit" | "stack";
 type Motiv = { src?: string; fokus: string; variante: Variante };
 
 const BILDER = {
-  /* Moderne Architektur: Glasfassade, Atrium oder Hochhausperspektive,
-     kühles Licht, gern Abend oder Dämmerung. Linke Bildhälfte ruhig –
-     dort liegt die Überschrift. Querformat 16:9. */
+  /* Datei: motive/hero.jpg · Querformat 16:9
+     Moderne Architektur: Glasfassade, Atrium, Hochhausperspektive, kühles
+     Licht oder Dämmerung. Linke Bildhälfte ruhig – dort liegt die Überschrift.
+     Der dunkelblaue Farbschleier liegt immer darüber. */
   hero: { src: undefined, fokus: "60% 45%", variante: "wave" },
 
-  /* Zwei bis vier Personen im Gespräch am Besprechungstisch,
-     Unterlagen, natürliches Licht. Querformat 16:10. */
+  /* Datei: motive/baustein-marketing.jpg · Querformat 16:10
+     Zwei bis vier Personen im Gespräch am Besprechungstisch, natürliches Licht. */
   bausteinMarketing: { src: undefined, fokus: "50% 45%", variante: "wave" },
 
-  /* Moderner Arbeitsraum, Menschen an Bildschirmen, Blick über die
-     Schulter. Kein Stockfoto-Hologramm. Querformat 16:10. */
+  /* Datei: motive/baustein-digital.jpg · Querformat 16:10
+     Moderner Arbeitsraum, Menschen an Bildschirmen, Blick über die Schulter. */
   bausteinDigital: { src: undefined, fokus: "50% 50%", variante: "orbit" },
 
-  /* Konzentrierte Arbeit am Rechner, Hände und Tastatur oder zwei
-     Entwickler im Gespräch vor einem Monitor. Querformat 16:10. */
+  /* Datei: motive/baustein-software.jpg · Querformat 16:10
+     Konzentrierte Arbeit am Rechner oder zwei Entwickler vor einem Monitor. */
   bausteinSoftware: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
-  /* Architekturdetail mit Rasterstruktur: Fassade, Deckenraster,
-     Treppenhaus von oben. Steht für Ordnung. Querformat 16:10. */
+  /* Datei: motive/baustein-daten.jpg · Querformat 16:10
+     Architekturdetail mit Raster: Fassade, Deckenraster, Treppenhaus von oben. */
   bausteinDaten: { src: undefined, fokus: "50% 50%", variante: "stack" },
 
-  /* Phase 1 – Workshop: Menschen am Tisch, Notizen, konzentrierte
-     Gesprächssituation. Hochformat 4:5 funktioniert am besten. */
+  /* Datei: motive/phase-analyse.jpg · Hochformat 4:5
+     Workshop: Menschen am Tisch, Notizen, konzentrierte Gesprächssituation. */
   phaseAnalyse: { src: undefined, fokus: "50% 40%", variante: "orbit" },
 
-  /* Phase 2 – Planung: Grundrisse, Skizzen auf dem Tisch, Tragwerk
-     oder Rohbau eines modernen Gebäudes. Hochformat 4:5. */
+  /* Datei: motive/phase-architektur.jpg · Hochformat 4:5
+     Planung: Grundrisse, Skizzen auf dem Tisch, Rohbau eines modernen Gebäudes. */
   phaseArchitektur: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
-  /* Phase 3 – Umsetzung: Team in Bewegung, Besprechung im Stehen,
-     Arbeit an Bildschirmen. Hochformat 4:5. */
+  /* Datei: motive/phase-umsetzung.jpg · Hochformat 4:5
+     Team in Bewegung, Besprechung im Stehen, Arbeit an Bildschirmen. */
   phaseUmsetzung: { src: undefined, fokus: "50% 45%", variante: "wave" },
 
-  /* Phase 4 – Übergabe: Mitarbeiterin oder Mitarbeiter präsentiert
-     im Besprechungsraum, Führung hört zu. Ihr Team, nicht wir. Hochformat 4:5. */
-  phaseUebergabe: { src: undefined, fokus: "50% 40%", variante: "stack" },
+  /* Datei: motive/phase-betrieb.jpg · Hochformat 4:5
+     Laufender Betrieb: Team im Besprechungsraum, jemand präsentiert Ergebnisse,
+     ruhige Selbstverständlichkeit. Zusammenarbeit, kein Abschied. */
+  phaseBetrieb: { src: undefined, fokus: "50% 40%", variante: "stack" },
 
-  /* Architektonische Präzision: klare Linien, Symmetrie, reduzierte
-     Farbigkeit. Treppen, Fluchten, Betonkanten. Hochformat 4:5. */
+  /* Datei: motive/haltung.jpg · Hochformat 4:5
+     Architektonische Präzision: klare Linien, Symmetrie, Betonkanten, Fluchten. */
   haltung: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
-  /* Perspektiven – drei ruhige, thematische Motive. Querformat 16:10. */
+  /* Dateien: motive/perspektive-ki.jpg, perspektive-architektur.jpg,
+     perspektive-qualitaet.jpg · Querformat 16:10 · ruhige, thematische Motive. */
   perspektiveKi: { src: undefined, fokus: "50% 50%", variante: "orbit" },
   perspektiveArchitektur: { src: undefined, fokus: "50% 50%", variante: "grid" },
   perspektiveQualitaet: { src: undefined, fokus: "50% 50%", variante: "wave" },
 
-  /* Heller, moderner Besprechungsraum, gern leer – bereit für das
-     Gespräch. Hochformat oder quadratisch. */
+  /* Datei: motive/kontakt.jpg · Hochformat oder quadratisch
+     Heller, moderner Besprechungsraum, gern leer – bereit für das Gespräch. */
   kontakt: { src: undefined, fokus: "50% 50%", variante: "orbit" },
 } satisfies Record<string, Motiv>;
 
@@ -157,9 +168,9 @@ const hauptmenue: MenuEintrag[] = [
 /* ══════════════════════════ Inhalte ══════════════════════════ */
 
 const heroFakten = [
-  { wert: "12", einheit: "Monate", text: "Ein Programm mit klarem Anfang und klarem Ende." },
   { wert: "4", einheit: "Bausteine", text: "Marketing, Digital & KI, Software und Daten." },
-  { wert: "1", einheit: "Ziel", text: "Eine Abteilung, die ohne uns weiterarbeitet." },
+  { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zum laufenden Betrieb." },
+  { wert: "1", einheit: "Partner", text: "Dauerhaft Teil Ihres Unternehmens." },
 ];
 
 /* Jede Zeile ist ein Paar: derselbe Bereich vorher und nachher. */
@@ -191,7 +202,7 @@ const bausteine: { nr: string; titel: string; text: string; punkte: string[]; bi
     nr: "01",
     titel: "Interne Marketing-Abteilung",
     text: "Ein Marketing, das Ihr Unternehmen selbst steuert: Kanäle, Inhalte und Kennzahlen in einer durchgängigen Logik.",
-    punkte: ["Steuerung und Kennzahlen", "Kanal- und Content-Systeme", "Eigene Betriebsfähigkeit"],
+    punkte: ["Steuerung und Kennzahlen", "Kanal- und Content-Systeme", "Laufende Optimierung"],
     bild: BILDER.bausteinMarketing,
   },
   {
@@ -220,9 +231,7 @@ const bausteine: { nr: string; titel: string; text: string; punkte: string[]; bi
 type Phase = {
   nr: string;
   titel: string;
-  monate: string;
-  startMonat: number;
-  endMonat: number;
+  stufe: string;
   text: string;
   ergebnis: string;
   bild: Motiv;
@@ -232,19 +241,15 @@ const phasen: Phase[] = [
   {
     nr: "01",
     titel: "Analyse & Zielbild",
-    monate: "Monat 1–2",
-    startMonat: 1,
-    endMonat: 2,
+    stufe: "Verstehen",
     text: "Wir erfassen Ihre Wertschöpfung als Ganzes: Abläufe, Systeme, Daten und Teams. Daraus entsteht ein Zielbild mit klaren Prioritäten.",
-    ergebnis: "Zielbild und Roadmap für die kommenden zehn Monate.",
+    ergebnis: "Zielbild und Roadmap mit klaren Prioritäten.",
     bild: BILDER.phaseAnalyse,
   },
   {
     nr: "02",
     titel: "Architektur",
-    monate: "Monat 3–5",
-    startMonat: 3,
-    endMonat: 5,
+    stufe: "Strukturieren",
     text: "Wir entwerfen die Struktur: Rollen der internen Abteilung, Datenmodell, Systemlandschaft und Verantwortlichkeiten.",
     ergebnis: "Eine dokumentierte Architektur, auf der alles Weitere aufbaut.",
     bild: BILDER.phaseArchitektur,
@@ -252,34 +257,30 @@ const phasen: Phase[] = [
   {
     nr: "03",
     titel: "Aufbau & Umsetzung",
-    monate: "Monat 6–9",
-    startMonat: 6,
-    endMonat: 9,
+    stufe: "Umsetzen",
     text: "Software, KI-Anwendungen und Marketing-Systeme gehen kontrolliert in Betrieb – eingebettet in Ihre Prozesse, nicht daneben.",
     ergebnis: "Produktive Systeme statt Pilotprojekte.",
     bild: BILDER.phaseUmsetzung,
   },
   {
     nr: "04",
-    titel: "Übergabe & Verankerung",
-    monate: "Monat 10–12",
-    startMonat: 10,
-    endMonat: 12,
-    text: "Ihr Team übernimmt. Wir befähigen, dokumentieren und ziehen uns schrittweise zurück, bis alles ohne uns läuft.",
-    ergebnis: "Eine Abteilung, die selbstständig weiterarbeitet.",
-    bild: BILDER.phaseUebergabe,
+    titel: "Betrieb & Weiterentwicklung",
+    stufe: "Fortlaufend",
+    text: "Ihre Abteilung arbeitet – und wir bleiben Teil davon. Wir steuern mit, entwickeln weiter und bringen jede neue Technologie in den Betrieb.",
+    ergebnis: "Ein System, das mit jeder Innovation stärker wird.",
+    bild: BILDER.phaseBetrieb,
   },
 ];
 
-function phaseFuerMonat(monat: number) {
-  const i = phasen.findIndex((p) => monat >= p.startMonat && monat <= p.endMonat);
-  return i < 0 ? 0 : i;
+/* Der Scroll-Fortschritt (0 bis 1) wird gleichmäßig auf die Phasen verteilt. */
+function phaseFuerAnteil(p: number) {
+  return Math.min(phasen.length - 1, Math.floor(p * phasen.length));
 }
 
 const prinzipien = [
-  { titel: "Ein Programm, kein Projekt.", text: "Zwölf Monate mit klarem Anfang, klarem Ende und einem vereinbarten Ergebnis." },
+  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Ihre Abteilung wächst weiter – und wir wachsen mit ihr." },
   { titel: "Umsetzung, nicht Empfehlung.", text: "Wir bauen, was wir planen. Strategie ohne Umsetzung bleibt eine Präsentation." },
-  { titel: "Übergabe als Ziel.", text: "Erfolgreich ist das Programm, wenn Ihr Team ohne uns weiterarbeitet." },
+  { titel: "Teil Ihres Unternehmens.", text: "Wir arbeiten nicht von außen auf Sie ein, sondern von innen mit Ihnen." },
 ];
 
 const branchen = [
@@ -480,7 +481,9 @@ function Visual({
           src={motiv.src}
           alt={alt}
           fill
-          priority={priority}
+          /* Next.js 16: "priority" ist veraltet. Laut Doku für das LCP-Bild
+             fetchPriority="high" und loading="eager" verwenden. */
+          {...(priority ? { loading: "eager" as const, fetchPriority: "high" as const } : {})}
           sizes={sizes}
           style={{ objectPosition: motiv.fokus }}
           className="ld-kenburns object-cover"
@@ -617,7 +620,7 @@ function Kopfbereich() {
 
         <div className="mx-auto flex h-[74px] max-w-[1240px] items-center justify-between gap-6 px-6">
           <a href="#top" aria-label="ladouz.digital – zum Seitenanfang" className="relative block h-[34px] w-[70px] flex-none">
-            <Image src="/logo-white.png" alt="ladouz.digital" fill priority sizes="70px" className={`object-contain object-left transition-opacity duration-300 ${dunkel ? "opacity-100" : "opacity-0"}`} />
+            <Image src="/logo-white.png" alt="ladouz.digital" fill loading="eager" sizes="70px" className={`object-contain object-left transition-opacity duration-300 ${dunkel ? "opacity-100" : "opacity-0"}`} />
             <Image src="/logo-navy.png" alt="" aria-hidden fill sizes="70px" className={`object-contain object-left transition-opacity duration-300 ${dunkel ? "opacity-0" : "opacity-100"}`} />
           </a>
 
@@ -763,8 +766,8 @@ function Hero() {
       <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
-      <div className="mx-auto flex min-h-[clamp(640px,92svh,980px)] max-w-[1240px] flex-col justify-end px-6 pt-[clamp(150px,22vh,230px)]">
-        <div className="max-w-[60rem] pb-[clamp(56px,8vh,96px)]">
+      <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(640px,92svh,980px)] sm:pt-[clamp(150px,22vh,230px)]">
+        <div className="max-w-[75rem] pb-12 sm:pb-[clamp(56px,8vh,96px)]">
           <p className="flex items-start gap-4">
             <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
             <span className="ld-enter ld-d1 flex flex-wrap gap-x-[0.9em] gap-y-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f] sm:text-[0.72rem] sm:tracking-[0.3em]">
@@ -774,22 +777,21 @@ function Hero() {
             </span>
           </p>
 
-          <h1 className="mt-8 text-[clamp(2.4rem,5.4vw,4.3rem)] font-bold leading-[1.02] tracking-[-0.04em]">
-            Ihre eigene{" "}
-            <span className="md:whitespace-nowrap">Digital&#8209; und KI&#8209;Abteilung.</span>
+          <h1 className="mt-6 text-[clamp(2.2rem,4.6vw,3.8rem)] font-bold leading-[1.04] tracking-[-0.04em] sm:mt-8">
+            Ihre eigene Digital&#8209; und KI&#8209;Abteilung.
             <br className="hidden md:block" />{" "}
-            <span className="ld-silber">Aufgebaut in zwölf Monaten.</span>
+            <span className="ld-silber">Präzise gedacht. Präzise umgesetzt.</span>
           </h1>
 
-          <p className="ld-serif ld-enter ld-d2 mt-8 max-w-[48ch] text-[clamp(1.08rem,2vw,1.32rem)] leading-[1.6] text-[#c7d6f5]">
-            Wir bauen mit Ihnen die interne Marketing-, Digital- und KI-Abteilung,
-            eigene Softwarelösungen und Datenstrukturen, die für die Zukunft gebaut sind.
-            Damit wird jede neue Technologie zu mehr Produktivität, Umsatz und Einsparung.
+          <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[50ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,2vw,1.28rem)] sm:leading-[1.6]">
+            Wir bauen die interne Marketing-, Digital- und KI-Abteilung Ihres Unternehmens auf –
+            mit eigener Software und Datenstruktur – und bleiben dauerhaft Teil davon.
+            So wird jede neue Technologie zu Produktivität, Umsatz und Einsparung.
           </p>
 
-          <div className="ld-enter ld-d3 mt-11 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+          <div className="ld-enter ld-d3 mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
             <CtaButton href={BOOKING_URL}>Erstberatung vereinbaren</CtaButton>
-            <CtaButton href="#framework" variant="ghost">Das Programm ansehen</CtaButton>
+            <CtaButton href="#framework" variant="ghost">Das Vorgehen ansehen</CtaButton>
           </div>
         </div>
 
@@ -821,7 +823,7 @@ function Wandel() {
         <Reveal>
           <Eyebrow>Ausgangslage und Ergebnis</Eyebrow>
           <h2 id="wandel-titel" className="mt-6 max-w-[24ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-            Wo Sie heute stehen. Wo Sie nach zwölf Monaten stehen.
+            Wo Sie heute stehen. Wohin Sie wachsen.
           </h2>
         </Reveal>
 
@@ -830,7 +832,7 @@ function Wandel() {
             <span />
             <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#5b6b8a]">Heute</span>
             <span />
-            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Nach zwölf Monaten</span>
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit Ihrer eigenen Abteilung</span>
           </div>
 
           <ol>
@@ -847,7 +849,7 @@ function Wandel() {
                   <span aria-hidden className="hidden h-11 w-11 items-center justify-center rounded-full bg-[#0b1233] text-[15px] text-[#8dc63f] lg:flex">→</span>
 
                   <p className="text-[1.12rem] font-medium leading-[1.45] tracking-[-0.012em] text-[#0b1233]">
-                    <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Nach zwölf Monaten</span>
+                    <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit Ihrer eigenen Abteilung</span>
                     {w.danach}
                   </p>
                 </li>
@@ -876,7 +878,7 @@ function Bausteine() {
           <Reveal delay={100}>
             <p className="ld-serif max-w-[46ch] text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.66] text-[#43507a]">
               Sie funktionieren nur zusammen – deshalb bauen wir sie zusammen auf.
-              Und übergeben sie am Ende an Ihr eigenes Team.
+              Und betreiben sie gemeinsam mit Ihrem Team weiter.
             </p>
           </Reveal>
         </div>
@@ -910,14 +912,16 @@ function Bausteine() {
   );
 }
 
-/* ══════════════════════════ Programm ══════════════════════════
-   Desktop: die Sektion wird beim Scrollen angeheftet. Ein Zifferblatt
-   läuft von Monat 1 bis 12 und dreht sich mit, Bild und Text wechseln
-   mit der Phase. Der Scroll schreibt eine CSS-Variable (--p) direkt ans
-   DOM; React rendert nur bei einem Phasenwechsel neu – viermal insgesamt.
+/* ══════════════════════════ Vorgehen ══════════════════════════
+   Desktop: die Sektion wird beim Scrollen angeheftet. Das Zifferblatt
+   füllt sich über vier Phasen, Bild und Text wechseln mit. In der
+   letzten Phase – dem laufenden Betrieb – zeigt es ∞.
 
-   Mobil: dieselben Phasen als ruhige Liste. Angeheftete Scroll-Szenen
-   sind auf kleinen Bildschirmen eher Hindernis als Erlebnis.
+   Smartphone: ein kompaktes Zifferblatt bleibt oben angeheftet,
+   während die Phasen darunter durchlaufen.
+
+   Beide schreiben den Fortschritt als CSS-Variable (--p) direkt ans DOM.
+   React rendert nur beim Phasenwechsel neu.
    ═══════════════════════════════════════════════════════════ */
 
 function Programm() {
@@ -927,52 +931,108 @@ function Programm() {
 
       <div className="relative mx-auto max-w-[1240px] px-6 pt-[clamp(88px,11vw,140px)]">
         <Reveal>
-          <Eyebrow tone="light">Das Programm</Eyebrow>
-          <h2 id="programm-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em]">
-            Zwölf Monate. Vier Phasen. Ein Ergebnis.
+          <Eyebrow tone="light">Das Vorgehen</Eyebrow>
+          <h2 id="programm-titel" className="mt-6 max-w-[20ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em]">
+            Vier Phasen. Ein Ergebnis, das Ergebnisse erzeugt.
           </h2>
           <Lead tone="light">
             Jede Phase baut auf der vorherigen auf. Am Ende steht keine Präsentation,
-            sondern eine Abteilung, die arbeitet.
+            sondern eine Abteilung, die arbeitet – und mit jeder neuen Technologie stärker wird.
           </Lead>
         </Reveal>
       </div>
 
       <ProgrammSzene />
-      <ProgrammListe />
+      <ProgrammMobil />
     </section>
   );
 }
 
-function ProgrammSzene() {
-  const buehne = useRef<HTMLDivElement | null>(null);
-  const monatRef = useRef<HTMLSpanElement | null>(null);
+/* Gemeinsames Zifferblatt. Liest --p vom nächsten Vorfahren.
+   Feinteilung in 40 Schritten, vier kräftige Marken an den Phasengrenzen. */
+function Zifferblatt({ aktiv, klein = false }: { aktiv: number; klein?: boolean }) {
+  const R = 104;
+  const U = 2 * Math.PI * R;
+  const letzte = aktiv === phasen.length - 1;
+
+  return (
+    <div className={`relative flex-none ${klein ? "h-[64px] w-[64px]" : "h-[240px] w-[240px]"}`}>
+      <svg viewBox="0 0 240 240" className="h-full w-full" aria-hidden>
+        <circle cx="120" cy="120" r={R} fill="none" stroke="rgba(255,255,255,.12)" strokeWidth={klein ? 9 : 2} />
+        <circle
+          cx="120" cy="120" r={R}
+          fill="none" stroke="#8dc63f" strokeWidth={klein ? 10 : 2.5} strokeLinecap="round"
+          className="ld-ring"
+          style={{ ["--u" as string]: U.toFixed(2) }}
+          transform="rotate(-90 120 120)"
+        />
+        {!klein && Array.from({ length: 40 }).map((_, t) => {
+          const grenze = t % 10 === 0;
+          const w = (t / 40) * Math.PI * 2 - Math.PI / 2;
+          const innen = grenze ? 84 : 92;
+          return (
+            <line
+              key={t}
+              x1={120 + Math.cos(w) * innen} y1={120 + Math.sin(w) * innen}
+              x2={120 + Math.cos(w) * 96} y2={120 + Math.sin(w) * 96}
+              stroke={grenze ? "#8dc63f" : "rgba(255,255,255,.22)"} strokeWidth={grenze ? 2 : 1}
+            />
+          );
+        })}
+        <g className="ld-dial">
+          <circle cx="120" cy={120 - R} r={klein ? 17 : 7} fill="#8dc63f" />
+          {!klein && <circle cx="120" cy={120 - R} r="13" fill="#8dc63f" fillOpacity=".18" />}
+        </g>
+      </svg>
+
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        {!klein && (
+          <span className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9aa8cc]">
+            Phase {phasen[aktiv].nr}
+          </span>
+        )}
+        <span
+          key={aktiv}
+          className={`ld-num ld-swap font-bold leading-none tracking-[-0.05em] ${klein ? "text-[1.05rem]" : "mt-1 text-[3.6rem]"}`}
+        >
+          {letzte ? "∞" : phasen[aktiv].nr}
+        </span>
+        {!klein && (
+          <span className="mt-1.5 text-[0.72rem] text-[#8695bd]">{letzte ? "fortlaufend" : `von ${phasen[phasen.length - 1].nr}`}</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* Scroll-Fortschritt eines Containers messen, ohne jeden Frame neu zu rendern.
+   bestimmePhase erhält den Anteil (0 bis 1) und liefert den Phasenindex. */
+function useScrollPhase(bestimmePhase: (p: number, vh: number) => number) {
+  const bereich = useRef<HTMLDivElement | null>(null);
   const [aktiv, setAktiv] = useState(0);
-  const reduced = useReducedMotion();
+  const bestimme = useRef(bestimmePhase);
+
+  useEffect(() => {
+    bestimme.current = bestimmePhase;
+  });
 
   useEffect(() => {
     let ticking = false;
-    let letztePhase = -1;
-    let letzterMonat = -1;
+    let letzte = -1;
 
     const messen = () => {
       ticking = false;
-      const el = buehne.current;
+      const el = bereich.current;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      if (r.height === 0) return; // mobil ausgeblendet
-      const weg = r.height - window.innerHeight;
+      if (r.height === 0) return; // auf diesem Gerät ausgeblendet
+      const vh = window.innerHeight;
+      const weg = r.height - vh;
       const p = weg > 0 ? Math.min(Math.max(-r.top / weg, 0), 1) : 0;
       el.style.setProperty("--p", p.toFixed(4));
-
-      const monat = Math.min(12, Math.floor(p * 12) + 1);
-      if (monat !== letzterMonat) {
-        letzterMonat = monat;
-        if (monatRef.current) monatRef.current.textContent = String(monat).padStart(2, "0");
-      }
-      const phase = phaseFuerMonat(monat);
-      if (phase !== letztePhase) {
-        letztePhase = phase;
+      const phase = bestimme.current(p, vh);
+      if (phase !== letzte) {
+        letzte = phase;
         setAktiv(phase);
       }
     };
@@ -991,71 +1051,40 @@ function ProgrammSzene() {
     };
   }, []);
 
-  /* Klick auf eine Phase: an den Anfang ihres Monatsbereichs scrollen. */
+  return { bereich, aktiv };
+}
+
+function ProgrammSzene() {
+  const { bereich, aktiv } = useScrollPhase((p) => phaseFuerAnteil(p));
+  const reduced = useReducedMotion();
+
+  /* Klick auf eine Phase: an ihren Anfang scrollen. */
   const springen = (i: number) => {
-    const el = buehne.current;
+    const el = bereich.current;
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY;
     const weg = el.offsetHeight - window.innerHeight;
-    const anteil = (phasen[i].startMonat - 1) / 12 + 0.012;
-    window.scrollTo({ top: top + weg * anteil, behavior: reduced ? "auto" : "smooth" });
+    window.scrollTo({ top: top + weg * (i / phasen.length + 0.02), behavior: reduced ? "auto" : "smooth" });
   };
 
   const ph = phasen[aktiv];
-  const RADIUS = 104;
-  const UMFANG = 2 * Math.PI * RADIUS;
 
   return (
-    <div ref={buehne} className="ld-buehne relative hidden lg:block" style={{ height: "360vh" }}>
+    <div ref={bereich} className="ld-buehne relative hidden lg:block" style={{ height: "360vh" }}>
       <div className="sticky top-0 flex h-[100svh] items-center pt-[112px] pb-10">
         <div className="mx-auto grid h-full max-h-[680px] w-full max-w-[1240px] grid-cols-[0.9fr_1.1fr] gap-16 px-6">
 
-          {/* Links: Zifferblatt und Phasenliste */}
           <div className="flex flex-col justify-center">
             <div className="flex items-center gap-10">
-              <div className="relative h-[240px] w-[240px] flex-none">
-                <svg viewBox="0 0 240 240" className="h-full w-full" aria-hidden>
-                  <circle cx="120" cy="120" r={RADIUS} fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="2" />
-                  <circle
-                    cx="120" cy="120" r={RADIUS}
-                    fill="none" stroke="#8dc63f" strokeWidth="2.5" strokeLinecap="round"
-                    className="ld-ring"
-                    style={{ ["--u" as string]: UMFANG.toFixed(2) }}
-                    transform="rotate(-90 120 120)"
-                  />
-                  {Array.from({ length: 12 }).map((_, m) => {
-                    const grenze = phasen.some((x) => x.startMonat === m + 1);
-                    const winkel = (m / 12) * Math.PI * 2 - Math.PI / 2;
-                    const innen = grenze ? 84 : 90;
-                    return (
-                      <line
-                        key={m}
-                        x1={120 + Math.cos(winkel) * innen} y1={120 + Math.sin(winkel) * innen}
-                        x2={120 + Math.cos(winkel) * 96} y2={120 + Math.sin(winkel) * 96}
-                        stroke={grenze ? "#8dc63f" : "rgba(255,255,255,.28)"} strokeWidth={grenze ? 2 : 1}
-                      />
-                    );
-                  })}
-                  <g className="ld-dial">
-                    <circle cx="120" cy={120 - RADIUS} r="7" fill="#8dc63f" />
-                    <circle cx="120" cy={120 - RADIUS} r="13" fill="#8dc63f" fillOpacity=".18" />
-                  </g>
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9aa8cc]">Monat</span>
-                  <span ref={monatRef} className="ld-num mt-1 text-[3.6rem] font-bold leading-none tracking-[-0.05em]">01</span>
-                  <span className="mt-1.5 text-[0.72rem] text-[#8695bd]">von 12</span>
-                </div>
-              </div>
-
+              <Zifferblatt aktiv={aktiv} />
               <dl className="min-w-0 space-y-6">
                 <div>
                   <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9aa8cc]">Start</dt>
                   <dd className="mt-1.5 text-[1.08rem] font-medium leading-[1.35] text-[#c7d6f5]">Analyse Ihrer Ausgangslage</dd>
                 </div>
                 <div>
-                  <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9fc65f]">Ziel</dt>
-                  <dd className="mt-1.5 text-[1.08rem] font-semibold leading-[1.35] text-white">Eine Abteilung, die ohne uns arbeitet</dd>
+                  <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9fc65f]">Ergebnis</dt>
+                  <dd className="mt-1.5 text-[1.08rem] font-semibold leading-[1.35] text-white">Eine Abteilung, die laufend Ergebnisse erzeugt</dd>
                 </div>
               </dl>
             </div>
@@ -1071,14 +1100,13 @@ function ProgrammSzene() {
                   >
                     <span className={`ld-num w-7 text-[0.78rem] font-semibold transition-colors ${i === aktiv ? "text-[#8dc63f]" : "text-[#8695bd]"}`}>{x.nr}</span>
                     <span className={`flex-1 text-[1.02rem] font-medium transition-colors ${i === aktiv ? "text-white" : "text-[#9aa8cc] group-hover:text-white"}`}>{x.titel}</span>
-                    <span className={`text-[0.8rem] transition-colors ${i === aktiv ? "text-[#c7d6f5]" : "text-[#8695bd]"}`}>{x.monate}</span>
+                    <span className={`text-[0.8rem] transition-colors ${i === aktiv ? "text-[#c7d6f5]" : "text-[#8695bd]"}`}>{x.stufe}</span>
                   </button>
                 </li>
               ))}
             </ol>
           </div>
 
-          {/* Rechts: Bild der Phase mit Inhalt */}
           <div className="relative overflow-hidden rounded-[26px] ring-1 ring-white/10">
             {phasen.map((x, i) => (
               <Visual
@@ -1093,7 +1121,7 @@ function ProgrammSzene() {
 
             <div key={`d-${aktiv}`} aria-live="polite" className="ld-swap absolute inset-x-0 bottom-0 p-10 xl:p-12">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">
-                Phase {ph.nr} · {ph.monate}
+                Phase {ph.nr} · {ph.stufe}
               </p>
               <h3 className="mt-3 text-[clamp(1.7rem,2.6vw,2.3rem)] font-bold leading-[1.1] tracking-[-0.03em]">{ph.titel}</h3>
               <p className="ld-serif mt-4 max-w-[46ch] text-[1.06rem] leading-[1.62] text-[#c7d6f5]">{ph.text}</p>
@@ -1109,16 +1137,40 @@ function ProgrammSzene() {
   );
 }
 
-function ProgrammListe() {
+/* Smartphone: angeheftetes Mini-Zifferblatt über den Phasenkarten.
+   Aktiv ist jeweils die Karte, deren Oberkante die Bildschirmmitte passiert hat.
+   Die Leiste hat einen deckenden Hintergrund statt Unschärfe-Effekt –
+   backdrop-filter kostet beim Scrollen auf Mobilgeräten spürbar Leistung. */
+function ProgrammMobil() {
+  const karten = useRef<(HTMLLIElement | null)[]>([]);
+  const { bereich, aktiv } = useScrollPhase((_, vh) => {
+    let idx = 0;
+    karten.current.forEach((k, i) => {
+      if (k && k.getBoundingClientRect().top < vh * 0.55) idx = i;
+    });
+    return idx;
+  });
+  const ph = phasen[aktiv];
+
   return (
-    <ol className="relative mx-auto max-w-[1240px] space-y-6 px-6 pt-14 pb-[clamp(72px,10vw,120px)] lg:hidden">
-      {phasen.map((x) => (
-        <li key={x.nr}>
-          <Reveal>
+    <div ref={bereich} className="relative lg:hidden">
+      <div className="sticky top-[74px] z-20 mt-10 border-y border-white/10 bg-[#0b1233]">
+        <div className="mx-auto flex max-w-[1240px] items-center gap-4 px-6 py-3">
+          <Zifferblatt aktiv={aktiv} klein />
+          <div className="min-w-0" aria-live="polite">
+            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">Phase {ph.nr} · {ph.stufe}</p>
+            <p key={aktiv} className="ld-swap mt-1 truncate text-[1.02rem] font-semibold tracking-[-0.012em]">{ph.titel}</p>
+          </div>
+        </div>
+      </div>
+
+      <ol className="mx-auto max-w-[1240px] space-y-6 px-6 pt-8 pb-[clamp(72px,10vw,120px)]">
+        {phasen.map((x, i) => (
+          <li key={x.nr} ref={(el) => { karten.current[i] = el; }}>
             <article className="overflow-hidden rounded-[22px] border border-white/10 bg-white/[0.04]">
               <Visual motiv={x.bild} sizes="100vw" className="aspect-[4/3] w-full" />
               <div className="p-7">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Phase {x.nr} · {x.monate}</p>
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Phase {x.nr} · {x.stufe}</p>
                 <h3 className="mt-3 text-[1.5rem] font-bold leading-[1.15] tracking-[-0.026em]">{x.titel}</h3>
                 <p className="ld-serif mt-3 text-[1rem] leading-[1.62] text-[#c7d6f5]">{x.text}</p>
                 <p className="mt-6 border-t border-white/15 pt-4 text-[0.95rem] font-medium">
@@ -1127,10 +1179,10 @@ function ProgrammListe() {
                 </p>
               </div>
             </article>
-          </Reveal>
-        </li>
-      ))}
-    </ol>
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
@@ -1152,7 +1204,7 @@ function Haltung() {
             </h2>
             <Lead>
               Wir sind Umsetzungspartner, nicht Folienlieferant. Was wir mit Ihnen planen,
-              bauen wir mit Ihnen auf – bis es in Ihrem Unternehmen selbstständig läuft.
+              bauen wir mit Ihnen auf – und bleiben Teil davon.
             </Lead>
           </Reveal>
 
@@ -1336,8 +1388,8 @@ function Kontakt() {
                 Sprechen wir über Ihre Ausgangslage.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
-                In der Erstberatung klären wir, wo Ihr Unternehmen heute steht – und ob das
-                Programm zu Ihnen passt. Unverbindlich und konkret.
+                In der Erstberatung klären wir, wo Ihr Unternehmen heute steht – und ob eine
+                Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
               </p>
               <div className="mt-9"><CtaButton href={BOOKING_URL}>Termin direkt wählen</CtaButton></div>
 
@@ -1426,7 +1478,7 @@ function Feld({
 
 function Footer() {
   const spalten: { titel: string; links: [string, string][] }[] = [
-    { titel: "Programm", links: [["Ausgangslage & Ergebnis", "#system"], ["Die vier Bausteine", "#leistungen"], ["Die vier Phasen", "#framework"], ["Für wen", "#branchen"]] },
+    { titel: "Leistung", links: [["Ausgangslage & Ergebnis", "#system"], ["Die vier Bausteine", "#leistungen"], ["Das Vorgehen", "#framework"], ["Für wen", "#branchen"]] },
     { titel: "Unternehmen", links: [["Unsere Haltung", "#leitbild"], ["Perspektiven", "#publikationen"], ["Erstberatung", "#kontakt"]] },
     { titel: "Rechtliches", links: [["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
   ];
@@ -1517,10 +1569,12 @@ function GlobalStyles() {
     @keyframes ldGlanz { to { background-position: 100% 50%; } }
 
     /* Hero-Farbschleier – hier werden die Farbwerte über dem Motiv gepflegt.
-       Liegt unabhängig vom Bild darüber. Unter etwa .70 links wird weisser
-       Text auf hellen Motiven unlesbar. */
+       Liegt unabhängig vom Bild darüber, getestet mit einem fast weißen Motiv.
+       Oben: Abdunklung für die Navigation. Links: kräftig für die Überschrift.
+       Unter etwa .70 links wird weißer Text auf hellen Motiven unlesbar. */
     .ld-hero-veil {
       background:
+        linear-gradient(180deg, rgba(7,13,36,.62) 0%, rgba(7,13,36,0) 24%),
         radial-gradient(78% 62% at 84% 10%, rgba(47,91,215,.30), transparent 62%),
         radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.08), transparent 60%),
         linear-gradient(100deg, rgba(7,13,36,.95) 0%, rgba(8,14,40,.88) 30%, rgba(11,18,51,.62) 60%, rgba(11,18,51,.28) 84%, rgba(11,18,51,.14) 100%);
