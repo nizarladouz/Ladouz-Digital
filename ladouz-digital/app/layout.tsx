@@ -1,33 +1,53 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Jost, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/* Die Schriften, die das Design tatsächlich vorsieht.
+   Bisher wurden hier Geist und Geist Mono geladen – im gesamten Projekt
+   ungenutzt – und die Seite lief auf Systemschriften.
+   display: swap verhindert unsichtbaren Text während des Ladens. */
+const jost = Jost({
+  variable: "--font-jost",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["400"],
 });
+
+const SITE = "https://ladouz.digital";
+const TITEL = "Ladouz Digital – Ihre Digital- und KI-Abteilung in zwölf Monaten";
+const BESCHREIBUNG =
+  "Digitale & KI-Strategien, Softwareentwicklung und Consulting für den Mittelstand. Wir bauen in einem 12-Monats-Programm Ihre interne Marketing-, Digital- und KI-Abteilung, Softwarelösungen und Datenstrukturen auf.";
 
 export const metadata: Metadata = {
-  title: "Ladouz Digital – Consulting Company für digitale Systemarchitektur",
-  description:
-    "Consulting Company für digitale Systemarchitektur, die Strategie, KI-Implementierung und Performance-Systeme zu einem messbaren, skalierbaren Framework verbindet.",
-  icons: {
-    icon: "/favicon.ico",
+  metadataBase: new URL(SITE),
+  title: { default: TITEL, template: "%s · Ladouz Digital" },
+  description: BESCHREIBUNG,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    url: SITE,
+    siteName: "Ladouz Digital",
+    title: TITEL,
+    description: BESCHREIBUNG,
   },
+  twitter: { card: "summary_large_image", title: TITEL, description: BESCHREIBUNG },
+  icons: { icon: "/favicon.ico" },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="de" className={`${jost.variable} ${sourceSerif.variable} h-full antialiased`}>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }
