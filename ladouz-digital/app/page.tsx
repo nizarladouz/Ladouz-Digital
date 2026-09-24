@@ -777,7 +777,7 @@ function Hero() {
             </span>
           </p>
 
-          <h1 className="mt-6 text-[clamp(2.2rem,4.6vw,3.8rem)] font-bold leading-[1.04] tracking-[-0.04em] sm:mt-8">
+          <h1 className="mt-6 text-[clamp(2.2rem,4.6vw,3.8rem)] font-medium leading-[1.04] tracking-[-0.04em] sm:mt-8">
             Ihre eigene Digital&#8209; und KI&#8209;Abteilung.
             <br className="hidden md:block" />{" "}
             <span className="ld-silber">Präzise gedacht. Präzise umgesetzt.</span>
@@ -822,7 +822,7 @@ function Wandel() {
       <div className="mx-auto max-w-[1240px]">
         <Reveal>
           <Eyebrow>Ausgangslage und Ergebnis</Eyebrow>
-          <h2 id="wandel-titel" className="mt-6 max-w-[24ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+          <h2 id="wandel-titel" className="mt-6 max-w-[24ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
             Wo Sie heute stehen. Wohin Sie wachsen.
           </h2>
         </Reveal>
@@ -871,7 +871,7 @@ function Bausteine() {
         <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <Reveal>
             <Eyebrow>Was am Ende steht</Eyebrow>
-            <h2 id="bausteine-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+            <h2 id="bausteine-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
               Vier Bausteine.<br />Ein digitales Setup.
             </h2>
           </Reveal>
@@ -892,7 +892,7 @@ function Bausteine() {
                 </div>
                 <div className="flex flex-1 flex-col p-8 sm:p-9">
                   <span className="ld-num text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">Baustein {b.nr}</span>
-                  <h3 className="mt-3 text-[1.45rem] font-bold leading-[1.2] tracking-[-0.024em] text-[#0b1233]">{b.titel}</h3>
+                  <h3 className="mt-3 text-[1.45rem] font-medium leading-[1.2] tracking-[-0.024em] text-[#0b1233]">{b.titel}</h3>
                   <p className="ld-serif mt-3.5 flex-1 text-[1.02rem] leading-[1.64] text-[#43507a]">{b.text}</p>
                   <ul className="mt-7 grid gap-2.5 border-t border-[#edf1f7] pt-6">
                     {b.punkte.map((p) => (
@@ -932,7 +932,7 @@ function Programm() {
       <div className="relative mx-auto max-w-[1240px] px-6 pt-[clamp(88px,11vw,140px)]">
         <Reveal>
           <Eyebrow tone="light">Das Vorgehen</Eyebrow>
-          <h2 id="programm-titel" className="mt-6 max-w-[20ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em]">
+          <h2 id="programm-titel" className="mt-6 max-w-[20ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em]">
             Vier Phasen. Ein Ergebnis, das Ergebnisse erzeugt.
           </h2>
           <Lead tone="light">
@@ -1123,7 +1123,7 @@ function ProgrammSzene() {
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">
                 Phase {ph.nr} · {ph.stufe}
               </p>
-              <h3 className="mt-3 text-[clamp(1.7rem,2.6vw,2.3rem)] font-bold leading-[1.1] tracking-[-0.03em]">{ph.titel}</h3>
+              <h3 className="mt-3 text-[clamp(1.7rem,2.6vw,2.3rem)] font-medium leading-[1.1] tracking-[-0.03em]">{ph.titel}</h3>
               <p className="ld-serif mt-4 max-w-[46ch] text-[1.06rem] leading-[1.62] text-[#c7d6f5]">{ph.text}</p>
               <p className="mt-7 flex items-start gap-3 border-t border-white/15 pt-5">
                 <span className="mt-[3px] text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">Ergebnis</span>
@@ -1171,7 +1171,7 @@ function ProgrammMobil() {
               <Visual motiv={x.bild} sizes="100vw" className="aspect-[4/3] w-full" />
               <div className="p-7">
                 <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Phase {x.nr} · {x.stufe}</p>
-                <h3 className="mt-3 text-[1.5rem] font-bold leading-[1.15] tracking-[-0.026em]">{x.titel}</h3>
+                <h3 className="mt-3 text-[1.5rem] font-medium leading-[1.15] tracking-[-0.026em]">{x.titel}</h3>
                 <p className="ld-serif mt-3 text-[1rem] leading-[1.62] text-[#c7d6f5]">{x.text}</p>
                 <p className="mt-6 border-t border-white/15 pt-4 text-[0.95rem] font-medium">
                   <span className="mr-2 text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#9fc65f]">Ergebnis</span>
@@ -1199,7 +1199,7 @@ function Haltung() {
         <div className="order-1 flex flex-col justify-center lg:order-2">
           <Reveal>
             <Eyebrow>Unsere Haltung</Eyebrow>
-            <h2 id="haltung-titel" className="mt-6 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1.0] tracking-[-0.04em] text-[#0b1233]">
+            <h2 id="haltung-titel" className="mt-6 text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.0] tracking-[-0.04em] text-[#0b1233]">
               Präzise denken.<br />Präzise handeln.
             </h2>
             <Lead>
@@ -1214,7 +1214,7 @@ function Haltung() {
                 <li className="grid gap-2 border-b border-[#e7ecf5] py-6 sm:grid-cols-[2.5rem_1fr] sm:gap-5">
                   <span className="ld-num text-[0.78rem] font-semibold text-[#2f5bd7]">{String(i + 1).padStart(2, "0")}</span>
                   <div>
-                    <h3 className="text-[1.14rem] font-bold tracking-[-0.018em] text-[#0b1233]">{p.titel}</h3>
+                    <h3 className="text-[1.14rem] font-medium tracking-[-0.018em] text-[#0b1233]">{p.titel}</h3>
                     <p className="ld-serif mt-1.5 text-[1rem] leading-[1.6] text-[#43507a]">{p.text}</p>
                   </div>
                 </li>
@@ -1245,7 +1245,7 @@ function Branchen() {
       <div className="mx-auto grid max-w-[1240px] gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <Reveal>
           <Eyebrow>Für wen</Eyebrow>
-          <h2 id="branchen-titel" className="mt-6 max-w-[14ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+          <h2 id="branchen-titel" className="mt-6 max-w-[14ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
             Mittelstand. Branchenübergreifend.
           </h2>
           <Lead>
@@ -1283,7 +1283,7 @@ function Perspektiven() {
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div>
               <Eyebrow>Perspektiven</Eyebrow>
-              <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+              <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
                 Wie wir über Digitalisierung denken.
               </h2>
             </div>
@@ -1302,7 +1302,7 @@ function Perspektiven() {
               <p className="ld-num mt-6 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">
                 {String(i + 1).padStart(2, "0")} · {x.kicker}
               </p>
-              <h3 className="mt-3 text-[1.26rem] font-bold leading-[1.25] tracking-[-0.02em] text-[#0b1233]">{x.titel}</h3>
+              <h3 className="mt-3 text-[1.26rem] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">{x.titel}</h3>
               <p className="ld-serif mt-3 text-[1rem] leading-[1.6] text-[#43507a]">{x.text}</p>
             </article>
           </li>
@@ -1316,7 +1316,7 @@ function Perspektiven() {
           <div className="flex flex-col gap-6 rounded-[22px] bg-[#0b1233] p-9 text-white sm:p-12 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Ladouz Insights</p>
-              <p className="mt-3 max-w-[30ch] text-[clamp(1.35rem,2.4vw,1.8rem)] font-bold leading-[1.2] tracking-[-0.024em]">
+              <p className="mt-3 max-w-[30ch] text-[clamp(1.35rem,2.4vw,1.8rem)] font-medium leading-[1.2] tracking-[-0.024em]">
                 Neue Perspektiven, wenn sie erscheinen.
               </p>
             </div>
@@ -1384,7 +1384,7 @@ function Kontakt() {
 
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Erstberatung</Eyebrow>
-              <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-bold leading-[1.06] tracking-[-0.032em]">
+              <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
                 Sprechen wir über Ihre Ausgangslage.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
