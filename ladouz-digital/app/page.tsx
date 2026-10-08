@@ -1019,9 +1019,7 @@ function Hero() {
             <p className="flex items-start gap-4">
               <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
               <span className="ld-enter ld-d1 flex flex-wrap gap-x-[0.9em] gap-y-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f] sm:text-[0.72rem] sm:tracking-[0.3em]">
-                <span className="whitespace-nowrap">Performance&nbsp;·</span>
-                <span className="whitespace-nowrap">Digital &amp; KI&nbsp;·</span>
-                <span className="whitespace-nowrap">Consulting</span>
+                <span>Für inhabergeführte Unternehmen</span>
               </span>
             </p>
 
