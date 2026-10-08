@@ -995,6 +995,9 @@ function Hero() {
         {/* Der bisherige Hintergrund bleibt immer bestehen (CI-Grafik + Farbschleier).
             Ist ein Foto hinterlegt, scheint es nur leicht durch und zoomt sehr langsam. */}
         <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="100vw" flat className="h-full w-full" />
+      </div>
+      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+      <div className="absolute inset-0 -z-10">
         {heroFoto && (
           <div aria-hidden className="ld-hero-foto absolute inset-0 overflow-hidden">
             <Image
@@ -1010,7 +1013,6 @@ function Hero() {
           </div>
         )}
       </div>
-      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
       <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(680px,94svh,1000px)] sm:pt-[clamp(150px,20vh,220px)]">
@@ -1037,7 +1039,7 @@ function Hero() {
               <span className="hidden sm:inline"> Und wir bleiben dauerhaft Teil Ihres Unternehmens.</span>
             </p>
 
-            <div className="ld-enter ld-d3 mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
               <CtaButton href={BOOKING_URL} auf="dunkel">Erstberatung vereinbaren</CtaButton>
               <CtaButton href="#leistungen" variant="ghost">Leistungsfelder ansehen</CtaButton>
             </div>
@@ -1068,6 +1070,14 @@ function HeroInstrument() {
   const C = 280;
   const R = 214;
   const KERN = 80;
+  /* Ein Takt pro Feld: Der Lichtpunkt erreicht alle TAKT Sekunden das nächste
+     Feld, das Feld leuchtet auf und schickt einen Impuls ins Ziel.
+     Sechs Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
+  const TAKT = 1.5;
+  const UMLAUF = TAKT * instrumentKnoten.length;
+  /* Schweif des Lichtpunkts: 60° Bogen hinter dem Kopf (Kopf steht bei 12 Uhr). */
+  const sx = C - R * Math.cos(Math.PI / 6);
+  const sy = C - R * Math.sin(Math.PI / 6);
   const knoten = instrumentKnoten.map((label, i) => {
     const w = (i / instrumentKnoten.length) * Math.PI * 2 - Math.PI / 2;
     return {
@@ -1079,7 +1089,7 @@ function HeroInstrument() {
 
   return (
     <div aria-hidden className="ld-instrument ld-enter ld-d3 relative hidden aspect-square w-full max-w-[500px] justify-self-end lg:block">
-      <svg viewBox="0 0 560 560" className="h-full w-full overflow-visible">
+      <svg viewBox="0 0 560 560" className="h-full w-full overflow-visible" style={{ "--umlauf": `${UMLAUF}s`, "--takt": `${TAKT}s` } as CSSProperties}>
         <defs>
           <radialGradient id="ld-hof">
             <stop offset="0%" stopColor="#2f5bd7" stopOpacity="0.42" />
@@ -1090,7 +1100,7 @@ function HeroInstrument() {
             <stop offset="0%" stopColor="#8dc63f" stopOpacity="0.38" />
             <stop offset="100%" stopColor="#8dc63f" stopOpacity="0" />
           </radialGradient>
-          <linearGradient id="ld-bogen" x1="0" y1="0" x2="1" y2="0">
+          <linearGradient id="ld-schweif" gradientUnits="userSpaceOnUse" x1={sx} y1={sy} x2={C} y2={C - R}>
             <stop offset="0%" stopColor="#8dc63f" stopOpacity="0" />
             <stop offset="100%" stopColor="#8dc63f" stopOpacity="0.95" />
           </linearGradient>
@@ -1116,32 +1126,28 @@ function HeroInstrument() {
 
         <circle cx={C} cy={C} r={R} fill="none" stroke="rgba(255,255,255,.14)" strokeWidth="1" />
 
-        {/* Umlaufender Messbogen auf dem Außenring. */}
-        <g className="ld-rot ld-rot-c">
-          <path
-            d={`M ${C} ${C - R} A ${R} ${R} 0 0 1 ${C + Math.sin(Math.PI / 3.4) * R} ${C - Math.cos(Math.PI / 3.4) * R}`}
-            fill="none" stroke="url(#ld-bogen)" strokeWidth="2.5" strokeLinecap="round"
-          />
-        </g>
+        {/* Ruhende Innenringe – bewegt ist nur noch das Rad. */}
+        <circle cx={C} cy={C} r="160" fill="none" stroke="rgba(255,255,255,.22)" strokeWidth="1" strokeDasharray="2 10" />
+        <circle cx={C} cy={C} r="122" fill="none" stroke="#4b7ce8" strokeOpacity=".45" strokeWidth="1" strokeDasharray="1 6" />
 
-        <g className="ld-rot ld-rot-a">
-          <circle cx={C} cy={C} r="160" fill="none" stroke="rgba(255,255,255,.26)" strokeWidth="1" strokeDasharray="2 10" />
-        </g>
-        <g className="ld-rot ld-rot-b">
-          <circle cx={C} cy={C} r="122" fill="none" stroke="#4b7ce8" strokeOpacity=".55" strokeWidth="1" strokeDasharray="1 6" />
-        </g>
-
-        {/* Verbindungen: jedes Feld läuft ins gemeinsame Ziel. */}
+        {/* Verbindungen und Impulse: Ein Impuls startet, wenn der Lichtpunkt sein Feld erreicht. */}
         {knoten.map((k, i) => (
           <g key={k.label}>
             <line x1={k.x} y1={k.y} x2={k.ix} y2={k.iy} stroke="rgba(255,255,255,.14)" strokeWidth="1" />
             <line
               x1={k.x} y1={k.y} x2={k.ix} y2={k.iy}
-              className="ld-puls" stroke="#8dc63f" strokeWidth="2" strokeLinecap="round"
-              style={{ animationDelay: `${i * 0.6}s` }}
+              className="ld-puls" stroke="#8dc63f" strokeWidth="2.2" strokeLinecap="round"
+              style={{ animationDelay: `${i * TAKT}s` }}
             />
           </g>
         ))}
+
+        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sechs Felder im Uhrzeigersinn. */}
+        <g className="ld-rot ld-rad">
+          <path d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${C} ${C - R}`} fill="none" stroke="url(#ld-schweif)" strokeWidth="2.5" strokeLinecap="round" />
+          <circle cx={C} cy={C - R} r="12" fill="#8dc63f" fillOpacity=".18" />
+          <circle cx={C} cy={C - R} r="5" fill="#b6e57a" />
+        </g>
 
         {/* Kern */}
         <circle cx={C} cy={C} r="118" fill="url(#ld-kernglanz)" className="ld-kern" />
@@ -1151,9 +1157,14 @@ function HeroInstrument() {
         <text x={C} y={C + 18} textAnchor="middle" fontSize="26" fontWeight="500" letterSpacing="-0.5" fill="#ffffff">Wachstum</text>
 
         {/* Knoten */}
-        {knoten.map((k) => (
+        {knoten.map((k, i) => (
           <g key={`n-${k.label}`} transform={`translate(${k.x} ${k.y})`}>
             <rect x="-68" y="-20" width="136" height="40" rx="20" fill="rgba(11,18,51,.86)" stroke="rgba(255,255,255,.22)" strokeWidth="1" />
+            <rect
+              x="-68" y="-20" width="136" height="40" rx="20"
+              className="ld-knoten-an" fill="rgba(141,198,63,.14)" stroke="#8dc63f" strokeWidth="1.5"
+              style={{ animationDelay: `${i * TAKT}s` }}
+            />
             <circle cx="-47" cy="0" r="4" fill="#8dc63f" />
             <text x="8" y="5.5" textAnchor="middle" fontSize="16" fontWeight="500" fill="#dfe7f8">{k.label}</text>
           </g>
@@ -2179,10 +2190,10 @@ function GlobalStyles() {
         radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.08), transparent 60%),
         linear-gradient(100deg, rgba(7,13,36,.95) 0%, rgba(8,14,40,.88) 30%, rgba(11,18,51,.62) 60%, rgba(11,18,51,.28) 84%, rgba(11,18,51,.14) 100%);
     }
-    /* Hero-Foto: liegt ganz hinten und scheint nur leicht durch.
+    /* Hero-Foto: liegt über dem Farbschleier, damit es auf der ganzen Fläche gleichmäßig durchscheint.
        opacity regelt, wie stark es sichtbar ist. luminosity übernimmt nur die
        Helligkeit des Fotos – die Farben bleiben die der CI. Zoom minimal (4 %). */
-    .ld-hero-foto { opacity: .22; mix-blend-mode: luminosity; }
+    .ld-hero-foto { opacity: .18; mix-blend-mode: luminosity; }
     .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
     @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
     .ld-hero-fuss { background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%); }
@@ -2195,18 +2206,27 @@ function GlobalStyles() {
     .ld-d3 { animation-delay: .32s; } .ld-d4 { animation-delay: .44s; }
     .ld-rule { transform-origin: left center; animation: ldRule .9s cubic-bezier(.16,.84,.28,1) both; }
 
-    /* Hero-Instrument. Die Verschiebung folgt dem Zeiger (--mx/--my vom Hero),
-       die Drehungen laufen dauerhaft und sehr langsam. */
+    /* Hero-Instrument. Die Verschiebung folgt dem Zeiger (--mx/--my vom Hero).
+       Bewegung als ein Kreislauf: Ein Lichtpunkt umrundet das Rad (--umlauf),
+       erreicht alle --takt Sekunden ein Feld, das Feld leuchtet auf, ein Impuls
+       läuft ins Ziel, und das Ziel leuchtet bei seiner Ankunft kurz nach.
+       Immer nur ein Impuls gleichzeitig. Alle Animationen starten gemeinsam
+       beim Laden und bleiben dadurch synchron. */
     .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
     .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
-    .ld-rot-a { animation: ldDreh 90s linear infinite; }
-    .ld-rot-b { animation: ldDreh 60s linear infinite reverse; }
-    .ld-rot-c { animation: ldDreh 18s linear infinite; }
+    .ld-rad { animation: ldDreh var(--umlauf, 9s) linear infinite; }
     @keyframes ldDreh { to { transform: rotate(360deg); } }
-    .ld-puls { stroke-dasharray: 18 300; stroke-dashoffset: 18; animation: ldPuls 3.6s linear infinite; }
-    @keyframes ldPuls { from { stroke-dashoffset: 18; } to { stroke-dashoffset: -300; } }
-    .ld-kern { transform-box: fill-box; transform-origin: center; animation: ldAtmen 5s ease-in-out infinite; }
-    @keyframes ldAtmen { 50% { transform: scale(1.08); opacity: .7; } }
+    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 9s) cubic-bezier(.4,0,.3,1) infinite; }
+    @keyframes ldPuls {
+      0% { stroke-dashoffset: 42; opacity: 0; }
+      1.5% { opacity: 1; }
+      15% { stroke-dashoffset: -136; opacity: 1; }
+      15.5%, 100% { stroke-dashoffset: -136; opacity: 0; }
+    }
+    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 9s) ease-out infinite; }
+    @keyframes ldKnoten { 0% { opacity: 0; } 2% { opacity: 1; } 20%, 100% { opacity: 0; } }
+    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 1.5s) ease-out 1.25s infinite; }
+    @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
 
     /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
     .ld-band { animation: ldBand 70s linear infinite; }
@@ -2260,8 +2280,8 @@ function GlobalStyles() {
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
       .ld-dial { transform: none; }
-      .ld-rot-a, .ld-rot-b, .ld-rot-c, .ld-puls, .ld-kern, .ld-band { animation: none; }
-      .ld-puls { stroke-dasharray: none; stroke-opacity: .35; }
+      .ld-rad, .ld-puls, .ld-knoten-an, .ld-kern, .ld-band { animation: none; }
+      .ld-puls, .ld-knoten-an { opacity: 0; }
       .ld-instrument { translate: none; transition: none; }
       .ld-wort { opacity: 1; transition: none; }
       .ld-bar { transform: scaleX(var(--w, 1)); transition: none; }
