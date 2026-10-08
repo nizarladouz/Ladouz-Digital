@@ -1,20 +1,35 @@
 "use client";
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   ladouz.digital – Landingpage
+   ladouz.digital – Startseite
    Next.js (App Router) · TypeScript · Tailwind CSS
 
+   POSITIONIERUNG
+   Performance-getriebene digitale Dienstleistungen und Consulting für den
+   Mittelstand. Gemessen an Anfragen, Aufträgen und Umsatz. Dauerhaft Teil
+   des Unternehmens. Präzise gedacht. Präzise umgesetzt.
+
    AUFBAU – jede Sektion beantwortet genau eine Frage:
-     Hero          Was bieten Sie an?
-     Wandel        Wo stehe ich heute, wo stehe ich danach?   (#system)
-     Bausteine     Was genau steht am Ende in meinem Haus?    (#leistungen)
-     Vorgehen      Wie läuft das ab?                           (#framework)
-     Haltung       Warum Sie?                                  (#leitbild)
-     Branchen      Passt das zu mir?                           (#branchen)
-     Perspektiven  Wie denken Sie?                             (#publikationen, #newsletter)
-     Kontakt       Wie fange ich an?                           (#kontakt)
+     Hero            Was bieten Sie an?
+     Laufband        Was gehört alles dazu?
+     Leitgedanke     Was heißt bei Ihnen Performance?
+     Wandel          Wo verliere ich heute Wachstum?        (#system)
+     Leistungsfelder Was genau machen Sie?                   (#leistungen)
+     Vorgehen        Wie läuft das ab?                        (#framework)
+     Messbarkeit     Woran erkenne ich, dass es wirkt?        (#messbarkeit)
+     Haltung         Warum Sie?                               (#leitbild)
+     Branchen        Passt das zu mir?                        (#branchen)
+     Perspektiven    Wie denken Sie?                          (#publikationen, #newsletter)
+     Fragen          Was will ich vorher noch wissen?         (#fragen)
+     Kontakt         Wie fange ich an?                        (#kontakt)
 
    Alle Anker aus dem Menü existieren. Das Menü selbst ist unverändert.
+
+   SKALIERUNG
+   Leistungsfelder und Perspektiven haben ein Feld `pfad`. Sobald eine
+   Unterseite existiert (z. B. /leistungen/performance-marketing), dort den
+   Pfad eintragen – die Karte verlinkt dann automatisch. Vorher bleibt das
+   Feld leer, damit kein Link ins Leere führt.
 
    BILDER
    Jede Bildfläche steht genau einmal im Objekt BILDER weiter unten.
@@ -24,20 +39,27 @@
    · Genau ein Bild mit fetchPriority="high": das Hero-Motiv (LCP).
      (Next.js 16 hat die frühere Eigenschaft "priority" abgelöst.)
    · Die H1 wird ohne Einblendung ausgeliefert – sie ist das LCP-Element.
-   · Scroll-Effekte schreiben direkt ans DOM, nicht in den React-State.
-     Die Phasen-Sektion rendert pro Phasenwechsel neu, nicht sechzigmal pro Sekunde.
+   · Alle Scroll- und Zeigereffekte schreiben CSS-Variablen direkt ans DOM,
+     nicht in den React-State. Animationen laufen über transform und opacity.
+   · Das Hero-Instrument ist reines SVG + CSS: kein Canvas, keine Bibliothek.
    · prefers-reduced-motion ist vollständig abgedeckt.
+
+   STRUKTURIERTE DATEN
+   Unternehmen und häufige Fragen werden als JSON-LD ausgeliefert
+   (Google, Bing und KI-Suchsysteme lesen das maschinell).
    ═══════════════════════════════════════════════════════════════════════════ */
 
 import {
   useCallback, useEffect, useId, useRef, useState, useSyncExternalStore,
-  type FormEvent, type ReactNode,
+  type CSSProperties, type FormEvent, type PointerEvent as ReactPointerEvent, type ReactNode,
 } from "react";
 import Image from "next/image";
 
+const SITE = "https://ladouz.digital";
 const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
 const MAIL = "management@ladouz.digital";
 const TEL = "01577 0206552";
+const TEL_LINK = "+4915770206552";
 
 /* ═══════════════════════════════════════════════════════════════════════════
    BILDER – die einzige Stelle, die du für Motive anfassen musst.
@@ -62,6 +84,9 @@ const TEL = "01577 0206552";
           "50% 50%" = Mitte, "30% 50%" = links, "50% 25%" = oben.
 
    variante: CI-Grafik, die erscheint, solange kein Foto hinterlegt ist.
+
+   Die vier Baustein-Motive der Vorfassung entfallen: die Leistungsfelder
+   arbeiten mit eigenen Symbolen statt mit Fotos.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 type Variante = "wave" | "grid" | "orbit" | "stack";
@@ -74,48 +99,32 @@ const BILDER = {
      Der dunkelblaue Farbschleier liegt immer darüber. */
   hero: { src: undefined, fokus: "60% 45%", variante: "wave" },
 
-  /* Datei: motive/baustein-marketing.jpg · Querformat 16:10
-     Zwei bis vier Personen im Gespräch am Besprechungstisch, natürliches Licht. */
-  bausteinMarketing: { src: undefined, fokus: "50% 45%", variante: "wave" },
-
-  /* Datei: motive/baustein-digital.jpg · Querformat 16:10
-     Moderner Arbeitsraum, Menschen an Bildschirmen, Blick über die Schulter. */
-  bausteinDigital: { src: undefined, fokus: "50% 50%", variante: "orbit" },
-
-  /* Datei: motive/baustein-software.jpg · Querformat 16:10
-     Konzentrierte Arbeit am Rechner oder zwei Entwickler vor einem Monitor. */
-  bausteinSoftware: { src: undefined, fokus: "50% 50%", variante: "grid" },
-
-  /* Datei: motive/baustein-daten.jpg · Querformat 16:10
-     Architekturdetail mit Raster: Fassade, Deckenraster, Treppenhaus von oben. */
-  bausteinDaten: { src: undefined, fokus: "50% 50%", variante: "stack" },
-
   /* Datei: motive/phase-analyse.jpg · Hochformat 4:5
      Workshop: Menschen am Tisch, Notizen, konzentrierte Gesprächssituation. */
   phaseAnalyse: { src: undefined, fokus: "50% 40%", variante: "orbit" },
 
   /* Datei: motive/phase-architektur.jpg · Hochformat 4:5
-     Planung: Grundrisse, Skizzen auf dem Tisch, Rohbau eines modernen Gebäudes. */
+     Planung: Skizzen, Whiteboard, Struktur auf dem Tisch. */
   phaseArchitektur: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
   /* Datei: motive/phase-umsetzung.jpg · Hochformat 4:5
-     Team in Bewegung, Besprechung im Stehen, Arbeit an Bildschirmen. */
+     Team in Bewegung, Arbeit an Bildschirmen, Besprechung im Stehen. */
   phaseUmsetzung: { src: undefined, fokus: "50% 45%", variante: "wave" },
 
   /* Datei: motive/phase-betrieb.jpg · Hochformat 4:5
-     Laufender Betrieb: Team im Besprechungsraum, jemand präsentiert Ergebnisse,
-     ruhige Selbstverständlichkeit. Zusammenarbeit, kein Abschied. */
+     Jemand präsentiert Ergebnisse auf einem Bildschirm, ruhige Selbstverständlichkeit.
+     Zusammenarbeit, kein Abschied. */
   phaseBetrieb: { src: undefined, fokus: "50% 40%", variante: "stack" },
 
   /* Datei: motive/haltung.jpg · Hochformat 4:5
      Architektonische Präzision: klare Linien, Symmetrie, Betonkanten, Fluchten. */
   haltung: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
-  /* Dateien: motive/perspektive-ki.jpg, perspektive-architektur.jpg,
-     perspektive-qualitaet.jpg · Querformat 16:10 · ruhige, thematische Motive. */
-  perspektiveKi: { src: undefined, fokus: "50% 50%", variante: "orbit" },
-  perspektiveArchitektur: { src: undefined, fokus: "50% 50%", variante: "grid" },
-  perspektiveQualitaet: { src: undefined, fokus: "50% 50%", variante: "wave" },
+  /* Dateien: motive/perspektive-kennzahlen.jpg, perspektive-suche.jpg,
+     perspektive-umsetzung.jpg · Querformat 16:10 · ruhige, thematische Motive. */
+  perspektiveKennzahlen: { src: undefined, fokus: "50% 50%", variante: "stack" },
+  perspektiveSuche: { src: undefined, fokus: "50% 50%", variante: "orbit" },
+  perspektiveUmsetzung: { src: undefined, fokus: "50% 50%", variante: "grid" },
 
   /* Datei: motive/kontakt.jpg · Hochformat oder quadratisch
      Heller, moderner Besprechungsraum, gern leer – bereit für das Gespräch. */
@@ -168,63 +177,115 @@ const hauptmenue: MenuEintrag[] = [
 /* ══════════════════════════ Inhalte ══════════════════════════ */
 
 const heroFakten = [
-  { wert: "4", einheit: "Bausteine", text: "Marketing, Digital & KI, Software und Daten." },
-  { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zum laufenden Betrieb." },
+  { wert: "6", einheit: "Leistungsfelder", text: "Strategie, Marketing, Sichtbarkeit, Plattformen, KI und Daten." },
+  { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
   { wert: "1", einheit: "Partner", text: "Dauerhaft Teil Ihres Unternehmens." },
 ];
+
+/* Die sechs Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
+const instrumentKnoten = ["Strategie", "Marketing", "Sichtbarkeit", "Plattformen", "KI", "Daten"];
+
+const laufband = [
+  "Digitale Strategie", "Performance-Marketing", "Google Ads", "Sichtbarkeit in Google",
+  "Sichtbarkeit in KI-Suche", "Websites & Plattformen", "Softwareentwicklung", "KI-Agenten",
+  "Prozess-Automatisierung", "Tracking-Architektur", "Dashboards & Reporting", "Consulting",
+];
+
+/* Der Leitgedanke wird beim Scrollen Wort für Wort aufgehellt.
+   Hervorgehobene Wörter stehen in *Sternchen*. */
+const leitgedanke =
+  "Performance ist kein Kanal und keine Kampagne. Sie entsteht, wenn *Strategie,* *Sichtbarkeit,* *Website,* *Software,* *KI* und *Daten* als ein System arbeiten – und jede Maßnahme sich an dem messen lässt, was am Ende zählt: *Umsatz.*";
 
 /* Jede Zeile ist ein Paar: derselbe Bereich vorher und nachher. */
 const wandel = [
   {
-    bereich: "Organisation",
-    heute: "Digitale Themen laufen projektweise, verteilt auf Agenturen und einzelne Personen.",
-    danach: "Eine eigene Abteilung steuert Marketing, Digitales und KI – mit klaren Rollen.",
+    bereich: "Sichtbarkeit",
+    heute: "Gefunden wird, wer zufällig gut rankt. Neue Suchwege wie KI-Antworten bleiben unbeachtet.",
+    danach: "Eine Inhaltsarchitektur, die Sie dort sichtbar macht, wo Ihre Kunden suchen – in Google und in KI-Antworten.",
   },
   {
-    bereich: "Software",
-    heute: "Standardsoftware bildet die eigenen Abläufe nur teilweise ab. Der Rest läuft über Tabellen.",
-    danach: "Eigene Softwarelösungen tragen die Kernabläufe – gebaut entlang Ihrer Prozesse.",
+    bereich: "Marketing",
+    heute: "Budgets folgen Bauchgefühl oder Klickzahlen. Was davon zu Aufträgen wird, weiß niemand genau.",
+    danach: "Jeder Euro wird nach Anfragen, Aufträgen und Umsatz gesteuert.",
   },
   {
-    bereich: "Daten",
+    bereich: "Website",
+    heute: "Die Website informiert, aber sie verkauft nicht. Besucher kommen – und gehen wieder.",
+    danach: "Eine Website, die Besucher systematisch zu qualifizierten Anfragen führt.",
+  },
+  {
+    bereich: "Abläufe",
+    heute: "Wiederkehrende Arbeit bindet Ihr Team. Standardsoftware bildet die eigenen Abläufe nur teilweise ab.",
+    danach: "Software und KI-Agenten übernehmen, was sich wiederholt. Ihr Team gewinnt Zeit für das Wesentliche.",
+  },
+  {
+    bereich: "Steuerung",
     heute: "Daten liegen verteilt in Systemen. Entscheidungen beruhen vor allem auf Erfahrung.",
-    danach: "Eine Datenstruktur, auf der Entscheidungen, Automatisierung und KI verlässlich aufbauen.",
-  },
-  {
-    bereich: "Technologie",
-    heute: "Neue Technologien sind etwas, das man beobachtet – und oft zu spät einsetzt.",
-    danach: "Jede neue Technologie wird zu Produktivität, Wirksamkeit, Umsatz und Einsparung.",
+    danach: "Ein gemeinsames Kennzahlensystem – vom ersten Kontakt bis zum Umsatz.",
   },
 ];
 
-const bausteine: { nr: string; titel: string; text: string; punkte: string[]; bild: Motiv }[] = [
+type SymbolArt = "kompass" | "ziel" | "lupe" | "fenster" | "knoten" | "kurve";
+
+type Leistungsfeld = {
+  nr: string;
+  titel: string;
+  wirkung: string;
+  text: string;
+  punkte: string[];
+  symbol: SymbolArt;
+  /* Unterseite, sobald sie existiert – z. B. "/leistungen/performance-marketing". */
+  pfad?: string;
+};
+
+const leistungsfelder: Leistungsfeld[] = [
   {
     nr: "01",
-    titel: "Interne Marketing-Abteilung",
-    text: "Ein Marketing, das Ihr Unternehmen selbst steuert: Kanäle, Inhalte und Kennzahlen in einer durchgängigen Logik.",
-    punkte: ["Steuerung und Kennzahlen", "Kanal- und Content-Systeme", "Laufende Optimierung"],
-    bild: BILDER.bausteinMarketing,
+    titel: "Strategie & Consulting",
+    wirkung: "Richtung",
+    text: "Ein Zielbild mit klaren Prioritäten und Kennzahlen – die Grundlage, auf der jede Maßnahme ihren Beitrag zum Umsatz nachweisen muss.",
+    punkte: ["Zielbild & Roadmap", "Kennzahlen-Architektur", "Steuerung & Governance"],
+    symbol: "kompass",
   },
   {
     nr: "02",
-    titel: "Digital- und KI-Abteilung",
-    text: "Menschen und Rollen, die neue Technologien bewerten, einführen und betreiben – statt sie jedes Mal einzukaufen.",
-    punkte: ["Rollen und Verantwortung", "KI-Anwendungen im Betrieb", "Governance und Bewertung"],
-    bild: BILDER.bausteinDigital,
+    titel: "Performance-Marketing",
+    wirkung: "Nachfrage",
+    text: "Bezahlte Reichweite in Suchmaschinen und sozialen Netzwerken – gesteuert nach Anfragen und Aufträgen, nicht nach Klicks.",
+    punkte: ["Google Ads & Suchmaschinenwerbung", "Paid Social & B2B-Kampagnen", "Budget- und Gebotssteuerung"],
+    symbol: "ziel",
   },
   {
     nr: "03",
-    titel: "Interne Softwarelösungen",
-    text: "Software für die Abläufe, für die es keine passende Standardlösung gibt. Nicht abgebildet, sondern ausgeführt.",
-    punkte: ["Angebot, Disposition, Planung", "Anbindung an Bestandssysteme", "Wartbar und dokumentiert"],
-    bild: BILDER.bausteinSoftware,
+    titel: "Organische Sichtbarkeit",
+    wirkung: "Sichtbarkeit",
+    text: "Gefunden werden, wenn Kunden suchen – in Google und zunehmend in KI-Antworten. Als Inhaltsarchitektur, die mit jeder Seite stärker wird.",
+    punkte: ["Technische Grundlagen & Seitenarchitektur", "Content-Systeme", "Sichtbarkeit in KI-Suche"],
+    symbol: "lupe",
   },
   {
     nr: "04",
-    titel: "Datenstrukturen",
-    text: "Eine Datenbasis, auf der Entscheidungen, Automatisierung und KI überhaupt erst zuverlässig funktionieren.",
-    punkte: ["Einheitliches Datenmodell", "Kennzahlen-Architektur", "Grundlage für jede KI"],
-    bild: BILDER.bausteinDaten,
+    titel: "Websites, Plattformen & Software",
+    wirkung: "Conversion",
+    text: "Websites, die verkaufen. Und Software für die Abläufe, für die es keine passende Standardlösung gibt.",
+    punkte: ["Conversion-orientierte Websites", "Plattformen & Apps", "Interne Softwarelösungen"],
+    symbol: "fenster",
+  },
+  {
+    nr: "05",
+    titel: "KI & Automatisierung",
+    wirkung: "Effizienz",
+    text: "KI-Agenten und automatisierte Abläufe, die wiederkehrende Arbeit übernehmen – eingebettet in Ihre Prozesse, nicht daneben.",
+    punkte: ["KI-Agenten im Betrieb", "Prozess-Automatisierung", "KI-Governance"],
+    symbol: "knoten",
+  },
+  {
+    nr: "06",
+    titel: "Daten, Tracking & Steuerung",
+    wirkung: "Steuerung",
+    text: "Eine saubere Datenbasis vom ersten Kontakt bis zum Auftrag. Damit Entscheidungen auf Zahlen beruhen statt auf Vermutungen.",
+    punkte: ["Tracking-Architektur", "Dashboards & Reporting", "CRM-Anbindung"],
+    symbol: "kurve",
   },
 ];
 
@@ -240,34 +301,34 @@ type Phase = {
 const phasen: Phase[] = [
   {
     nr: "01",
-    titel: "Analyse & Zielbild",
+    titel: "Analyse & Potenzial",
     stufe: "Verstehen",
-    text: "Wir erfassen Ihre Wertschöpfung als Ganzes: Abläufe, Systeme, Daten und Teams. Daraus entsteht ein Zielbild mit klaren Prioritäten.",
-    ergebnis: "Zielbild und Roadmap mit klaren Prioritäten.",
+    text: "Wir erfassen, wo Ihr Unternehmen heute Umsatz gewinnt – und wo es ihn verliert: Sichtbarkeit, Marketing, Website, Abläufe und Daten.",
+    ergebnis: "Ein Zielbild mit Prioritäten, geordnet nach Wirkung.",
     bild: BILDER.phaseAnalyse,
   },
   {
     nr: "02",
-    titel: "Architektur",
+    titel: "Architektur & Plan",
     stufe: "Strukturieren",
-    text: "Wir entwerfen die Struktur: Rollen der internen Abteilung, Datenmodell, Systemlandschaft und Verantwortlichkeiten.",
-    ergebnis: "Eine dokumentierte Architektur, auf der alles Weitere aufbaut.",
+    text: "Wir legen die Struktur fest: welche Kanäle, welche Systeme, welches Kennzahlensystem – und wer wofür verantwortlich ist.",
+    ergebnis: "Ein dokumentierter Plan, auf dem jede Maßnahme aufbaut.",
     bild: BILDER.phaseArchitektur,
   },
   {
     nr: "03",
-    titel: "Aufbau & Umsetzung",
+    titel: "Umsetzung",
     stufe: "Umsetzen",
-    text: "Software, KI-Anwendungen und Marketing-Systeme gehen kontrolliert in Betrieb – eingebettet in Ihre Prozesse, nicht daneben.",
+    text: "Kampagnen, Website, Software und KI-Anwendungen gehen kontrolliert live – eingebettet in Ihre Prozesse und vom ersten Tag an gemessen.",
     ergebnis: "Produktive Systeme statt Pilotprojekte.",
     bild: BILDER.phaseUmsetzung,
   },
   {
     nr: "04",
-    titel: "Betrieb & Weiterentwicklung",
+    titel: "Messen, Optimieren, Skalieren",
     stufe: "Fortlaufend",
-    text: "Ihre Abteilung arbeitet – und wir bleiben Teil davon. Wir steuern mit, entwickeln weiter und bringen jede neue Technologie in den Betrieb.",
-    ergebnis: "Ein System, das mit jeder Innovation stärker wird.",
+    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Wir messen, lernen und verbessern – und bleiben dauerhaft Teil Ihres Unternehmens.",
+    ergebnis: "Ein System, das mit jeder Optimierung stärker wird.",
     bild: BILDER.phaseBetrieb,
   },
 ];
@@ -277,10 +338,26 @@ function phaseFuerAnteil(p: number) {
   return Math.min(phasen.length - 1, Math.floor(p * phasen.length));
 }
 
+/* Kennzahlenkette: von der Sichtbarkeit bis zum Umsatz.
+   breite ist rein grafisch (Trichterform) und stellt keine Messwerte dar. */
+const kennzahlen = [
+  { stufe: "Sichtbarkeit", misst: "Rankings, Impressionen, Präsenz in KI-Antworten", breite: 1 },
+  { stufe: "Besuche", misst: "Qualifizierte Besucher je Kanal", breite: 0.8 },
+  { stufe: "Anfragen", misst: "Formulare, Anrufe, Terminbuchungen", breite: 0.6 },
+  { stufe: "Aufträge", misst: "Abschlüsse und Auftragswert", breite: 0.42 },
+  { stufe: "Umsatz", misst: "Umsatz, Deckungsbeitrag, Kosten je Auftrag", breite: 0.28 },
+];
+
+const messprinzipien = [
+  { titel: "Ziele vor Maßnahmen.", text: "Erst steht fest, welche Kennzahl sich bewegen soll. Dann wird entschieden, womit." },
+  { titel: "Ein Cockpit statt vieler Reports.", text: "Alle Kanäle in einer Logik – damit sichtbar wird, welche Maßnahme welchen Beitrag leistet." },
+  { titel: "Einwilligung zuerst.", text: "Gemessen wird im Einklang mit der DSGVO. Vertrauen ist selbst eine Kennzahl." },
+];
+
 const prinzipien = [
-  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Ihre Abteilung wächst weiter – und wir wachsen mit ihr." },
+  { titel: "Wirkung vor Aktivität.", text: "Wir messen uns an Anfragen, Aufträgen und Umsatz – nicht an Stunden, Reichweite oder Klicks." },
   { titel: "Umsetzung, nicht Empfehlung.", text: "Wir bauen, was wir planen. Strategie ohne Umsetzung bleibt eine Präsentation." },
-  { titel: "Teil Ihres Unternehmens.", text: "Wir arbeiten nicht von außen auf Sie ein, sondern von innen mit Ihnen." },
+  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Wachstum nicht – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens." },
 ];
 
 const branchen = [
@@ -290,26 +367,97 @@ const branchen = [
   "Bildung & Weiterbildung", "Industriegüter", "Öffentlicher Sektor",
 ];
 
-const perspektiven: { kicker: string; titel: string; text: string; bild: Motiv }[] = [
+const perspektiven: { kicker: string; titel: string; text: string; bild: Motiv; pfad?: string }[] = [
   {
     kicker: "Analyse",
-    titel: "Warum KI-Pilotprojekte im Mittelstand selten produktiv werden",
-    text: "Die meisten Initiativen scheitern nicht an der Technologie, sondern an fehlender Verankerung in den Abläufen.",
-    bild: BILDER.perspektiveKi,
+    titel: "Warum Klicks keine Kennzahl sind",
+    text: "Performance beginnt dort, wo Marketing an Anfragen und Umsatz gemessen wird – nicht an Reichweite.",
+    bild: BILDER.perspektiveKennzahlen,
   },
   {
-    kicker: "Framework",
-    titel: "Digitale Strategie als Architektur, nicht als Maßnahmenliste",
-    text: "Einzelmaßnahmen verpuffen, Strukturen bleiben. Warum die Reihenfolge den Unterschied macht.",
-    bild: BILDER.perspektiveArchitektur,
+    kicker: "Leitfaden",
+    titel: "Sichtbar in Google und in KI-Antworten",
+    text: "Wie sich die Suche verändert – und was das für die Inhaltsarchitektur mittelständischer Unternehmen bedeutet.",
+    bild: BILDER.perspektiveSuche,
   },
   {
     kicker: "Standpunkt",
-    titel: "Die eigene Abteilung schlägt die bessere Agentur",
-    text: "Wer Fähigkeiten dauerhaft einkauft, bleibt abhängig. Wer sie aufbaut, wird schneller mit jeder Innovation.",
-    bild: BILDER.perspektiveQualitaet,
+    titel: "Strategie ohne Umsetzung bleibt eine Präsentation",
+    text: "Warum digitale Wirkung erst entsteht, wenn Planung, Umsetzung und Messung in einer Hand liegen.",
+    bild: BILDER.perspektiveUmsetzung,
   },
 ];
+
+/* Häufige Fragen – erscheinen sichtbar auf der Seite und als JSON-LD.
+   Antworten so formulieren, dass sie auch ohne die Frage verständlich sind:
+   KI-Suchsysteme zitieren gern einzelne Absätze. */
+const fragen = [
+  {
+    frage: "Was bedeutet performance-getrieben bei Ladouz Digital?",
+    antwort: "Jede Maßnahme – ob Kampagne, Website, Software oder KI-Anwendung – wird an ihrer Wirkung gemessen: an Sichtbarkeit, Anfragen, Aufträgen und Umsatz. Was nicht wirkt, wird verbessert oder ersetzt.",
+  },
+  {
+    frage: "Für welche Unternehmen arbeitet Ladouz Digital?",
+    antwort: "Für mittelständische Unternehmen, die digitales Wachstum als dauerhafte Aufgabe verstehen – branchenübergreifend. Entscheidend ist die Struktur der Wertschöpfung, nicht das Etikett der Branche.",
+  },
+  {
+    frage: "Arbeiten Sie projektweise oder dauerhaft?",
+    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit Ihnen auf und bleiben danach Teil Ihres Unternehmens: Wir steuern mit, messen und entwickeln weiter.",
+  },
+  {
+    frage: "Übernehmen Sie auch die Umsetzung?",
+    antwort: "Ja. Wir planen nicht nur, wir setzen um – Kampagnen, Websites, Software, KI-Anwendungen und Tracking aus einer Hand.",
+  },
+  {
+    frage: "Wie wird der Erfolg gemessen?",
+    antwort: "Über ein gemeinsames Kennzahlensystem, das alle Kanäle verbindet – vom ersten Kontakt bis zum Auftrag. So wird sichtbar, welche Maßnahme welchen Beitrag zum Umsatz leistet.",
+  },
+  {
+    frage: "Wie beginnt eine Zusammenarbeit?",
+    antwort: "Mit einer Erstberatung. Darin klären wir, wo Ihr Unternehmen heute steht und ob eine Zusammenarbeit zu Ihnen passt – unverbindlich und konkret.",
+  },
+];
+
+/* ══════════════════════════ Strukturierte Daten ══════════════════════════ */
+
+const strukturDaten = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": `${SITE}/#unternehmen`,
+      name: "Ladouz Digital",
+      url: SITE,
+      logo: `${SITE}/logo-navy.png`,
+      email: MAIL,
+      telephone: TEL_LINK,
+      description: "Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand.",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Markt 40",
+        postalCode: "53721",
+        addressLocality: "Siegburg",
+        addressCountry: "DE",
+      },
+      areaServed: { "@type": "Country", name: "Deutschland" },
+      founder: { "@type": "Person", name: "Nizar Ladouz" },
+      knowsAbout: leistungsfelder.map((l) => l.titel),
+      slogan: "Präzise gedacht. Präzise umgesetzt.",
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE}/#fragen`,
+      mainEntity: fragen.map((f) => ({
+        "@type": "Question",
+        name: f.frage,
+        acceptedAnswer: { "@type": "Answer", text: f.antwort },
+      })),
+    },
+  ],
+};
+
+/* "<" maskieren, damit kein Inhalt das Script-Tag vorzeitig schließen kann. */
+const strukturDatenJson = JSON.stringify(strukturDaten).replace(/</g, "\\u003c");
 
 /* ══════════════════════════ Hooks ══════════════════════════ */
 
@@ -350,8 +498,7 @@ function useInView<T extends HTMLElement>(threshold = 0.14) {
   return { ref, inView };
 }
 
-/* Fortschrittsbalken direkt am DOM-Knoten statt über State: die Vorfassung
-   hat den kompletten Kopfbereich bei jedem Scroll-Frame neu gerendert.
+/* Fortschrittsbalken direkt am DOM-Knoten statt über State.
    scaleX statt width läuft im Compositor, ohne Layout und Paint. */
 function useScrollState() {
   const balken = useRef<HTMLSpanElement | null>(null);
@@ -390,14 +537,66 @@ function useScrollState() {
   return { balken, scrolled };
 }
 
+/* Scroll-Fortschritt eines Bereichs als CSS-Variable --p (0 bis 1).
+   Kein React-State: es wird nichts neu gerendert, nur eine Variable gesetzt. */
+function useScrollVariable<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    let ticking = false;
+    const messen = () => {
+      ticking = false;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const weg = r.height - vh;
+      const p = weg > 0 ? Math.min(Math.max(-r.top / weg, 0), 1) : r.top < vh * 0.5 ? 1 : 0;
+      el.style.setProperty("--p", p.toFixed(4));
+    };
+    const on = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(messen);
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
+  }, []);
+  return ref;
+}
+
+/* Zeigerposition als CSS-Variablen am Element (für Licht- und Tiefeneffekte).
+   Nur bei Maus/Trackpad – auf Touch-Geräten gibt es keinen Hover. */
+function setzeZeiger(e: ReactPointerEvent<HTMLElement>) {
+  if (e.pointerType !== "mouse") return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  el.style.setProperty("--x", `${e.clientX - r.left}px`);
+  el.style.setProperty("--y", `${e.clientY - r.top}px`);
+  el.style.setProperty("--mx", ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+  el.style.setProperty("--my", ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+}
+
 /* ══════════════════════════ Bausteine ══════════════════════════ */
 
-function Reveal({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
-  const { ref, inView } = useInView<HTMLDivElement>();
+/* as="li": direkt als Listeneintrag rendern. Ein <div> zwischen <ul> und
+   <li> ist ungültiges HTML – Screenreader zählen die Liste dann falsch. */
+function Reveal({
+  children, delay = 0, className = "", as: Tag = "div",
+}: { children: ReactNode; delay?: number; className?: string; as?: "div" | "li" }) {
+  const { ref, inView } = useInView<HTMLElement>();
   return (
-    <div ref={ref} className={`ld-reveal ${inView ? "is-visible" : ""} ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+    <Tag
+      ref={(el: HTMLElement | null) => { ref.current = el; }}
+      className={`ld-reveal ${inView ? "is-visible" : ""} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
       {children}
-    </div>
+    </Tag>
   );
 }
 
@@ -420,24 +619,47 @@ function Lead({ children, tone = "dark", className = "" }: { children: ReactNode
   );
 }
 
+/* Die Bildmarke „l." aus dem Logo – als SVG, damit sie in jeder Größe scharf ist.
+   Maße aus der Originalgrafik: Strich 7 × 34, Punkt Ø 11.
+   hell = für helle Flächen (Strich navy, Punkt blau),
+   sonst für dunkle Flächen (Strich weiß, Punkt Logo-Silber). */
+function Marke({ hell = false, className = "" }: { hell?: boolean; className?: string }) {
+  return (
+    <svg viewBox="0 0 23 34" className={className} aria-hidden>
+      <rect width="7" height="34" fill={hell ? "#0b1233" : "#ffffff"} />
+      <circle cx="17" cy="28.5" r="5.5" fill={hell ? "#2f5bd7" : "#adbbd1"} />
+    </svg>
+  );
+}
+
+/* Buttons als Pille.
+   primary: Signatur-Button mit Bildmarke, Verlauf und feinem Außenring.
+            auf="hell"   → dunkle Pille (Navy → Blau) für helle Flächen
+            auf="dunkel" → helle Pille für dunkle Flächen (Hero, Kontakt, Newsletter)
+   ghost:   Kontur-Pille für dunkle Flächen, dark: Kontur-Pille für helle Flächen. */
 function CtaButton({
-  href, children, variant = "primary", className = "", submit = false, disabled,
+  href, children, variant = "primary", auf = "hell", className = "", submit = false, disabled,
 }: {
-  href?: string; children: ReactNode; variant?: "primary" | "ghost" | "dark";
+  href?: string; children: ReactNode; variant?: "primary" | "ghost" | "dark"; auf?: "hell" | "dunkel";
   className?: string; submit?: boolean; disabled?: boolean;
 }) {
-  const base = "ld-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-[11px] px-8 py-4 text-[12.5px] font-semibold uppercase tracking-[0.16em] transition-[background-color,border-color,color,transform] duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0";
+  const base = "ld-btn group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-[15px] text-[15px] font-medium tracking-[-0.005em] transition-[background-color,background-position,border-color,color,transform,box-shadow] duration-500 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:translate-y-0";
   const styles = {
-    primary: "bg-[#8dc63f] text-[#0b1233] hover:bg-[#b6e57a]",
-    ghost: "border border-white/45 text-white hover:border-white hover:bg-white/10",
-    dark: "border border-[#131f5c] text-[#131f5c] hover:bg-[#131f5c] hover:text-white",
+    primary: `ld-pill ${auf === "dunkel" ? "ld-pill-dunkel" : "ld-pill-hell"}`,
+    ghost: "border border-white/40 text-white hover:border-white hover:bg-white/10",
+    dark: "border border-[#131f5c]/70 text-[#131f5c] hover:border-[#131f5c] hover:bg-[#131f5c] hover:text-white",
   }[variant];
 
-  const inner = (
+  const inner = variant === "primary" ? (
+    <>
+      <Marke hell={auf === "dunkel"} className="relative z-10 h-[19px] w-auto flex-none" />
+      <span className="relative z-10">{children}</span>
+      {!disabled && <span aria-hidden className="ld-sweep" />}
+    </>
+  ) : (
     <>
       <span className="relative z-10">{children}</span>
       <span aria-hidden className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
-      {variant === "primary" && !disabled && <span aria-hidden className="ld-sweep" />}
     </>
   );
 
@@ -468,10 +690,9 @@ function Visual({
   const uid = useId().replace(/:/g, "");
   const g = `g-${uid}`, r = `r-${uid}`, p = `p-${uid}`;
 
-  /* Positionierung kommt vom Aufrufer. Früher stand hier fest `relative` –
-     wurde zusätzlich `absolute inset-0` übergeben, gewann je nach
-     CSS-Reihenfolge `relative`, und die Fläche fiel auf null Höhe zusammen.
-     Genau das war die leere rechte Hälfte im alten Hero. */
+  /* Positionierung kommt vom Aufrufer. Ein fest gesetztes `relative`
+     würde ein übergebenes `absolute inset-0` je nach CSS-Reihenfolge
+     überstimmen – die Fläche fiele auf null Höhe zusammen. */
   const pos = /(^|\s)(absolute|fixed)(\s|$)/.test(className) ? "" : "relative";
 
   if (motiv.src) {
@@ -553,17 +774,22 @@ export default function Home() {
   return (
     <>
       <GlobalStyles />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: strukturDatenJson }} />
       <div className="min-h-screen bg-[#f7f9fc] text-[#0b1233] antialiased selection:bg-[#8dc63f] selection:text-[#0b1233]">
         <a href="#main" className="ld-skip">Zum Inhalt springen</a>
         <Kopfbereich />
         <main id="main">
           <Hero />
+          <Laufband />
+          <Leitgedanke />
           <Wandel />
-          <Bausteine />
+          <Leistungsfelder />
           <Programm />
+          <Messbarkeit />
           <Haltung />
           <Branchen />
           <Perspektiven />
+          <Fragen />
           <Kontakt />
         </main>
         <Footer />
@@ -664,7 +890,8 @@ function Kopfbereich() {
               <SucheIcon />
             </button>
 
-            <a href={BOOKING_URL} target="_blank" rel="noopener" className="ld-btn group relative hidden overflow-hidden rounded-[11px] bg-[#8dc63f] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#0b1233] transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex">
+            <a href={BOOKING_URL} target="_blank" rel="noopener" className={`ld-btn ld-pill group relative hidden items-center gap-2.5 overflow-hidden rounded-full px-5 py-[9px] text-[14px] font-medium tracking-[-0.005em] transition-[background-position,transform,color] duration-500 hover:-translate-y-0.5 sm:inline-flex ${dunkel ? "ld-pill-dunkel" : "ld-pill-hell"}`}>
+              <Marke hell={dunkel} className="relative z-10 h-[15px] w-auto flex-none" />
               <span className="relative z-10">Erstberatung</span>
               <span aria-hidden className="ld-sweep" />
             </a>
@@ -733,7 +960,8 @@ function Kopfbereich() {
             {utilityLinks.map(([label, href]) => (
               <a key={label} href={href} onClick={close} className="border-b border-[#edf1f7] py-3 text-[0.9rem] text-[#43507a] last:border-0">{label}</a>
             ))}
-            <a href={BOOKING_URL} target="_blank" rel="noopener" onClick={close} className="my-4 rounded-[11px] bg-[#8dc63f] px-5 py-3.5 text-center text-[12.5px] font-semibold uppercase tracking-[0.16em] text-[#0b1233]">
+            <a href={BOOKING_URL} target="_blank" rel="noopener" onClick={close} className="ld-pill ld-pill-hell my-5 inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[15px] font-medium">
+              <Marke className="h-[17px] w-auto flex-none" />
               Erstberatung buchen
             </a>
           </nav>
@@ -754,45 +982,51 @@ function SucheIcon() {
 
 /* ══════════════════════════ Hero ══════════════════════════
    Drei Schichten: Motiv → Farbschleier → Inhalt.
+   Rechts das Performance-Instrument: sechs Leistungsfelder, die in ein
+   gemeinsames Ziel laufen. Reines SVG, bewegt nur über CSS.
    Die H1 trägt keine Animation: sie ist das LCP-Element.
    ═══════════════════════════════════════════════════════════ */
 
 function Hero() {
   return (
-    <section id="top" className="relative isolate bg-[#0b1233] text-white">
+    <section id="top" onPointerMove={setzeZeiger} className="relative isolate overflow-hidden bg-[#0b1233] text-white">
       <div className="absolute inset-0 -z-20">
         <Visual motiv={BILDER.hero} sizes="100vw" priority flat className="h-full w-full" />
       </div>
       <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
-      <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(640px,92svh,980px)] sm:pt-[clamp(150px,22vh,230px)]">
-        <div className="max-w-[75rem] pb-12 sm:pb-[clamp(56px,8vh,96px)]">
-          <p className="flex items-start gap-4">
-            <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
-            <span className="ld-enter ld-d1 flex flex-wrap gap-x-[0.9em] gap-y-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f] sm:text-[0.72rem] sm:tracking-[0.3em]">
-              <span className="whitespace-nowrap">Digitale &amp; KI-Strategien&nbsp;·</span>
-              <span className="whitespace-nowrap">Software&nbsp;·</span>
-              <span className="whitespace-nowrap">Consulting</span>
-            </span>
-          </p>
+      <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(680px,94svh,1000px)] sm:pt-[clamp(150px,20vh,220px)]">
+        <div className="grid items-center gap-10 pb-12 sm:pb-[clamp(56px,8vh,96px)] lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-6">
+          <div>
+            <p className="flex items-start gap-4">
+              <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
+              <span className="ld-enter ld-d1 flex flex-wrap gap-x-[0.9em] gap-y-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f] sm:text-[0.72rem] sm:tracking-[0.3em]">
+                <span className="whitespace-nowrap">Performance&nbsp;·</span>
+                <span className="whitespace-nowrap">Digital &amp; KI&nbsp;·</span>
+                <span className="whitespace-nowrap">Consulting</span>
+              </span>
+            </p>
 
-          <h1 className="mt-6 text-[clamp(2.2rem,4.6vw,3.8rem)] font-medium leading-[1.04] tracking-[-0.04em] sm:mt-8">
-            Ihre eigene Digital&#8209; und KI&#8209;Abteilung.
-            <br className="hidden md:block" />{" "}
-            <span className="ld-silber">Präzise gedacht. Präzise umgesetzt.</span>
-          </h1>
+            <h1 className="mt-6 text-[clamp(2.35rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
+              Digitales Wachstum, das sich messen lässt.{" "}
+              <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
+            </h1>
 
-          <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[50ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,2vw,1.28rem)] sm:leading-[1.6]">
-            Wir bauen die interne Marketing-, Digital- und KI-Abteilung Ihres Unternehmens auf –
-            mit eigener Software und Datenstruktur – und bleiben dauerhaft Teil davon.
-            So wird jede neue Technologie zu Produktivität, Umsatz und Einsparung.
-          </p>
+            <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
+              Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand –
+              von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
+              Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz.
+              <span className="hidden sm:inline"> Und wir bleiben dauerhaft Teil Ihres Unternehmens.</span>
+            </p>
 
-          <div className="ld-enter ld-d3 mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-            <CtaButton href={BOOKING_URL}>Erstberatung vereinbaren</CtaButton>
-            <CtaButton href="#framework" variant="ghost">Das Vorgehen ansehen</CtaButton>
+            <div className="ld-enter ld-d3 mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+              <CtaButton href={BOOKING_URL} auf="dunkel">Erstberatung vereinbaren</CtaButton>
+              <CtaButton href="#leistungen" variant="ghost">Leistungsfelder ansehen</CtaButton>
+            </div>
           </div>
+
+          <HeroInstrument />
         </div>
 
         <ul className="ld-enter ld-d4 grid gap-px border-t border-white/15 bg-white/10 md:grid-cols-3">
@@ -811,6 +1045,165 @@ function Hero() {
   );
 }
 
+/* Das Instrument liest --mx/--my vom Hero (Zeigerposition) und
+   verschiebt sich leicht gegenläufig – ein ruhiger Tiefeneffekt. */
+function HeroInstrument() {
+  const C = 280;
+  const R = 214;
+  const KERN = 80;
+  const knoten = instrumentKnoten.map((label, i) => {
+    const w = (i / instrumentKnoten.length) * Math.PI * 2 - Math.PI / 2;
+    return {
+      label,
+      x: C + Math.cos(w) * R, y: C + Math.sin(w) * R,
+      ix: C + Math.cos(w) * (KERN + 4), iy: C + Math.sin(w) * (KERN + 4),
+    };
+  });
+
+  return (
+    <div aria-hidden className="ld-instrument ld-enter ld-d3 relative hidden aspect-square w-full max-w-[500px] justify-self-end lg:block">
+      <svg viewBox="0 0 560 560" className="h-full w-full overflow-visible">
+        <defs>
+          <radialGradient id="ld-hof">
+            <stop offset="0%" stopColor="#2f5bd7" stopOpacity="0.42" />
+            <stop offset="55%" stopColor="#131f5c" stopOpacity="0.30" />
+            <stop offset="100%" stopColor="#070d24" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="ld-kernglanz">
+            <stop offset="0%" stopColor="#8dc63f" stopOpacity="0.38" />
+            <stop offset="100%" stopColor="#8dc63f" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id="ld-bogen" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#8dc63f" stopOpacity="0" />
+            <stop offset="100%" stopColor="#8dc63f" stopOpacity="0.95" />
+          </linearGradient>
+        </defs>
+
+        {/* Hof: trennt das Instrument ruhig vom Hintergrundmotiv. */}
+        <circle cx={C} cy={C} r="290" fill="url(#ld-hof)" />
+
+        {/* Skala: 72 Teilstriche, jeder sechste länger. */}
+        {Array.from({ length: 72 }).map((_, t) => {
+          const w = (t / 72) * Math.PI * 2;
+          const lang = t % 6 === 0;
+          const a = lang ? 240 : 246;
+          return (
+            <line
+              key={t}
+              x1={C + Math.cos(w) * a} y1={C + Math.sin(w) * a}
+              x2={C + Math.cos(w) * 254} y2={C + Math.sin(w) * 254}
+              stroke={lang ? "rgba(255,255,255,.42)" : "rgba(255,255,255,.16)"} strokeWidth="1"
+            />
+          );
+        })}
+
+        <circle cx={C} cy={C} r={R} fill="none" stroke="rgba(255,255,255,.14)" strokeWidth="1" />
+
+        {/* Umlaufender Messbogen auf dem Außenring. */}
+        <g className="ld-rot ld-rot-c">
+          <path
+            d={`M ${C} ${C - R} A ${R} ${R} 0 0 1 ${C + Math.sin(Math.PI / 3.4) * R} ${C - Math.cos(Math.PI / 3.4) * R}`}
+            fill="none" stroke="url(#ld-bogen)" strokeWidth="2.5" strokeLinecap="round"
+          />
+        </g>
+
+        <g className="ld-rot ld-rot-a">
+          <circle cx={C} cy={C} r="160" fill="none" stroke="rgba(255,255,255,.26)" strokeWidth="1" strokeDasharray="2 10" />
+        </g>
+        <g className="ld-rot ld-rot-b">
+          <circle cx={C} cy={C} r="122" fill="none" stroke="#4b7ce8" strokeOpacity=".55" strokeWidth="1" strokeDasharray="1 6" />
+        </g>
+
+        {/* Verbindungen: jedes Feld läuft ins gemeinsame Ziel. */}
+        {knoten.map((k, i) => (
+          <g key={k.label}>
+            <line x1={k.x} y1={k.y} x2={k.ix} y2={k.iy} stroke="rgba(255,255,255,.14)" strokeWidth="1" />
+            <line
+              x1={k.x} y1={k.y} x2={k.ix} y2={k.iy}
+              className="ld-puls" stroke="#8dc63f" strokeWidth="2" strokeLinecap="round"
+              style={{ animationDelay: `${i * 0.6}s` }}
+            />
+          </g>
+        ))}
+
+        {/* Kern */}
+        <circle cx={C} cy={C} r="118" fill="url(#ld-kernglanz)" className="ld-kern" />
+        <circle cx={C} cy={C} r={KERN} fill="#0b1233" stroke="#8dc63f" strokeOpacity=".6" strokeWidth="1.5" />
+        <circle cx={C} cy={C} r={KERN - 10} fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
+        <text x={C} y={C - 12} textAnchor="middle" fontSize="12" fontWeight="600" letterSpacing="3.5" fill="#9fc65f">ZIEL</text>
+        <text x={C} y={C + 18} textAnchor="middle" fontSize="30" fontWeight="500" letterSpacing="-0.5" fill="#ffffff">Umsatz</text>
+
+        {/* Knoten */}
+        {knoten.map((k) => (
+          <g key={`n-${k.label}`} transform={`translate(${k.x} ${k.y})`}>
+            <rect x="-68" y="-20" width="136" height="40" rx="20" fill="rgba(11,18,51,.86)" stroke="rgba(255,255,255,.22)" strokeWidth="1" />
+            <circle cx="-47" cy="0" r="4" fill="#8dc63f" />
+            <text x="8" y="5.5" textAnchor="middle" fontSize="16" fontWeight="500" fill="#dfe7f8">{k.label}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/* ══════════════════════════ Laufband ══════════════════════════
+   Zwei identische Listen nebeneinander, um -50 % verschoben: eine nahtlose
+   Endlosschleife ohne Skript. Die zweite Liste ist für Screenreader verborgen.
+   ═══════════════════════════════════════════════════════════ */
+
+function Laufband() {
+  return (
+    <section aria-label="Leistungsspektrum" className="relative overflow-hidden border-y border-white/10 bg-[#0b1233] py-5">
+      <div className="ld-band flex w-max">
+        {[0, 1].map((k) => (
+          <ul key={k} aria-hidden={k === 1 ? true : undefined} className="flex flex-none items-center">
+            {laufband.map((t) => (
+              <li key={t} className="flex items-center whitespace-nowrap pr-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#9aa8cc]">
+                <span aria-hidden className="mr-9 block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
+                {t}
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-[linear-gradient(90deg,#0b1233,transparent)]" />
+      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[linear-gradient(270deg,#0b1233,transparent)]" />
+    </section>
+  );
+}
+
+/* ══════════════════════════ Leitgedanke ══════════════════════════
+   Der Satz bleibt stehen, während man scrollt – Wort für Wort wird er
+   aufgehellt. Gesteuert allein über --p und --i im CSS.
+   Der vollständige Text steht immer im DOM (lesbar für Suchmaschinen).
+   ═══════════════════════════════════════════════════════════ */
+
+function Leitgedanke() {
+  const ref = useScrollVariable<HTMLElement>();
+  const woerter = leitgedanke.split(" ");
+  const n = woerter.length;
+
+  return (
+    <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white" style={{ height: "190vh" }}>
+      <div className="sticky top-0 flex h-[100svh] items-center px-6 pt-[74px]">
+        <div className="mx-auto w-full max-w-[1192px]">
+          <Eyebrow>Was Performance heißt</Eyebrow>
+          <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
+            {woerter.map((w, i) => {
+              const hervor = w.startsWith("*");
+              return (
+                <span key={i} className={`ld-wort ${hervor ? "text-[#2f5bd7]" : ""}`} style={{ "--i": (i / n).toFixed(4) } as CSSProperties}>
+                  {w.replace(/\*/g, "")}{i < n - 1 ? " " : ""}
+                </span>
+              );
+            })}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ══════════════════════════ Wandel ══════════════════════════
    Die A-nach-B-Logik als Tabelle: jede Zeile ist derselbe Bereich
    vorher und nachher. Dadurch ist der Wert ohne Erklärung lesbar.
@@ -818,13 +1211,17 @@ function Hero() {
 
 function Wandel() {
   return (
-    <section id="system" aria-labelledby="wandel-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto max-w-[1240px]">
+    <section id="system" aria-labelledby="wandel-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto max-w-[1192px]">
         <Reveal>
           <Eyebrow>Ausgangslage und Ergebnis</Eyebrow>
-          <h2 id="wandel-titel" className="mt-6 max-w-[24ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-            Wo Sie heute stehen. Wohin Sie wachsen.
+          <h2 id="wandel-titel" className="mt-6 max-w-[22ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+            Wo Wachstum heute verloren geht.
           </h2>
+          <Lead>
+            In den meisten Unternehmen fehlt nicht der Einsatz, sondern die Verbindung:
+            Kanäle, Website, Systeme und Daten arbeiten nebeneinander statt miteinander.
+          </Lead>
         </Reveal>
 
         <div className="mt-16">
@@ -832,27 +1229,25 @@ function Wandel() {
             <span />
             <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#5b6b8a]">Heute</span>
             <span />
-            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit Ihrer eigenen Abteilung</span>
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit einem Performance-System</span>
           </div>
 
           <ol>
             {wandel.map((w, i) => (
-              <Reveal key={w.bereich} delay={i * 70}>
-                <li className="grid gap-x-8 gap-y-4 border-b border-[#e7ecf5] py-8 lg:grid-cols-[12rem_1fr_3.5rem_1fr] lg:items-center lg:py-9">
-                  <span className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#0b1233]">{w.bereich}</span>
+              <Reveal as="li" key={w.bereich} delay={i * 70} className="grid gap-x-8 gap-y-4 border-b border-[#e2e8f2] py-8 lg:grid-cols-[12rem_1fr_3.5rem_1fr] lg:items-center lg:py-9">
+                <span className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#0b1233]">{w.bereich}</span>
 
-                  <p className="ld-serif text-[1.02rem] leading-[1.6] text-[#5b6b8a]">
-                    <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#5b6b8a] not-italic lg:hidden" style={{ fontFamily: "inherit" }}>Heute</span>
-                    {w.heute}
-                  </p>
+                <p className="ld-serif text-[1.02rem] leading-[1.6] text-[#5b6b8a]">
+                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#5b6b8a] lg:hidden" style={{ fontFamily: "var(--font-jost), system-ui, sans-serif" }}>Heute</span>
+                  {w.heute}
+                </p>
 
-                  <span aria-hidden className="hidden h-11 w-11 items-center justify-center rounded-full bg-[#0b1233] text-[15px] text-[#8dc63f] lg:flex">→</span>
+                <span aria-hidden className="hidden h-11 w-11 items-center justify-center rounded-full bg-[#0b1233] text-[15px] text-[#8dc63f] lg:flex">→</span>
 
-                  <p className="text-[1.12rem] font-medium leading-[1.45] tracking-[-0.012em] text-[#0b1233]">
-                    <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit Ihrer eigenen Abteilung</span>
-                    {w.danach}
-                  </p>
-                </li>
+                <p className="text-[1.12rem] font-medium leading-[1.45] tracking-[-0.012em] text-[#0b1233]">
+                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit einem Performance-System</span>
+                  {w.danach}
+                </p>
               </Reveal>
             ))}
           </ol>
@@ -862,48 +1257,68 @@ function Wandel() {
   );
 }
 
-/* ══════════════════════════ Bausteine ══════════════════════════ */
+/* ══════════════════════════ Leistungsfelder ══════════════════════════
+   Sechs Karten mit Lichtkegel, der dem Mauszeiger folgt (--x/--y).
+   Hat eine Karte einen `pfad`, wird sie vollflächig klickbar.
+   ═══════════════════════════════════════════════════════════ */
 
-function Bausteine() {
+function Leistungsfelder() {
   return (
-    <section id="leistungen" aria-labelledby="bausteine-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto max-w-[1240px]">
-        <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
+    <section id="leistungen" aria-labelledby="leistungen-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto max-w-[1192px]">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <Reveal>
-            <Eyebrow>Was am Ende steht</Eyebrow>
-            <h2 id="bausteine-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-              Vier Bausteine.<br />Ein digitales Setup.
+            <Eyebrow>Leistungsfelder</Eyebrow>
+            <h2 id="leistungen-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+              Sechs Leistungsfelder.<br />Ein Ziel: Wachstum.
             </h2>
           </Reveal>
           <Reveal delay={100}>
             <p className="ld-serif max-w-[46ch] text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.66] text-[#43507a]">
-              Sie funktionieren nur zusammen – deshalb bauen wir sie zusammen auf.
-              Und betreiben sie gemeinsam mit Ihrem Team weiter.
+              Einzeln stark, zusammen ein System. Jedes Feld zahlt auf dieselbe Kennzahlenkette
+              ein – und wird gemeinsam mit Ihrem Team dauerhaft weiterentwickelt.
             </p>
           </Reveal>
         </div>
 
-        <ul className="mt-16 grid gap-6 md:grid-cols-2">
-          {bausteine.map((b, i) => (
-            <Reveal key={b.nr} delay={(i % 2) * 110}>
-              <li className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-white transition-[border-color,box-shadow] duration-300 hover:border-[#d6dfee] hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)]">
-                <div className="overflow-hidden">
-                  <Visual motiv={b.bild} sizes="(max-width: 768px) 100vw, 600px" className="aspect-[16/10] w-full transition-transform duration-[900ms] group-hover:scale-[1.03]" />
+        <ul className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {leistungsfelder.map((l, i) => (
+            <Reveal as="li" key={l.nr} delay={(i % 3) * 90} className="h-full">
+              <article
+                onPointerMove={setzeZeiger}
+                className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-8 transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#d3ddef] hover:bg-white hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)] sm:p-9"
+              >
+                <span aria-hidden className="ld-licht pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-transform duration-500 group-hover:scale-x-100" />
+
+                <div className="relative flex items-start justify-between gap-4">
+                  <span className="flex h-14 w-14 flex-none items-center justify-center rounded-[16px] bg-[#0b1233] text-[#8dc63f] transition-transform duration-500 group-hover:rotate-[-4deg]">
+                    <Symbol art={l.symbol} />
+                  </span>
+                  <span className="mt-1 rounded-full border border-[#dfe6f1] bg-white px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.18em] text-[#43507a]">
+                    Hebel: {l.wirkung}
+                  </span>
                 </div>
-                <div className="flex flex-1 flex-col p-8 sm:p-9">
-                  <span className="ld-num text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">Baustein {b.nr}</span>
-                  <h3 className="mt-3 text-[1.45rem] font-medium leading-[1.2] tracking-[-0.024em] text-[#0b1233]">{b.titel}</h3>
-                  <p className="ld-serif mt-3.5 flex-1 text-[1.02rem] leading-[1.64] text-[#43507a]">{b.text}</p>
-                  <ul className="mt-7 grid gap-2.5 border-t border-[#edf1f7] pt-6">
-                    {b.punkte.map((p) => (
-                      <li key={p} className="flex items-center gap-3 text-[0.92rem] text-[#43507a]">
-                        <span aria-hidden className="block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </li>
+
+                <span className="ld-num relative mt-9 text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">Feld {l.nr}</span>
+                <h3 className="relative mt-2.5 text-[1.4rem] font-medium leading-[1.2] tracking-[-0.024em] text-[#0b1233]">
+                  {l.pfad ? <a href={l.pfad} className="after:absolute after:inset-0 after:content-['']">{l.titel}</a> : l.titel}
+                </h3>
+                <p className="ld-serif relative mt-3.5 flex-1 text-[1rem] leading-[1.64] text-[#43507a]">{l.text}</p>
+                <ul className="relative mt-7 grid gap-2.5 border-t border-[#e2e8f2] pt-6">
+                  {l.punkte.map((p) => (
+                    <li key={p} className="flex items-center gap-3 text-[0.92rem] text-[#43507a]">
+                      <span aria-hidden className="block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                {l.pfad && (
+                  <span aria-hidden className="relative mt-7 inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#0b1233]">
+                    Mehr erfahren <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  </span>
+                )}
+              </article>
             </Reveal>
           ))}
         </ul>
@@ -912,10 +1327,27 @@ function Bausteine() {
   );
 }
 
+/* Linien-Symbole für die Leistungsfelder, 24er-Raster, Strichstärke 1.6. */
+function Symbol({ art }: { art: SymbolArt }) {
+  const pfade: Record<SymbolArt, ReactNode> = {
+    kompass: (<><circle cx="12" cy="12" r="9" /><path d="M15.5 8.5 13.6 13.6 8.5 15.5 10.4 10.4Z" /></>),
+    ziel: (<><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.2" /><path d="M21 3l-7.6 7.6M21 3h-3.5M21 3v3.5" /></>),
+    lupe: (<><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5M8 10.5h5M10.5 8v5" /></>),
+    fenster: (<><rect x="3" y="4" width="18" height="16" rx="2.5" /><path d="M3 9h18M8 13.5h4M8 16.5h7" /></>),
+    knoten: (<><circle cx="12" cy="12" r="2.6" /><circle cx="5" cy="5.5" r="1.8" /><circle cx="19" cy="5.5" r="1.8" /><circle cx="12" cy="20.2" r="1.8" /><path d="M6.4 6.8 10 10M17.6 6.8 14 10M12 14.6v3.8" /></>),
+    kurve: (<><path d="M3 20.5h18" /><path d="M4 16l5-5 4 3 7-8" /><path d="M16 6h4v4" /></>),
+  };
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      {pfade[art]}
+    </svg>
+  );
+}
+
 /* ══════════════════════════ Vorgehen ══════════════════════════
    Desktop: die Sektion wird beim Scrollen angeheftet. Das Zifferblatt
    füllt sich über vier Phasen, Bild und Text wechseln mit. In der
-   letzten Phase – dem laufenden Betrieb – zeigt es ∞.
+   letzten Phase – fortlaufend – zeigt es ∞.
 
    Smartphone: ein kompaktes Zifferblatt bleibt oben angeheftet,
    während die Phasen darunter durchlaufen.
@@ -933,11 +1365,11 @@ function Programm() {
         <Reveal>
           <Eyebrow tone="light">Das Vorgehen</Eyebrow>
           <h2 id="programm-titel" className="mt-6 max-w-[20ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em]">
-            Vier Phasen. Ein Ergebnis, das Ergebnisse erzeugt.
+            Vier Phasen. Ein Kreislauf, der Ergebnisse erzeugt.
           </h2>
           <Lead tone="light">
-            Jede Phase baut auf der vorherigen auf. Am Ende steht keine Präsentation,
-            sondern eine Abteilung, die arbeitet – und mit jeder neuen Technologie stärker wird.
+            Jede Phase baut auf der vorherigen auf. Die letzte endet nicht: Messen, Optimieren
+            und Skalieren laufen fortlaufend – so wird jede Maßnahme mit der Zeit wirksamer.
           </Lead>
         </Reveal>
       </div>
@@ -1084,7 +1516,7 @@ function ProgrammSzene() {
                 </div>
                 <div>
                   <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9fc65f]">Ergebnis</dt>
-                  <dd className="mt-1.5 text-[1.08rem] font-semibold leading-[1.35] text-white">Eine Abteilung, die laufend Ergebnisse erzeugt</dd>
+                  <dd className="mt-1.5 text-[1.08rem] font-semibold leading-[1.35] text-white">Wachstum, das sich messen lässt</dd>
                 </div>
               </dl>
             </div>
@@ -1186,12 +1618,98 @@ function ProgrammMobil() {
   );
 }
 
+/* ══════════════════════════ Messbarkeit ══════════════════════════
+   Die Kennzahlenkette als Trichter. Die Balken füllen sich beim
+   Erscheinen; ihre Länge ist Gestaltung, keine Messung – das steht
+   deshalb ausdrücklich daneben ("Schematisch").
+   ═══════════════════════════════════════════════════════════ */
+
+function Messbarkeit() {
+  const letzte = kennzahlen.length - 1;
+  return (
+    <section id="messbarkeit" aria-labelledby="mess-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto max-w-[1192px]">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:gap-20">
+          <Reveal>
+            <Eyebrow>Messbarkeit</Eyebrow>
+            <h2 id="mess-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+              Jede Maßnahme hat eine Kennzahl.
+            </h2>
+            <Lead>
+              Wir berichten nicht über Aktivität, sondern über Wirkung. Dafür verbinden wir alle
+              Kanäle in einem durchgängigen Kennzahlensystem – vom ersten Kontakt bis zum Auftrag.
+            </Lead>
+
+            <ol className="mt-12 border-t border-[#e7ecf5]">
+              {messprinzipien.map((m, i) => (
+                <li key={m.titel} className="grid gap-2 border-b border-[#e7ecf5] py-6 sm:grid-cols-[2.5rem_1fr] sm:gap-5">
+                  <span className="ld-num text-[0.78rem] font-semibold text-[#2f5bd7]">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h3 className="text-[1.12rem] font-medium tracking-[-0.018em] text-[#0b1233]">{m.titel}</h3>
+                    <p className="ld-serif mt-1.5 text-[1rem] leading-[1.6] text-[#43507a]">{m.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <figure className="relative overflow-hidden rounded-[26px] bg-[#0b1233] p-8 text-white sm:p-11">
+              <span aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 50% at 100% 0%, rgba(47,91,215,.34), transparent 65%), radial-gradient(ellipse 50% 40% at 0% 100%, rgba(141,198,63,.10), transparent 70%)" }} />
+              <figcaption className="relative flex flex-wrap items-center justify-between gap-3">
+                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Kennzahlenkette</span>
+                <span className="rounded-full border border-white/15 px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-[#9aa8cc]">Schematisch</span>
+              </figcaption>
+
+              <ol className="relative mt-9 space-y-6">
+                {kennzahlen.map((k, i) => (
+                  <li key={k.stufe}>
+                    <p className="flex items-baseline gap-3">
+                      <span className="ld-num text-[0.74rem] font-semibold text-[#8695bd]">{String(i + 1).padStart(2, "0")}</span>
+                      <span className={`text-[1.1rem] font-medium tracking-[-0.014em] ${i === letzte ? "text-white" : "text-[#dfe7f8]"}`}>{k.stufe}</span>
+                    </p>
+                    <div className="mt-2.5 h-[10px] overflow-hidden rounded-full bg-white/[0.07]">
+                      <span
+                        className={`ld-bar block h-full rounded-full ${i === letzte ? "bg-[#8dc63f]" : "bg-[linear-gradient(90deg,#2f5bd7,#4b7ce8)]"}`}
+                        style={{ "--w": k.breite, transitionDelay: `${250 + i * 130}ms` } as CSSProperties}
+                      />
+                    </div>
+                    <p className="ld-serif mt-2 text-[0.92rem] leading-[1.5] text-[#9aa8cc]">{k.misst}</p>
+                  </li>
+                ))}
+              </ol>
+
+              <p className="relative mt-10 border-t border-white/15 pt-6 text-[1.02rem] font-medium leading-[1.45]">
+                Eine Logik für alle Kanäle. <span className="text-[#9aa8cc]">Damit klar ist, was wirkt – und was nicht.</span>
+              </p>
+            </figure>
+          </Reveal>
+        </div>
+
+        <Reveal delay={80}>
+          <div className="mt-20 flex flex-col gap-7 rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-9 sm:p-12 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="max-w-[26ch] text-[clamp(1.4rem,2.6vw,2rem)] font-medium leading-[1.15] tracking-[-0.026em] text-[#0b1233]">
+                Wo verliert Ihr Unternehmen heute Wachstum?
+              </p>
+              <p className="ld-serif mt-3 max-w-[50ch] text-[1.02rem] leading-[1.6] text-[#43507a]">
+                In der Erstberatung finden wir es gemeinsam heraus – unverbindlich und konkret.
+              </p>
+            </div>
+            <CtaButton href={BOOKING_URL} className="flex-none">Erstberatung vereinbaren</CtaButton>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
 /* ══════════════════════════ Haltung ══════════════════════════ */
 
 function Haltung() {
   return (
-    <section id="leitbild" aria-labelledby="haltung-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto grid max-w-[1240px] items-stretch gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
+    <section id="leitbild" aria-labelledby="haltung-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto grid max-w-[1192px] grid-cols-1 items-stretch gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
         <Reveal className="order-2 lg:order-1">
           <Visual motiv={BILDER.haltung} sizes="(max-width: 1024px) 100vw, 580px" className="aspect-[4/5] h-full w-full rounded-[26px]" />
         </Reveal>
@@ -1203,21 +1721,20 @@ function Haltung() {
               Präzise denken.<br />Präzise handeln.
             </h2>
             <Lead>
-              Wir sind Umsetzungspartner, nicht Folienlieferant. Was wir mit Ihnen planen,
-              bauen wir mit Ihnen auf – und bleiben Teil davon.
+              Unser Anspruch: die performancestärksten digitalen Services für den Mittelstand.
+              Wir sind Umsetzungspartner, nicht Folienlieferant – was wir mit Ihnen planen,
+              bauen wir mit Ihnen auf und bleiben Teil davon.
             </Lead>
           </Reveal>
 
-          <ol className="mt-12 border-t border-[#e7ecf5]">
+          <ol className="mt-12 border-t border-[#e2e8f2]">
             {prinzipien.map((p, i) => (
-              <Reveal key={p.titel} delay={i * 90}>
-                <li className="grid gap-2 border-b border-[#e7ecf5] py-6 sm:grid-cols-[2.5rem_1fr] sm:gap-5">
-                  <span className="ld-num text-[0.78rem] font-semibold text-[#2f5bd7]">{String(i + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h3 className="text-[1.14rem] font-medium tracking-[-0.018em] text-[#0b1233]">{p.titel}</h3>
-                    <p className="ld-serif mt-1.5 text-[1rem] leading-[1.6] text-[#43507a]">{p.text}</p>
-                  </div>
-                </li>
+              <Reveal as="li" key={p.titel} delay={i * 90} className="grid gap-2 border-b border-[#e2e8f2] py-6 sm:grid-cols-[2.5rem_1fr] sm:gap-5">
+                <span className="ld-num text-[0.78rem] font-semibold text-[#2f5bd7]">{String(i + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3 className="text-[1.14rem] font-medium tracking-[-0.018em] text-[#0b1233]">{p.titel}</h3>
+                  <p className="ld-serif mt-1.5 text-[1rem] leading-[1.6] text-[#43507a]">{p.text}</p>
+                </div>
               </Reveal>
             ))}
           </ol>
@@ -1241,17 +1758,17 @@ function Haltung() {
 
 function Branchen() {
   return (
-    <section id="branchen" aria-labelledby="branchen-titel" className="border-t border-[#e7ecf5] bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto grid max-w-[1240px] gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+    <section id="branchen" aria-labelledby="branchen-titel" className="border-t border-[#e7ecf5] bg-white px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto grid max-w-[1192px] grid-cols-1 gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <Reveal>
           <Eyebrow>Für wen</Eyebrow>
           <h2 id="branchen-titel" className="mt-6 max-w-[14ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
             Mittelstand. Branchenübergreifend.
           </h2>
           <Lead>
-            Für mittelständische Unternehmen, die Digitales nicht länger einkaufen,
-            sondern als eigene Fähigkeit aufbauen wollen. Entscheidend ist die Struktur
-            Ihrer Wertschöpfung, nicht das Etikett Ihrer Branche.
+            Für mittelständische Unternehmen, die digitales Wachstum nicht dem Zufall
+            überlassen wollen. Entscheidend ist die Struktur Ihrer Wertschöpfung,
+            nicht das Etikett Ihrer Branche.
           </Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Passt das zu uns?</CtaButton>
@@ -1277,14 +1794,14 @@ function Branchen() {
 
 function Perspektiven() {
   return (
-    <section id="publikationen" aria-labelledby="perspektiven-titel" className="bg-white py-[clamp(88px,11vw,140px)]">
+    <section id="publikationen" aria-labelledby="perspektiven-titel" className="bg-[#f7f9fc] py-[clamp(88px,11vw,140px)]">
       <div className="mx-auto max-w-[1240px] px-6">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div>
               <Eyebrow>Perspektiven</Eyebrow>
               <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-                Wie wir über Digitalisierung denken.
+                Wie wir über Performance denken.
               </h2>
             </div>
             <a href="#newsletter" className="inline-flex items-center gap-2 border-b-2 border-[#8dc63f] pb-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#0b1233] transition-colors hover:text-[#2f5bd7]">
@@ -1297,12 +1814,16 @@ function Perspektiven() {
       <ul className="ld-rail ld-rail-inset mt-14 flex gap-6 overflow-x-auto pb-4">
         {perspektiven.map((x, i) => (
           <li key={x.titel} className="ld-rail-item w-[min(82vw,400px)] flex-none">
-            <article className="flex h-full flex-col">
-              <Visual motiv={x.bild} sizes="(max-width: 640px) 82vw, 400px" className="aspect-[16/10] w-full rounded-[18px]" />
+            <article className="group relative flex h-full flex-col">
+              <div className="overflow-hidden rounded-[18px]">
+                <Visual motiv={x.bild} sizes="(max-width: 640px) 82vw, 400px" className="aspect-[16/10] w-full transition-transform duration-[900ms] group-hover:scale-[1.03]" />
+              </div>
               <p className="ld-num mt-6 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">
                 {String(i + 1).padStart(2, "0")} · {x.kicker}
               </p>
-              <h3 className="mt-3 text-[1.26rem] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">{x.titel}</h3>
+              <h3 className="mt-3 text-[1.26rem] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">
+                {x.pfad ? <a href={x.pfad} className="after:absolute after:inset-0 after:content-['']">{x.titel}</a> : x.titel}
+              </h3>
               <p className="ld-serif mt-3 text-[1rem] leading-[1.6] text-[#43507a]">{x.text}</p>
             </article>
           </li>
@@ -1320,13 +1841,50 @@ function Perspektiven() {
                 Neue Perspektiven, wenn sie erscheinen.
               </p>
             </div>
-            <a
-              href={`mailto:${MAIL}?subject=${encodeURIComponent("Aufnahme in den Verteiler")}`}
-              className="ld-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-[11px] bg-[#8dc63f] px-8 py-4 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-[#0b1233] transition-colors hover:bg-[#b6e57a]"
-            >
-              <span className="relative z-10">Aufnahme anfragen</span>
-              <span aria-hidden className="relative z-10">→</span>
-            </a>
+            <CtaButton href={`mailto:${MAIL}?subject=${encodeURIComponent("Aufnahme in den Verteiler")}`} auf="dunkel" className="flex-none">
+              Aufnahme anfragen
+            </CtaButton>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════ Fragen ══════════════════════════
+   Natives <details>: funktioniert ohne JavaScript, ist per Tastatur
+   bedienbar, und der Text steht vollständig im HTML.
+   ═══════════════════════════════════════════════════════════ */
+
+function Fragen() {
+  return (
+    <section id="fragen" aria-labelledby="fragen-titel" className="border-t border-[#e7ecf5] bg-white px-6 py-[clamp(88px,11vw,140px)]">
+      <div className="mx-auto grid max-w-[1192px] grid-cols-1 gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <Reveal>
+          <Eyebrow>Häufige Fragen</Eyebrow>
+          <h2 id="fragen-titel" className="mt-6 max-w-[16ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
+            Was Sie vorab wissen sollten.
+          </h2>
+          <Lead>Und wenn Ihre Frage fehlt: In der Erstberatung ist Raum für alles Weitere.</Lead>
+          <div className="mt-9">
+            <CtaButton href="#kontakt" variant="dark">Frage stellen</CtaButton>
+          </div>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div className="border-t border-[#dfe6f1]">
+            {fragen.map((f, i) => (
+              <details key={f.frage} className="ld-frage group border-b border-[#dfe6f1]" open={i === 0}>
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-left text-[1.1rem] font-medium leading-[1.35] tracking-[-0.012em] text-[#0b1233] transition-colors hover:text-[#2f5bd7]">
+                  {f.frage}
+                  <span aria-hidden className="relative h-9 w-9 flex-none rounded-full border border-[#dfe6f1] transition-colors duration-300 group-open:border-[#0b1233] group-open:bg-[#0b1233]">
+                    <span className="absolute left-1/2 top-1/2 h-px w-3.5 -translate-x-1/2 -translate-y-1/2 bg-[#0b1233] transition-colors duration-300 group-open:bg-[#8dc63f]" />
+                    <span className="absolute left-1/2 top-1/2 h-3.5 w-px -translate-x-1/2 -translate-y-1/2 bg-[#0b1233] transition-transform duration-300 group-open:scale-y-0" />
+                  </span>
+                </summary>
+                <p className="ld-serif max-w-[60ch] pb-7 pr-14 text-[1.02rem] leading-[1.66] text-[#43507a]">{f.antwort}</p>
+              </details>
+            ))}
           </div>
         </Reveal>
       </div>
@@ -1374,7 +1932,7 @@ function Kontakt() {
 
   return (
     <section id="kontakt" aria-labelledby="kontakt-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto max-w-[1240px]">
+      <div className="mx-auto max-w-[1192px]">
         <Reveal>
           <div className="grid overflow-hidden rounded-[28px] bg-[#0b1233] text-white lg:grid-cols-[0.85fr_1.15fr]">
             <div className="relative min-h-[280px]">
@@ -1385,13 +1943,13 @@ function Kontakt() {
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Erstberatung</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
-                Sprechen wir über Ihre Ausgangslage.
+                Sprechen wir über Ihr Wachstum.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
-                In der Erstberatung klären wir, wo Ihr Unternehmen heute steht – und ob eine
-                Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
+                In der Erstberatung klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
+                ihn verliert – und ob eine Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
               </p>
-              <div className="mt-9"><CtaButton href={BOOKING_URL}>Termin direkt wählen</CtaButton></div>
+              <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
 
               <div className="mt-12 border-t border-white/15 pt-9" aria-live="polite">
                 {status === "success" ? (
@@ -1415,7 +1973,7 @@ function Kontakt() {
                       <input id="ld-kennung" name="ld-kennung" type="text" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
                     </div>
 
-                    <CtaButton submit disabled={!bereit || status === "sending"} className="mt-7 w-full sm:w-auto">
+                    <CtaButton submit auf="dunkel" disabled={!bereit || status === "sending"} className="mt-7 w-full sm:w-auto">
                       {status === "sending" ? "Wird gesendet …" : "Anfrage senden"}
                     </CtaButton>
 
@@ -1443,7 +2001,7 @@ function Kontakt() {
                 <div>
                   <dt className="text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-[#9aa8cc]">Kontakt</dt>
                   <dd className="mt-1.5 text-[0.95rem] text-[#dfe7f8]">
-                    <a href="tel:+4915770206552" className="hover:text-white">{TEL}</a><br />
+                    <a href={`tel:${TEL_LINK}`} className="hover:text-white">{TEL}</a><br />
                     <a href={`mailto:${MAIL}`} className="hover:text-white">{MAIL}</a>
                   </dd>
                 </div>
@@ -1478,21 +2036,25 @@ function Feld({
 
 function Footer() {
   const spalten: { titel: string; links: [string, string][] }[] = [
-    { titel: "Leistung", links: [["Ausgangslage & Ergebnis", "#system"], ["Die vier Bausteine", "#leistungen"], ["Das Vorgehen", "#framework"], ["Für wen", "#branchen"]] },
-    { titel: "Unternehmen", links: [["Unsere Haltung", "#leitbild"], ["Perspektiven", "#publikationen"], ["Erstberatung", "#kontakt"]] },
+    { titel: "Leistung", links: [["Leistungsfelder", "#leistungen"], ["Das Vorgehen", "#framework"], ["Messbarkeit", "#messbarkeit"], ["Ausgangslage & Ergebnis", "#system"]] },
+    { titel: "Unternehmen", links: [["Unsere Haltung", "#leitbild"], ["Für wen", "#branchen"], ["Perspektiven", "#publikationen"], ["Häufige Fragen", "#fragen"], ["Erstberatung", "#kontakt"]] },
     { titel: "Rechtliches", links: [["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
   ];
 
   return (
     <footer className="bg-[#0b1233] px-6 pt-[86px] text-[#9aa8cc]">
-      <div className="mx-auto max-w-[1240px]">
+      <div className="mx-auto max-w-[1192px]">
         <div className="grid gap-12 pb-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[38px] w-auto" />
             <p className="ld-serif mt-6 max-w-[320px] text-[0.94rem] leading-[1.7]">
-              Digitale &amp; KI-Strategien, Softwareentwicklung und Consulting für den Mittelstand.
+              Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand.
               Präzise gedacht, präzise umgesetzt.
             </p>
+            <address className="mt-6 text-[0.88rem] not-italic leading-[1.7]">
+              Markt 40 · 53721 Siegburg<br />
+              <a href={`mailto:${MAIL}`} className="transition-colors hover:text-white">{MAIL}</a>
+            </address>
           </div>
 
           {spalten.map((col) => (
@@ -1553,6 +2115,27 @@ function GlobalStyles() {
     .ld-btn .ld-sweep { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.5) 50%, transparent 65%); transform: translateX(-120%); transition: transform .75s cubic-bezier(.16,.84,.28,1); }
     .ld-btn:hover .ld-sweep { transform: translateX(120%); }
 
+    /* Signatur-Button: Pille mit Verlauf, feinem Außenring (outline mit Abstand)
+       und Lichtkante oben. Beim Überfahren wandert der Verlauf Richtung Blau. */
+    .ld-pill {
+      background-image: var(--pill); background-size: 170% 100%; background-position: 0% 50%;
+      outline: 1px solid var(--ring); outline-offset: 3px;
+      box-shadow: inset 0 1px 0 var(--kante), 0 14px 30px -14px var(--schatten);
+    }
+    .ld-pill:hover { background-position: 100% 50%; }
+    .ld-pill:focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; }
+    .ld-pill-hell {
+      --pill: linear-gradient(100deg, #070d24 0%, #0b1233 30%, #1b2a6b 70%, #2f5bd7 100%);
+      --ring: #d3dbe8; --kante: rgba(255,255,255,.16); --schatten: rgba(11,18,51,.6);
+      color: #ffffff;
+    }
+    .ld-pill-dunkel {
+      --pill: linear-gradient(100deg, #ffffff 0%, #f1f5fc 45%, #d6e1f4 80%, #b9cbec 100%);
+      --ring: rgba(255,255,255,.32); --kante: rgba(255,255,255,.9); --schatten: rgba(0,0,0,.55);
+      color: #0b1233;
+    }
+    .ld-pill .ld-sweep { background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%); }
+
     .ld-navlink { position: relative; padding-block: 6px; background: none; border: 0; cursor: pointer; }
     .ld-navlink::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #8dc63f; transform: scaleX(0); transform-origin: 0 50%; transition: transform .28s cubic-bezier(.16,.84,.28,1); }
     .ld-navlink:hover::after, .ld-navlink:focus-visible::after { transform: scaleX(1); }
@@ -1589,6 +2172,38 @@ function GlobalStyles() {
     .ld-d3 { animation-delay: .32s; } .ld-d4 { animation-delay: .44s; }
     .ld-rule { transform-origin: left center; animation: ldRule .9s cubic-bezier(.16,.84,.28,1) both; }
 
+    /* Hero-Instrument. Die Verschiebung folgt dem Zeiger (--mx/--my vom Hero),
+       die Drehungen laufen dauerhaft und sehr langsam. */
+    .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
+    .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
+    .ld-rot-a { animation: ldDreh 90s linear infinite; }
+    .ld-rot-b { animation: ldDreh 60s linear infinite reverse; }
+    .ld-rot-c { animation: ldDreh 18s linear infinite; }
+    @keyframes ldDreh { to { transform: rotate(360deg); } }
+    .ld-puls { stroke-dasharray: 18 300; stroke-dashoffset: 18; animation: ldPuls 3.6s linear infinite; }
+    @keyframes ldPuls { from { stroke-dashoffset: 18; } to { stroke-dashoffset: -300; } }
+    .ld-kern { transform-box: fill-box; transform-origin: center; animation: ldAtmen 5s ease-in-out infinite; }
+    @keyframes ldAtmen { 50% { transform: scale(1.08); opacity: .7; } }
+
+    /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
+    .ld-band { animation: ldBand 70s linear infinite; }
+    .ld-band:hover { animation-play-state: paused; }
+    @keyframes ldBand { to { transform: translateX(-50%); } }
+
+    /* Leitgedanke: jedes Wort hat --i (0 bis 1), der Abschnitt setzt --p.
+       Ein Wort hellt auf, sobald der Fortschritt seine Position erreicht. */
+    .ld-wort { opacity: calc(.14 + .86 * clamp(0, (var(--p, 0) * 1.3 - var(--i, 0)) * 10, 1)); transition: opacity .25s linear; }
+
+    /* Leistungsfelder: Lichtkegel am Zeiger. */
+    .ld-licht { background: radial-gradient(440px circle at var(--x, 50%) var(--y, 0%), rgba(47,91,215,.10), transparent 46%); }
+
+    /* Kennzahlenkette: Balken füllen sich, sobald der Block erscheint. */
+    .ld-bar { transform: scaleX(0); transform-origin: left center; transition: transform 1.4s cubic-bezier(.16,.84,.28,1); }
+    .ld-reveal.is-visible .ld-bar { transform: scaleX(var(--w, 1)); }
+
+    /* Fragen: Standard-Dreieck des Browsers ausblenden. */
+    .ld-frage summary::-webkit-details-marker { display: none; }
+
     /* Programm-Szene: --p (0 bis 1) wird beim Scrollen direkt gesetzt. */
     .ld-ring { stroke-dasharray: var(--u); stroke-dashoffset: calc(var(--u) * (1 - var(--p, 0))); }
     .ld-dial { transform-box: view-box; transform-origin: 50% 50%; transform: rotate(calc(var(--p, 0) * 360deg)); }
@@ -1605,9 +2220,13 @@ function GlobalStyles() {
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
-    @media (scripting: none) { .ld-reveal { opacity: 1; transform: none; } }
-    @media (prefers-contrast: more) {
+    @media (scripting: none) {
       .ld-reveal { opacity: 1; transform: none; }
+      .ld-wort { opacity: 1; }
+      .ld-bar { transform: scaleX(var(--w, 1)); }
+    }
+    @media (prefers-contrast: more) {
+      .ld-reveal, .ld-wort { opacity: 1; transform: none; }
       .ld-hero-veil { background: linear-gradient(100deg, rgba(7,13,36,.97) 0%, rgba(11,18,51,.86) 70%, rgba(11,18,51,.74) 100%); }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -1618,6 +2237,11 @@ function GlobalStyles() {
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
       .ld-dial { transform: none; }
+      .ld-rot-a, .ld-rot-b, .ld-rot-c, .ld-puls, .ld-kern, .ld-band { animation: none; }
+      .ld-puls { stroke-dasharray: none; stroke-opacity: .35; }
+      .ld-instrument { translate: none; transition: none; }
+      .ld-wort { opacity: 1; transition: none; }
+      .ld-bar { transform: scaleX(var(--w, 1)); transition: none; }
     }
   `;
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
