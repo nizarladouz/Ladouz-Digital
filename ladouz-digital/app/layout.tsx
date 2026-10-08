@@ -21,9 +21,9 @@ const sourceSerif = Source_Serif_4({
 });
 
 const SITE = "https://ladouz.digital";
-const TITEL = "Ladouz Digital – Ihre eigene Digital- und KI-Abteilung";
+const TITEL = "Ladouz Digital – Performance & Consulting für den Mittelstand";
 const BESCHREIBUNG =
-  "Digitale & KI-Strategien, Softwareentwicklung und Consulting für den Mittelstand. Wir bauen Ihre interne Marketing-, Digital- und KI-Abteilung mit eigener Software und Datenstruktur auf – und bleiben dauerhaft Teil davon.";
+  "Performance-getriebene Digitalberatung für den Mittelstand: Strategie, Marketing, SEO, Websites, Software, KI und Daten – gemessen an Anfragen, Aufträgen und Umsatz.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
