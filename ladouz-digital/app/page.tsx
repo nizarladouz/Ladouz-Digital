@@ -995,9 +995,6 @@ function Hero() {
         {/* Der bisherige Hintergrund bleibt immer bestehen (CI-Grafik + Farbschleier).
             Ist ein Foto hinterlegt, scheint es nur leicht durch und zoomt sehr langsam. */}
         <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="100vw" flat className="h-full w-full" />
-      </div>
-      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
-      <div className="absolute inset-0 -z-10">
         {heroFoto && (
           <div aria-hidden className="ld-hero-foto absolute inset-0 overflow-hidden">
             <Image
@@ -1013,6 +1010,7 @@ function Hero() {
           </div>
         )}
       </div>
+      <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
       <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(680px,94svh,1000px)] sm:pt-[clamp(150px,20vh,220px)]">
@@ -1073,7 +1071,7 @@ function HeroInstrument() {
   /* Ein Takt pro Feld: Der Lichtpunkt erreicht alle TAKT Sekunden das nächste
      Feld, das Feld leuchtet auf und schickt einen Impuls ins Ziel.
      Sechs Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
-  const TAKT = 1.5;
+  const TAKT = 3;
   const UMLAUF = TAKT * instrumentKnoten.length;
   /* Schweif des Lichtpunkts: 60° Bogen hinter dem Kopf (Kopf steht bei 12 Uhr). */
   const sx = C - R * Math.cos(Math.PI / 6);
@@ -2190,10 +2188,11 @@ function GlobalStyles() {
         radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.08), transparent 60%),
         linear-gradient(100deg, rgba(7,13,36,.95) 0%, rgba(8,14,40,.88) 30%, rgba(11,18,51,.62) 60%, rgba(11,18,51,.28) 84%, rgba(11,18,51,.14) 100%);
     }
-    /* Hero-Foto: liegt über dem Farbschleier, damit es auf der ganzen Fläche gleichmäßig durchscheint.
+    /* Hero-Foto: liegt ganz hinten, unter dem Farbschleier. Links (hinter dem Text)
+       bleibt es dadurch dezent, rechts ist es deutlicher zu sehen.
        opacity regelt, wie stark es sichtbar ist. luminosity übernimmt nur die
        Helligkeit des Fotos – die Farben bleiben die der CI. Zoom minimal (4 %). */
-    .ld-hero-foto { opacity: .18; mix-blend-mode: luminosity; }
+    .ld-hero-foto { opacity: .32; mix-blend-mode: luminosity; }
     .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
     @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
     .ld-hero-fuss { background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%); }
@@ -2214,18 +2213,18 @@ function GlobalStyles() {
        beim Laden und bleiben dadurch synchron. */
     .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
     .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
-    .ld-rad { animation: ldDreh var(--umlauf, 9s) linear infinite; }
+    .ld-rad { animation: ldDreh var(--umlauf, 18s) linear infinite; }
     @keyframes ldDreh { to { transform: rotate(360deg); } }
-    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 9s) cubic-bezier(.4,0,.3,1) infinite; }
+    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 18s) cubic-bezier(.4,0,.3,1) infinite; }
     @keyframes ldPuls {
       0% { stroke-dashoffset: 42; opacity: 0; }
       1.5% { opacity: 1; }
       15% { stroke-dashoffset: -136; opacity: 1; }
       15.5%, 100% { stroke-dashoffset: -136; opacity: 0; }
     }
-    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 9s) ease-out infinite; }
+    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 18s) ease-out infinite; }
     @keyframes ldKnoten { 0% { opacity: 0; } 2% { opacity: 1; } 20%, 100% { opacity: 0; } }
-    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 1.5s) ease-out 1.25s infinite; }
+    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 3s) ease-out 2.5s infinite; }
     @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
 
     /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
