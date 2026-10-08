@@ -23,7 +23,7 @@ const sourceSerif = Source_Serif_4({
 const SITE = "https://ladouz.digital";
 const TITEL = "Ladouz Digital – Performance & Consulting für den Mittelstand";
 const BESCHREIBUNG =
-  "Performance-getriebene Digitalberatung für den Mittelstand: Strategie, Marketing, SEO, Websites, Software, KI und Daten – gemessen an Anfragen, Aufträgen und Umsatz.";
+  "Performance-getriebene Digitalberatung für den Mittelstand: Strategie, Marketing, Sichtbarkeit, Websites, Software, KI und Daten – gemessen an Anfragen, Aufträgen und Umsatz.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

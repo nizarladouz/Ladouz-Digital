@@ -177,16 +177,16 @@ const hauptmenue: MenuEintrag[] = [
 /* ══════════════════════════ Inhalte ══════════════════════════ */
 
 const heroFakten = [
-  { wert: "6", einheit: "Leistungsfelder", text: "Strategie, Marketing, SEO, Plattformen, KI und Daten." },
+  { wert: "6", einheit: "Leistungsfelder", text: "Strategie, Marketing, Sichtbarkeit, Plattformen, KI und Daten." },
   { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
   { wert: "1", einheit: "Partner", text: "Dauerhaft Teil Ihres Unternehmens." },
 ];
 
 /* Die sechs Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
-const instrumentKnoten = ["Strategie", "Marketing", "SEO", "Plattformen", "KI", "Daten"];
+const instrumentKnoten = ["Strategie", "Marketing", "Sichtbarkeit", "Plattformen", "KI", "Daten"];
 
 const laufband = [
-  "Digitale Strategie", "Performance-Marketing", "Google Ads", "Suchmaschinenoptimierung",
+  "Digitale Strategie", "Performance-Marketing", "Google Ads", "Sichtbarkeit in Google",
   "Sichtbarkeit in KI-Suche", "Websites & Plattformen", "Softwareentwicklung", "KI-Agenten",
   "Prozess-Automatisierung", "Tracking-Architektur", "Dashboards & Reporting", "Consulting",
 ];
@@ -257,10 +257,10 @@ const leistungsfelder: Leistungsfeld[] = [
   },
   {
     nr: "03",
-    titel: "SEO & organische Sichtbarkeit",
+    titel: "Organische Sichtbarkeit",
     wirkung: "Sichtbarkeit",
     text: "Gefunden werden, wenn Kunden suchen – in Google und zunehmend in KI-Antworten. Als Inhaltsarchitektur, die mit jeder Seite stärker wird.",
-    punkte: ["Technisches SEO & Seitenarchitektur", "Content-Systeme", "Sichtbarkeit in KI-Suche"],
+    punkte: ["Technische Grundlagen & Seitenarchitektur", "Content-Systeme", "Sichtbarkeit in KI-Suche"],
     symbol: "lupe",
   },
   {
