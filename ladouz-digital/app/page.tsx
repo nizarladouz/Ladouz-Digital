@@ -988,10 +988,27 @@ function SucheIcon() {
    ═══════════════════════════════════════════════════════════ */
 
 function Hero() {
+  const heroFoto: string | undefined = BILDER.hero.src;
   return (
     <section id="top" onPointerMove={setzeZeiger} className="relative isolate overflow-hidden bg-[#0b1233] text-white">
       <div className="absolute inset-0 -z-20">
-        <Visual motiv={BILDER.hero} sizes="100vw" priority flat className="h-full w-full" />
+        {/* Der bisherige Hintergrund bleibt immer bestehen (CI-Grafik + Farbschleier).
+            Ist ein Foto hinterlegt, scheint es nur leicht durch und zoomt sehr langsam. */}
+        <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="100vw" flat className="h-full w-full" />
+        {heroFoto && (
+          <div aria-hidden className="ld-hero-foto absolute inset-0 overflow-hidden">
+            <Image
+              src={heroFoto}
+              alt=""
+              fill
+              loading="eager"
+              fetchPriority="high"
+              sizes="100vw"
+              style={{ objectPosition: BILDER.hero.fokus }}
+              className="ld-hero-zoom object-cover"
+            />
+          </div>
+        )}
       </div>
       <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
@@ -1131,7 +1148,7 @@ function HeroInstrument() {
         <circle cx={C} cy={C} r={KERN} fill="#0b1233" stroke="#8dc63f" strokeOpacity=".6" strokeWidth="1.5" />
         <circle cx={C} cy={C} r={KERN - 10} fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
         <text x={C} y={C - 12} textAnchor="middle" fontSize="12" fontWeight="600" letterSpacing="3.5" fill="#9fc65f">ZIEL</text>
-        <text x={C} y={C + 18} textAnchor="middle" fontSize="30" fontWeight="500" letterSpacing="-0.5" fill="#ffffff">Umsatz</text>
+        <text x={C} y={C + 18} textAnchor="middle" fontSize="26" fontWeight="500" letterSpacing="-0.5" fill="#ffffff">Wachstum</text>
 
         {/* Knoten */}
         {knoten.map((k) => (
@@ -2162,6 +2179,12 @@ function GlobalStyles() {
         radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.08), transparent 60%),
         linear-gradient(100deg, rgba(7,13,36,.95) 0%, rgba(8,14,40,.88) 30%, rgba(11,18,51,.62) 60%, rgba(11,18,51,.28) 84%, rgba(11,18,51,.14) 100%);
     }
+    /* Hero-Foto: liegt ganz hinten und scheint nur leicht durch.
+       opacity regelt, wie stark es sichtbar ist. luminosity übernimmt nur die
+       Helligkeit des Fotos – die Farben bleiben die der CI. Zoom minimal (4 %). */
+    .ld-hero-foto { opacity: .2; mix-blend-mode: luminosity; }
+    .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
+    @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
     .ld-hero-fuss { background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%); }
 
     /* Ladechoreografie – nur CSS. Die H1 ist bewusst nicht dabei. */
@@ -2233,7 +2256,7 @@ function GlobalStyles() {
       html { scroll-behavior: auto; }
       .ld-reveal { opacity: 1; transform: none; transition: none; }
       .ld-btn .ld-sweep { display: none; }
-      .ld-kenburns, .ld-enter, .ld-rule, .ld-swap { animation: none; opacity: 1; transform: none; }
+      .ld-kenburns, .ld-hero-zoom, .ld-enter, .ld-rule, .ld-swap { animation: none; opacity: 1; transform: none; }
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
       .ld-dial { transform: none; }
