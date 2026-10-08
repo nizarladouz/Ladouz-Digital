@@ -97,7 +97,7 @@ const BILDER = {
      Moderne Architektur: Glasfassade, Atrium, Hochhausperspektive, kühles
      Licht oder Dämmerung. Linke Bildhälfte ruhig – dort liegt die Überschrift.
      Der dunkelblaue Farbschleier liegt immer darüber. */
-  hero: { src: undefined, fokus: "60% 45%", variante: "wave" },
+  hero: { src: "/motive/hero.jpg", fokus: "55% 55%", variante: "wave" },
 
   /* Datei: motive/phase-analyse.jpg · Hochformat 4:5
      Workshop: Menschen am Tisch, Notizen, konzentrierte Gesprächssituation. */
@@ -2182,7 +2182,7 @@ function GlobalStyles() {
     /* Hero-Foto: liegt ganz hinten und scheint nur leicht durch.
        opacity regelt, wie stark es sichtbar ist. luminosity übernimmt nur die
        Helligkeit des Fotos – die Farben bleiben die der CI. Zoom minimal (4 %). */
-    .ld-hero-foto { opacity: .2; mix-blend-mode: luminosity; }
+    .ld-hero-foto { opacity: .22; mix-blend-mode: luminosity; }
     .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
     @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
     .ld-hero-fuss { background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%); }
