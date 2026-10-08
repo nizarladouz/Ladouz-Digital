@@ -619,24 +619,47 @@ function Lead({ children, tone = "dark", className = "" }: { children: ReactNode
   );
 }
 
+/* Die Bildmarke „l." aus dem Logo – als SVG, damit sie in jeder Größe scharf ist.
+   Maße aus der Originalgrafik: Strich 7 × 34, Punkt Ø 11.
+   hell = für helle Flächen (Strich navy, Punkt blau),
+   sonst für dunkle Flächen (Strich weiß, Punkt Logo-Silber). */
+function Marke({ hell = false, className = "" }: { hell?: boolean; className?: string }) {
+  return (
+    <svg viewBox="0 0 23 34" className={className} aria-hidden>
+      <rect width="7" height="34" fill={hell ? "#0b1233" : "#ffffff"} />
+      <circle cx="17" cy="28.5" r="5.5" fill={hell ? "#2f5bd7" : "#adbbd1"} />
+    </svg>
+  );
+}
+
+/* Buttons als Pille.
+   primary: Signatur-Button mit Bildmarke, Verlauf und feinem Außenring.
+            auf="hell"   → dunkle Pille (Navy → Blau) für helle Flächen
+            auf="dunkel" → helle Pille für dunkle Flächen (Hero, Kontakt, Newsletter)
+   ghost:   Kontur-Pille für dunkle Flächen, dark: Kontur-Pille für helle Flächen. */
 function CtaButton({
-  href, children, variant = "primary", className = "", submit = false, disabled,
+  href, children, variant = "primary", auf = "hell", className = "", submit = false, disabled,
 }: {
-  href?: string; children: ReactNode; variant?: "primary" | "ghost" | "dark";
+  href?: string; children: ReactNode; variant?: "primary" | "ghost" | "dark"; auf?: "hell" | "dunkel";
   className?: string; submit?: boolean; disabled?: boolean;
 }) {
-  const base = "ld-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-[11px] px-8 py-4 text-[12.5px] font-semibold uppercase tracking-[0.16em] transition-[background-color,border-color,color,transform] duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0";
+  const base = "ld-btn group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-full px-7 py-[15px] text-[15px] font-medium tracking-[-0.005em] transition-[background-color,background-position,border-color,color,transform,box-shadow] duration-500 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:translate-y-0";
   const styles = {
-    primary: "bg-[#8dc63f] text-[#0b1233] hover:bg-[#b6e57a]",
-    ghost: "border border-white/45 text-white hover:border-white hover:bg-white/10",
-    dark: "border border-[#131f5c] text-[#131f5c] hover:bg-[#131f5c] hover:text-white",
+    primary: `ld-pill ${auf === "dunkel" ? "ld-pill-dunkel" : "ld-pill-hell"}`,
+    ghost: "border border-white/40 text-white hover:border-white hover:bg-white/10",
+    dark: "border border-[#131f5c]/70 text-[#131f5c] hover:border-[#131f5c] hover:bg-[#131f5c] hover:text-white",
   }[variant];
 
-  const inner = (
+  const inner = variant === "primary" ? (
+    <>
+      <Marke hell={auf === "dunkel"} className="relative z-10 h-[19px] w-auto flex-none" />
+      <span className="relative z-10">{children}</span>
+      {!disabled && <span aria-hidden className="ld-sweep" />}
+    </>
+  ) : (
     <>
       <span className="relative z-10">{children}</span>
       <span aria-hidden className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">→</span>
-      {variant === "primary" && !disabled && <span aria-hidden className="ld-sweep" />}
     </>
   );
 
@@ -867,7 +890,8 @@ function Kopfbereich() {
               <SucheIcon />
             </button>
 
-            <a href={BOOKING_URL} target="_blank" rel="noopener" className="ld-btn group relative hidden overflow-hidden rounded-[11px] bg-[#8dc63f] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-[#0b1233] transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex">
+            <a href={BOOKING_URL} target="_blank" rel="noopener" className={`ld-btn ld-pill group relative hidden items-center gap-2.5 overflow-hidden rounded-full px-5 py-[9px] text-[14px] font-medium tracking-[-0.005em] transition-[background-position,transform,color] duration-500 hover:-translate-y-0.5 sm:inline-flex ${dunkel ? "ld-pill-dunkel" : "ld-pill-hell"}`}>
+              <Marke hell={dunkel} className="relative z-10 h-[15px] w-auto flex-none" />
               <span className="relative z-10">Erstberatung</span>
               <span aria-hidden className="ld-sweep" />
             </a>
@@ -936,7 +960,8 @@ function Kopfbereich() {
             {utilityLinks.map(([label, href]) => (
               <a key={label} href={href} onClick={close} className="border-b border-[#edf1f7] py-3 text-[0.9rem] text-[#43507a] last:border-0">{label}</a>
             ))}
-            <a href={BOOKING_URL} target="_blank" rel="noopener" onClick={close} className="my-4 rounded-[11px] bg-[#8dc63f] px-5 py-3.5 text-center text-[12.5px] font-semibold uppercase tracking-[0.16em] text-[#0b1233]">
+            <a href={BOOKING_URL} target="_blank" rel="noopener" onClick={close} className="ld-pill ld-pill-hell my-5 inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[15px] font-medium">
+              <Marke className="h-[17px] w-auto flex-none" />
               Erstberatung buchen
             </a>
           </nav>
@@ -996,7 +1021,7 @@ function Hero() {
             </p>
 
             <div className="ld-enter ld-d3 mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              <CtaButton href={BOOKING_URL}>Erstberatung vereinbaren</CtaButton>
+              <CtaButton href={BOOKING_URL} auf="dunkel">Erstberatung vereinbaren</CtaButton>
               <CtaButton href="#leistungen" variant="ghost">Leistungsfelder ansehen</CtaButton>
             </div>
           </div>
@@ -1816,13 +1841,9 @@ function Perspektiven() {
                 Neue Perspektiven, wenn sie erscheinen.
               </p>
             </div>
-            <a
-              href={`mailto:${MAIL}?subject=${encodeURIComponent("Aufnahme in den Verteiler")}`}
-              className="ld-btn group relative inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-[11px] bg-[#8dc63f] px-8 py-4 text-[12.5px] font-semibold uppercase tracking-[0.16em] text-[#0b1233] transition-colors hover:bg-[#b6e57a]"
-            >
-              <span className="relative z-10">Aufnahme anfragen</span>
-              <span aria-hidden className="relative z-10">→</span>
-            </a>
+            <CtaButton href={`mailto:${MAIL}?subject=${encodeURIComponent("Aufnahme in den Verteiler")}`} auf="dunkel" className="flex-none">
+              Aufnahme anfragen
+            </CtaButton>
           </div>
         </Reveal>
       </div>
@@ -1928,7 +1949,7 @@ function Kontakt() {
                 In der Erstberatung klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
                 ihn verliert – und ob eine Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
               </p>
-              <div className="mt-9"><CtaButton href={BOOKING_URL}>Termin direkt wählen</CtaButton></div>
+              <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
 
               <div className="mt-12 border-t border-white/15 pt-9" aria-live="polite">
                 {status === "success" ? (
@@ -1952,7 +1973,7 @@ function Kontakt() {
                       <input id="ld-kennung" name="ld-kennung" type="text" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
                     </div>
 
-                    <CtaButton submit disabled={!bereit || status === "sending"} className="mt-7 w-full sm:w-auto">
+                    <CtaButton submit auf="dunkel" disabled={!bereit || status === "sending"} className="mt-7 w-full sm:w-auto">
                       {status === "sending" ? "Wird gesendet …" : "Anfrage senden"}
                     </CtaButton>
 
@@ -2093,6 +2114,27 @@ function GlobalStyles() {
 
     .ld-btn .ld-sweep { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.5) 50%, transparent 65%); transform: translateX(-120%); transition: transform .75s cubic-bezier(.16,.84,.28,1); }
     .ld-btn:hover .ld-sweep { transform: translateX(120%); }
+
+    /* Signatur-Button: Pille mit Verlauf, feinem Außenring (outline mit Abstand)
+       und Lichtkante oben. Beim Überfahren wandert der Verlauf Richtung Blau. */
+    .ld-pill {
+      background-image: var(--pill); background-size: 170% 100%; background-position: 0% 50%;
+      outline: 1px solid var(--ring); outline-offset: 3px;
+      box-shadow: inset 0 1px 0 var(--kante), 0 14px 30px -14px var(--schatten);
+    }
+    .ld-pill:hover { background-position: 100% 50%; }
+    .ld-pill:focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; }
+    .ld-pill-hell {
+      --pill: linear-gradient(100deg, #070d24 0%, #0b1233 30%, #1b2a6b 70%, #2f5bd7 100%);
+      --ring: #d3dbe8; --kante: rgba(255,255,255,.16); --schatten: rgba(11,18,51,.6);
+      color: #ffffff;
+    }
+    .ld-pill-dunkel {
+      --pill: linear-gradient(100deg, #ffffff 0%, #f1f5fc 45%, #d6e1f4 80%, #b9cbec 100%);
+      --ring: rgba(255,255,255,.32); --kante: rgba(255,255,255,.9); --schatten: rgba(0,0,0,.55);
+      color: #0b1233;
+    }
+    .ld-pill .ld-sweep { background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%); }
 
     .ld-navlink { position: relative; padding-block: 6px; background: none; border: 0; cursor: pointer; }
     .ld-navlink::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #8dc63f; transform: scaleX(0); transform-origin: 0 50%; transition: transform .28s cubic-bezier(.16,.84,.28,1); }
