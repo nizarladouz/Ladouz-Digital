@@ -177,17 +177,17 @@ const hauptmenue: MenuEintrag[] = [
 /* ══════════════════════════ Inhalte ══════════════════════════ */
 
 const heroFakten = [
-  { wert: "6", einheit: "Leistungsfelder", text: "Strategie, Marketing, Sichtbarkeit, Plattformen, KI und Daten." },
+  { wert: "7", einheit: "Leistungsfelder", text: "Strategie, Marketing, Sichtbarkeit, Conversion, Plattformen, KI und Daten." },
   { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
   { wert: "1", einheit: "Partner", text: "Dauerhaft Teil Ihres Unternehmens." },
 ];
 
-/* Die sechs Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
-const instrumentKnoten = ["Strategie", "Marketing", "Sichtbarkeit", "Plattformen", "KI", "Daten"];
+/* Die sieben Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
+const instrumentKnoten = ["Strategie", "Marketing", "Sichtbarkeit", "Conversion", "Plattformen", "KI", "Daten"];
 
 const laufband = [
   "Digitale Strategie", "Performance-Marketing", "Google Ads", "Sichtbarkeit in Google",
-  "Sichtbarkeit in KI-Suche", "Websites & Plattformen", "Softwareentwicklung", "KI-Agenten",
+  "Sichtbarkeit in KI-Suche", "Conversion-Optimierung", "Websites & Plattformen", "Softwareentwicklung", "KI-Agenten",
   "Prozess-Automatisierung", "Tracking-Architektur", "Dashboards & Reporting", "Consulting",
 ];
 
@@ -225,7 +225,7 @@ const wandel = [
   },
 ];
 
-type SymbolArt = "kompass" | "ziel" | "lupe" | "fenster" | "knoten" | "kurve";
+type SymbolArt = "kompass" | "ziel" | "lupe" | "trichter" | "fenster" | "knoten" | "kurve";
 
 type Leistungsfeld = {
   nr: string;
@@ -265,14 +265,22 @@ const leistungsfelder: Leistungsfeld[] = [
   },
   {
     nr: "04",
+    titel: "Conversion-Optimierung",
+    wirkung: "Anfragen",
+    text: "Mehr Anfragen aus denselben Besuchern: Seiten, Formulare und Nutzerführung werden gemessen, getestet und laufend verbessert.",
+    punkte: ["Landingpages & Nutzerführung", "A/B-Tests", "Formular- und Funnel-Optimierung"],
+    symbol: "trichter",
+  },
+  {
+    nr: "05",
     titel: "Websites, Plattformen & Software",
-    wirkung: "Conversion",
+    wirkung: "Plattformen",
     text: "Websites, die verkaufen. Und Software für die Abläufe, für die es keine passende Standardlösung gibt.",
     punkte: ["Conversion-orientierte Websites", "Plattformen & Apps", "Interne Softwarelösungen"],
     symbol: "fenster",
   },
   {
-    nr: "05",
+    nr: "06",
     titel: "KI & Automatisierung",
     wirkung: "Effizienz",
     text: "KI-Agenten und automatisierte Abläufe, die wiederkehrende Arbeit übernehmen – eingebettet in Ihre Prozesse, nicht daneben.",
@@ -280,7 +288,7 @@ const leistungsfelder: Leistungsfeld[] = [
     symbol: "knoten",
   },
   {
-    nr: "06",
+    nr: "07",
     titel: "Daten, Tracking & Steuerung",
     wirkung: "Steuerung",
     text: "Eine saubere Datenbasis vom ersten Kontakt bis zum Auftrag. Damit Entscheidungen auf Zahlen beruhen statt auf Vermutungen.",
@@ -982,7 +990,7 @@ function SucheIcon() {
 
 /* ══════════════════════════ Hero ══════════════════════════
    Drei Schichten: Motiv → Farbschleier → Inhalt.
-   Rechts das Performance-Instrument: sechs Leistungsfelder, die in ein
+   Rechts das Performance-Instrument: sieben Leistungsfelder, die in ein
    gemeinsames Ziel laufen. Reines SVG, bewegt nur über CSS.
    Die H1 trägt keine Animation: sie ist das LCP-Element.
    ═══════════════════════════════════════════════════════════ */
@@ -1023,16 +1031,17 @@ function Hero() {
               </span>
             </p>
 
-            <h1 className="mt-6 text-[clamp(1.9rem,10vw,2.15rem)] sm:text-[clamp(2.15rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
-              <span className="whitespace-nowrap">Performance-Agentur</span> für den Mittelstand{" "}
+            <h1 className="mt-6 text-[clamp(1.9rem,10vw,2.15rem)] sm:text-[clamp(2.15rem,4.4vw,3.6rem)] font-medium leading-[1.04] tracking-[-0.044em] sm:mt-8">
+              {/* Ab Tablet in einer Zeile; auf dem Handy darf das lange Wort am Bindestrich umbrechen. */}
+              <span className="sm:whitespace-nowrap">Performance-Agenturdienste</span> für den Mittelstand{" "}
               <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
             </h1>
 
             <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
               Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand –
               von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
-              Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz.
-              <span className="hidden sm:inline"> Und wir bleiben dauerhaft Teil Ihres Unternehmens.</span>
+              Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz, Verbesserung und Kundenzufriedenheit.
+              <span className="hidden sm:inline"> Und wir streben eine dauerhafte Partnerschaft mit Ihrem Unternehmen an.</span>
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
@@ -1044,13 +1053,17 @@ function Hero() {
           <HeroInstrument />
         </div>
 
-        <ul className="ld-enter ld-d4 grid gap-px border-t border-white/15 bg-white/10 md:grid-cols-3">
+        {/* Kacheln im Stil des Signatur-Buttons: Glasfläche mit Verlauf,
+            feiner Außenring mit Abstand, Lichtkante oben. */}
+        <ul className="ld-enter ld-d4 grid gap-5 pb-10 md:grid-cols-3 md:gap-6 sm:pb-14">
           {heroFakten.map((f) => (
-            <li key={f.einheit} className="flex items-baseline gap-5 bg-[#0b1233]/55 py-7 md:px-7">
-              <span className="ld-num text-[2.6rem] font-bold leading-none tracking-[-0.04em] text-white">{f.wert}</span>
-              <span>
-                <span className="block text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f]">{f.einheit}</span>
-                <span className="ld-serif mt-1.5 block max-w-[30ch] text-[0.94rem] leading-[1.5] text-[#9aa8cc]">{f.text}</span>
+            <li key={f.einheit} className="ld-kachel group relative flex items-start gap-5 rounded-[22px] p-6 sm:p-7">
+              <span className="ld-num ld-kachel-zahl text-[2.9rem] font-semibold leading-[0.9] tracking-[-0.04em]">{f.wert}</span>
+              <span className="min-w-0 pt-1">
+                <span className="flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f]">
+                  {f.einheit}
+                </span>
+                <span className="ld-serif mt-2 block text-[0.94rem] leading-[1.5] text-[#aebbdc]">{f.text}</span>
               </span>
             </li>
           ))}
@@ -1068,7 +1081,7 @@ function HeroInstrument() {
   const KERN = 80;
   /* Ein Takt pro Feld: Der Lichtpunkt erreicht alle TAKT Sekunden das nächste
      Feld, das Feld leuchtet auf und schickt einen Impuls ins Ziel.
-     Sechs Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
+     Sieben Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
   const TAKT = 3;
   const UMLAUF = TAKT * instrumentKnoten.length;
   /* Schweif des Lichtpunkts: 60° Bogen hinter dem Kopf (Kopf steht bei 12 Uhr). */
@@ -1138,7 +1151,7 @@ function HeroInstrument() {
           </g>
         ))}
 
-        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sechs Felder im Uhrzeigersinn. */}
+        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sieben Felder im Uhrzeigersinn. */}
         <g className="ld-rot ld-rad">
           <path d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${C} ${C - R}`} fill="none" stroke="url(#ld-schweif)" strokeWidth="2.5" strokeLinecap="round" />
           <circle cx={C} cy={C - R} r="12" fill="#8dc63f" fillOpacity=".18" />
@@ -1282,7 +1295,7 @@ function Wandel() {
 }
 
 /* ══════════════════════════ Leistungsfelder ══════════════════════════
-   Sechs Karten mit Lichtkegel, der dem Mauszeiger folgt (--x/--y).
+   Sieben Karten mit Lichtkegel, der dem Mauszeiger folgt (--x/--y). Strategie überspannt die volle Breite.
    Hat eine Karte einen `pfad`, wird sie vollflächig klickbar.
    ═══════════════════════════════════════════════════════════ */
 
@@ -1294,7 +1307,7 @@ function Leistungsfelder() {
           <Reveal>
             <Eyebrow>Leistungsfelder</Eyebrow>
             <h2 id="leistungen-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-              Sechs Leistungsfelder.<br />Ein Ziel: Wachstum.
+              Sieben Leistungsfelder.<br />Ein Ziel: Wachstum.
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -1307,7 +1320,7 @@ function Leistungsfelder() {
 
         <ul className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {leistungsfelder.map((l, i) => (
-            <Reveal as="li" key={l.nr} delay={(i % 3) * 90} className="h-full">
+            <Reveal as="li" key={l.nr} delay={i === 0 ? 0 : ((i - 1) % 3) * 90} className={`h-full ${i === 0 ? "md:col-span-2 lg:col-span-3" : ""}`}>
               <article
                 onPointerMove={setzeZeiger}
                 className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-8 transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#d3ddef] hover:bg-white hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)] sm:p-9"
@@ -1315,6 +1328,8 @@ function Leistungsfelder() {
                 <span aria-hidden className="ld-licht pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-transform duration-500 group-hover:scale-x-100" />
 
+                <div className={`relative flex flex-1 flex-col ${i === 0 ? "lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:items-end lg:gap-x-16" : ""}`}>
+                <div className="flex flex-1 flex-col">
                 <div className="relative flex items-start justify-between gap-4">
                   <span className="flex h-14 w-14 flex-none items-center justify-center rounded-[16px] bg-[#0b1233] text-[#8dc63f] transition-transform duration-500 group-hover:rotate-[-4deg]">
                     <Symbol art={l.symbol} />
@@ -1329,7 +1344,9 @@ function Leistungsfelder() {
                   {l.pfad ? <a href={l.pfad} className="after:absolute after:inset-0 after:content-['']">{l.titel}</a> : l.titel}
                 </h3>
                 <p className="ld-serif relative mt-3.5 flex-1 text-[1rem] leading-[1.64] text-[#43507a]">{l.text}</p>
-                <ul className="relative mt-7 grid gap-2.5 border-t border-[#e2e8f2] pt-6">
+                </div>
+                <div>
+                <ul className={`relative mt-7 grid gap-2.5 border-t border-[#e2e8f2] pt-6 ${i === 0 ? "lg:mt-0" : ""}`}>
                   {l.punkte.map((p) => (
                     <li key={p} className="flex items-center gap-3 text-[0.92rem] text-[#43507a]">
                       <span aria-hidden className="block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
@@ -1342,6 +1359,8 @@ function Leistungsfelder() {
                     Mehr erfahren <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   </span>
                 )}
+                </div>
+                </div>
               </article>
             </Reveal>
           ))}
@@ -1357,6 +1376,7 @@ function Symbol({ art }: { art: SymbolArt }) {
     kompass: (<><circle cx="12" cy="12" r="9" /><path d="M15.5 8.5 13.6 13.6 8.5 15.5 10.4 10.4Z" /></>),
     ziel: (<><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1.2" /><path d="M21 3l-7.6 7.6M21 3h-3.5M21 3v3.5" /></>),
     lupe: (<><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5M8 10.5h5M10.5 8v5" /></>),
+    trichter: (<><path d="M3.5 4.5h17l-6.5 8v6.5l-4 1.5v-8z" /></>),
     fenster: (<><rect x="3" y="4" width="18" height="16" rx="2.5" /><path d="M3 9h18M8 13.5h4M8 16.5h7" /></>),
     knoten: (<><circle cx="12" cy="12" r="2.6" /><circle cx="5" cy="5.5" r="1.8" /><circle cx="19" cy="5.5" r="1.8" /><circle cx="12" cy="20.2" r="1.8" /><path d="M6.4 6.8 10 10M17.6 6.8 14 10M12 14.6v3.8" /></>),
     kurve: (<><path d="M3 20.5h18" /><path d="M4 16l5-5 4 3 7-8" /><path d="M16 6h4v4" /></>),
@@ -2193,6 +2213,22 @@ function GlobalStyles() {
     .ld-hero-foto { opacity: .32; mix-blend-mode: luminosity; }
     .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
     @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
+    /* Kacheln unter dem Hero – gleiche Formensprache wie der Signatur-Button. */
+    .ld-kachel {
+      background:
+        radial-gradient(120% 90% at 100% 0%, rgba(75,124,232,.22), transparent 55%),
+        linear-gradient(150deg, rgba(255,255,255,.085) 0%, rgba(255,255,255,.025) 55%, rgba(255,255,255,.04) 100%),
+        rgba(9,15,42,.62);
+      border: 1px solid rgba(255,255,255,.12);
+      outline: 1px solid rgba(255,255,255,.09); outline-offset: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 24px 48px -28px rgba(0,0,0,.8);
+      transition: border-color .4s, outline-color .4s, transform .4s cubic-bezier(.16,.84,.28,1);
+    }
+    .ld-kachel:hover { border-color: rgba(255,255,255,.22); outline-color: rgba(141,198,63,.35); transform: translateY(-2px); }
+    .ld-kachel-zahl {
+      background-image: linear-gradient(180deg, #ffffff 0%, #ffffff 45%, #adbbd1 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
     .ld-hero-fuss { background: linear-gradient(to top, #0b1233 0%, rgba(11,18,51,0) 100%); }
 
     /* Ladechoreografie – nur CSS. Die H1 ist bewusst nicht dabei. */
@@ -2211,18 +2247,18 @@ function GlobalStyles() {
        beim Laden und bleiben dadurch synchron. */
     .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
     .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
-    .ld-rad { animation: ldDreh var(--umlauf, 18s) linear infinite; }
+    .ld-rad { animation: ldDreh var(--umlauf, 21s) linear infinite; }
     @keyframes ldDreh { to { transform: rotate(360deg); } }
-    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 18s) cubic-bezier(.4,0,.3,1) infinite; }
+    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 21s) cubic-bezier(.4,0,.3,1) infinite; }
     @keyframes ldPuls {
       0% { stroke-dashoffset: 42; opacity: 0; }
-      1.5% { opacity: 1; }
-      15% { stroke-dashoffset: -136; opacity: 1; }
-      15.5%, 100% { stroke-dashoffset: -136; opacity: 0; }
+      1.2% { opacity: 1; }
+      12.5% { stroke-dashoffset: -136; opacity: 1; }
+      13%, 100% { stroke-dashoffset: -136; opacity: 0; }
     }
-    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 18s) ease-out infinite; }
-    @keyframes ldKnoten { 0% { opacity: 0; } 2% { opacity: 1; } 20%, 100% { opacity: 0; } }
-    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 3s) ease-out 2.5s infinite; }
+    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 21s) ease-out infinite; }
+    @keyframes ldKnoten { 0% { opacity: 0; } 1.7% { opacity: 1; } 17%, 100% { opacity: 0; } }
+    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 3s) ease-out 2.35s infinite; }
     @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
 
     /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
