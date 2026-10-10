@@ -1041,7 +1041,6 @@ function Hero() {
               Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand –
               von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
               Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz, Verbesserung und Kundenzufriedenheit.
-              <span className="hidden sm:inline"> Und wir streben eine dauerhafte Partnerschaft mit Ihrem Unternehmen an.</span>
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
