@@ -1032,8 +1032,8 @@ function Hero() {
             </p>
 
             <h1 className="mt-6 text-[clamp(1.9rem,10vw,2.15rem)] sm:text-[clamp(2.15rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
-              {/* „Digitale Performance“ ab Tablet immer zusammen in einer Zeile. */}
-              <span className="sm:whitespace-nowrap">Digitale Performance</span> für den Mittelstand.{" "}
+              {/* „Digital- & KI-Agentur“ ab Tablet immer zusammen in einer Zeile. */}
+              <span className="sm:whitespace-nowrap">Digital- &amp; KI-Agentur</span> für den Mittelstand.{" "}
               <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
             </h1>
 
