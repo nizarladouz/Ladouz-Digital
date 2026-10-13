@@ -1083,9 +1083,8 @@ function Hero() {
 function HeroInstrument() {
   const C = 280;
   const R = 214;
-  const KERN = 80;
   /* Ein Takt pro Feld: Der Lichtpunkt erreicht alle TAKT Sekunden das nächste
-     Feld, das Feld leuchtet auf und schickt einen Impuls ins Ziel.
+     Feld, das Feld hebt sich an, leuchtet auf und schickt einen Impuls ins Ziel.
      Sieben Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
   const TAKT = 3;
   const UMLAUF = TAKT * instrumentKnoten.length;
@@ -1097,93 +1096,124 @@ function HeroInstrument() {
     return {
       label,
       x: C + Math.cos(w) * R, y: C + Math.sin(w) * R,
-      ix: C + Math.cos(w) * (KERN + 4), iy: C + Math.sin(w) * (KERN + 4),
+      ix: C + Math.cos(w) * 26, iy: C + Math.sin(w) * 26,
     };
   });
+  /* Abstand zur Mitte in % der Instrument-Breite (cqw) – damit jedes aufrechte
+     Element seine eigene, identische 3D-Projektion bekommt (siehe CSS .ld-anker). */
+  const cqw = (v: number) => `${(((v - C) / 560) * 100).toFixed(3)}cqw`;
+  /* Zeichenreihenfolge nach Tiefe: hinten liegende Felder zuerst, dann das Ziel,
+     dann die vorderen Felder. So überdeckt nie ein hinteres Element ein vorderes. */
+  const hinten = knoten.map((k, i) => ({ ...k, i })).filter((k) => k.y < C);
+  const vorn = knoten.map((k, i) => ({ ...k, i })).filter((k) => k.y >= C);
+  const feld = (k: (typeof hinten)[number]) => (
+    <div key={`n-${k.label}`} className="ld-anker" style={{ "--dx": cqw(k.x), "--dy": cqw(k.y) } as CSSProperties}>
+      <span className="ld-pille" style={{ animationDelay: `${k.i * TAKT}s` }}>
+        <span className="ld-pille-punkt" />
+        {k.label}
+      </span>
+    </div>
+  );
 
   return (
-    <div aria-hidden className="ld-instrument ld-enter ld-d3 relative hidden aspect-square w-full max-w-[500px] justify-self-end lg:block">
-      <svg viewBox="0 0 560 560" className="h-full w-full overflow-visible" style={{ "--umlauf": `${UMLAUF}s`, "--takt": `${TAKT}s` } as CSSProperties}>
-        <defs>
-          <radialGradient id="ld-hof">
-            <stop offset="0%" stopColor="#2f5bd7" stopOpacity="0.42" />
-            <stop offset="55%" stopColor="#131f5c" stopOpacity="0.30" />
-            <stop offset="100%" stopColor="#070d24" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="ld-kernglanz">
-            <stop offset="0%" stopColor="#8dc63f" stopOpacity="0.38" />
-            <stop offset="100%" stopColor="#8dc63f" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="ld-schweif" gradientUnits="userSpaceOnUse" x1={sx} y1={sy} x2={C} y2={C - R}>
-            <stop offset="0%" stopColor="#8dc63f" stopOpacity="0" />
-            <stop offset="100%" stopColor="#8dc63f" stopOpacity="0.95" />
-          </linearGradient>
-        </defs>
+    <div
+      aria-hidden
+      className="ld-instrument ld-enter ld-d3 relative hidden aspect-square w-full max-w-[520px] justify-self-end lg:block"
+      style={{ "--umlauf": `${UMLAUF}s`, "--takt": `${TAKT}s` } as CSSProperties}
+    >
+      {/* 3D-Szene: Die Scheibe liegt geneigt im Raum und folgt leicht dem Mauszeiger
+          (--mx/--my vom Hero). Felder und Ziel stehen aufrecht und schauen immer
+          zum Betrachter; das Ziel schwebt über der Scheibe.
+          Jedes Element trägt seine eigene Projektion (perspective() in transform) –
+          dadurch gibt es keine 3D-Überschneidungen zwischen den Ebenen. */}
+      <div className="ld-scheibe absolute inset-0">
+        <svg viewBox="0 0 560 560" className="absolute inset-0 h-full w-full overflow-visible">
+          <defs>
+            <radialGradient id="ld-hof">
+              <stop offset="0%" stopColor="#2f5bd7" stopOpacity="0.5" />
+              <stop offset="55%" stopColor="#131f5c" stopOpacity="0.34" />
+              <stop offset="100%" stopColor="#070d24" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="ld-schatten">
+              <stop offset="0%" stopColor="#020617" stopOpacity="0.75" />
+              <stop offset="100%" stopColor="#020617" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="ld-schweif" gradientUnits="userSpaceOnUse" x1={sx} y1={sy} x2={C} y2={C - R}>
+              <stop offset="0%" stopColor="#8dc63f" stopOpacity="0" />
+              <stop offset="100%" stopColor="#8dc63f" stopOpacity="0.95" />
+            </linearGradient>
+          </defs>
 
-        {/* Hof: trennt das Instrument ruhig vom Hintergrundmotiv. */}
-        <circle cx={C} cy={C} r="290" fill="url(#ld-hof)" />
+          <circle cx={C} cy={C} r="290" fill="url(#ld-hof)" />
 
-        {/* Skala: 72 Teilstriche, jeder sechste länger. */}
-        {Array.from({ length: 72 }).map((_, t) => {
-          const w = (t / 72) * Math.PI * 2;
-          const lang = t % 6 === 0;
-          const a = lang ? 240 : 246;
-          return (
-            <line
-              key={t}
-              x1={C + Math.cos(w) * a} y1={C + Math.sin(w) * a}
-              x2={C + Math.cos(w) * 254} y2={C + Math.sin(w) * 254}
-              stroke={lang ? "rgba(255,255,255,.42)" : "rgba(255,255,255,.16)"} strokeWidth="1"
-            />
-          );
-        })}
+          {/* Skala: 72 Teilstriche, jeder sechste länger. */}
+          {Array.from({ length: 72 }).map((_, t) => {
+            const w = (t / 72) * Math.PI * 2;
+            const lang = t % 6 === 0;
+            const a = lang ? 238 : 246;
+            return (
+              <line
+                key={t}
+                x1={C + Math.cos(w) * a} y1={C + Math.sin(w) * a}
+                x2={C + Math.cos(w) * 256} y2={C + Math.sin(w) * 256}
+                stroke={lang ? "rgba(255,255,255,.5)" : "rgba(255,255,255,.18)"} strokeWidth={lang ? 1.5 : 1}
+              />
+            );
+          })}
 
-        <circle cx={C} cy={C} r={R} fill="none" stroke="rgba(255,255,255,.14)" strokeWidth="1" />
+          <circle cx={C} cy={C} r={R} fill="none" stroke="rgba(255,255,255,.18)" strokeWidth="1.2" />
+          <circle cx={C} cy={C} r="160" fill="none" stroke="rgba(255,255,255,.2)" strokeWidth="1" strokeDasharray="2 10" />
+          <circle cx={C} cy={C} r="122" fill="none" stroke="#4b7ce8" strokeOpacity=".45" strokeWidth="1" strokeDasharray="1 6" />
 
-        {/* Ruhende Innenringe – bewegt ist nur noch das Rad. */}
-        <circle cx={C} cy={C} r="160" fill="none" stroke="rgba(255,255,255,.22)" strokeWidth="1" strokeDasharray="2 10" />
-        <circle cx={C} cy={C} r="122" fill="none" stroke="#4b7ce8" strokeOpacity=".45" strokeWidth="1" strokeDasharray="1 6" />
+          {/* Schatten des schwebenden Ziels auf der Scheibe */}
+          <circle cx={C} cy={C} r="84" fill="url(#ld-schatten)" />
 
-        {/* Verbindungen und Impulse: Ein Impuls startet, wenn der Lichtpunkt sein Feld erreicht. */}
-        {knoten.map((k, i) => (
-          <g key={k.label}>
-            <line x1={k.x} y1={k.y} x2={k.ix} y2={k.iy} stroke="rgba(255,255,255,.14)" strokeWidth="1" />
-            <line
-              x1={k.x} y1={k.y} x2={k.ix} y2={k.iy}
-              className="ld-puls" stroke="#8dc63f" strokeWidth="2.2" strokeLinecap="round"
-              style={{ animationDelay: `${i * TAKT}s` }}
-            />
+          {/* Verbindungen und Impulse: Ein Impuls startet, wenn der Lichtpunkt sein Feld erreicht. */}
+          {knoten.map((k, i) => (
+            <g key={k.label}>
+              <line x1={k.x} y1={k.y} x2={k.ix} y2={k.iy} stroke="rgba(255,255,255,.16)" strokeWidth="1" />
+              <line
+                x1={k.x} y1={k.y} x2={k.ix} y2={k.iy}
+                className="ld-puls" stroke="#8dc63f" strokeWidth="2.6" strokeLinecap="round"
+                style={{ animationDelay: `${i * TAKT}s` }}
+              />
+            </g>
+          ))}
+
+          {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sieben Felder im Uhrzeigersinn. */}
+          <g className="ld-rot ld-rad">
+            <path d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${C} ${C - R}`} fill="none" stroke="url(#ld-schweif)" strokeWidth="3" strokeLinecap="round" />
+            <circle cx={C} cy={C - R} r="14" fill="#8dc63f" fillOpacity=".2" />
+            <circle cx={C} cy={C - R} r="5.5" fill="#b6e57a" />
           </g>
-        ))}
+        </svg>
+      </div>
 
-        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sieben Felder im Uhrzeigersinn. */}
-        <g className="ld-rot ld-rad">
-          <path d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${C} ${C - R}`} fill="none" stroke="url(#ld-schweif)" strokeWidth="2.5" strokeLinecap="round" />
-          <circle cx={C} cy={C - R} r="12" fill="#8dc63f" fillOpacity=".18" />
-          <circle cx={C} cy={C - R} r="5" fill="#b6e57a" />
-        </g>
+      {/* Ein Ring schwebt etwas über der Scheibe (Tiefenstaffelung) */}
+      <div className="ld-scheibe ld-scheibe-ring absolute inset-0">
+        <svg viewBox="0 0 560 560" className="absolute inset-0 h-full w-full overflow-visible">
+          <circle cx={C} cy={C} r="186" fill="none" stroke="rgba(141,198,63,.24)" strokeWidth="1" strokeDasharray="1 14" />
+        </svg>
+      </div>
 
-        {/* Kern */}
-        <circle cx={C} cy={C} r="118" fill="url(#ld-kernglanz)" className="ld-kern" />
-        <circle cx={C} cy={C} r={KERN} fill="#0b1233" stroke="#8dc63f" strokeOpacity=".6" strokeWidth="1.5" />
-        <circle cx={C} cy={C} r={KERN - 10} fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="1" />
-        <text x={C} y={C - 12} textAnchor="middle" fontSize="12" fontWeight="600" letterSpacing="3.5" fill="#9fc65f">ZIEL</text>
-        <text x={C} y={C + 18} textAnchor="middle" fontSize="26" fontWeight="500" letterSpacing="-0.5" fill="#ffffff">Wachstum</text>
+      {/* Lichtsäule vom Zentrum der Scheibe hinauf zum Ziel */}
+      <span className="ld-saeule" />
 
-        {/* Knoten */}
-        {knoten.map((k, i) => (
-          <g key={`n-${k.label}`} transform={`translate(${k.x} ${k.y})`}>
-            <rect x="-68" y="-20" width="136" height="40" rx="20" fill="rgba(11,18,51,.86)" stroke="rgba(255,255,255,.22)" strokeWidth="1" />
-            <rect
-              x="-68" y="-20" width="136" height="40" rx="20"
-              className="ld-knoten-an" fill="rgba(141,198,63,.14)" stroke="#8dc63f" strokeWidth="1.5"
-              style={{ animationDelay: `${i * TAKT}s` }}
-            />
-            <circle cx="-47" cy="0" r="4" fill="#8dc63f" />
-            <text x="8" y="5.5" textAnchor="middle" fontSize="16" fontWeight="500" fill="#dfe7f8">{k.label}</text>
-          </g>
-        ))}
-      </svg>
+      {hinten.map(feld)}
+
+      {/* Das Ziel schwebt über der Mitte */}
+      <div className="ld-anker ld-anker-ziel" style={{ "--dx": "0cqw", "--dy": "0cqw" } as CSSProperties}>
+        <div className="ld-ziel">
+          <span className="ld-ziel-glanz" />
+          <span className="ld-ziel-ring" />
+          <span className="relative block text-[10px] font-semibold uppercase tracking-[0.3em] text-[#9fc65f]">Ziel</span>
+          <span className="relative mt-1 block text-[16.5px] font-medium leading-[1.12] tracking-[-0.02em] text-white">
+            Performance-<br />Steigerung
+          </span>
+        </div>
+      </div>
+
+      {vorn.map(feld)}
     </div>
   );
 }
@@ -2327,7 +2357,64 @@ function GlobalStyles() {
        läuft ins Ziel, und das Ziel leuchtet bei seiner Ankunft kurz nach.
        Immer nur ein Impuls gleichzeitig. Alle Animationen starten gemeinsam
        beim Laden und bleiben dadurch synchron. */
-    .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
+    /* 3D-Szene. --neigung und --drehung folgen dem Zeiger (--mx/--my vom Hero, je ±0,5).
+       Alle Teile nutzen dieselbe Kette: Perspektive → Absenken → Neigen → Drehen.
+       Aufrechte Teile werden danach an ihren Platz geschoben, angehoben und
+       exakt gegenläufig zurückgedreht – sie schauen dadurch immer zum Betrachter. */
+    .ld-instrument {
+      container-type: inline-size;
+      --neigung: calc(46deg + var(--my, 0) * -12deg);
+      --drehung: calc(var(--mx, 0) * -14deg);
+      --kette: perspective(1150px) translateY(5cqw) rotateX(var(--neigung)) rotateZ(var(--drehung));
+    }
+    .ld-scheibe { transform-origin: 50% 50%; transform: var(--kette); transition: transform 1.2s cubic-bezier(.16,.84,.28,1); }
+    .ld-scheibe-ring { transform: var(--kette) translateZ(28px); }
+    .ld-anker {
+      position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-origin: 0 0;
+      transform: var(--kette) translate3d(var(--dx, 0), var(--dy, 0), var(--hoehe, 16px)) rotateZ(calc(var(--drehung) * -1)) rotateX(calc(var(--neigung) * -1));
+      transition: transform 1.2s cubic-bezier(.16,.84,.28,1);
+    }
+    .ld-anker > * { position: absolute; left: 0; top: 0; translate: -50% -50%; }
+    .ld-anker-ziel { --hoehe: 7.5cqw; }
+    .ld-pille {
+      position: relative; display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+      padding: 9px 18px 9px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 500; color: #dfe7f8;
+      background: linear-gradient(150deg, rgba(31,45,110,.95), rgba(9,15,42,.95));
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 14px 26px -12px rgba(0,0,0,.85);
+      animation: ldPille var(--umlauf, 21s) cubic-bezier(.2,.8,.2,1) infinite;
+    }
+    .ld-pille-punkt { width: 7px; height: 7px; border-radius: 999px; background: #8dc63f; box-shadow: 0 0 10px rgba(141,198,63,.8); }
+    @keyframes ldPille {
+      0% { transform: translateY(0) scale(1); border-color: rgba(255,255,255,.2); }
+      2% { transform: translateY(-16px) scale(1.1); border-color: rgba(141,198,63,.95); box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 0 0 4px rgba(141,198,63,.14), 0 22px 34px -10px rgba(141,198,63,.45); color: #ffffff; }
+      14% { transform: translateY(-16px) scale(1.1); border-color: rgba(141,198,63,.7); }
+      19%, 100% { transform: translateY(0) scale(1); border-color: rgba(255,255,255,.2); }
+    }
+
+    .ld-saeule {
+      position: absolute; left: 50%; top: 50%; width: 2px; height: 7.5cqw; margin-left: -1px;
+      transform-origin: 1px 0; transform: var(--kette) rotateX(90deg);
+      transition: transform 1.2s cubic-bezier(.16,.84,.28,1);
+      background: linear-gradient(to bottom, rgba(141,198,63,0), rgba(141,198,63,.8));
+      box-shadow: 0 0 14px rgba(141,198,63,.55);
+    }
+    .ld-ziel {
+      position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 142px; height: 142px; border-radius: 999px; text-align: center;
+      background: radial-gradient(circle at 50% 28%, #1d2b6e 0%, #0b1233 62%, #070d24 100%);
+      border: 1.5px solid rgba(141,198,63,.65);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,.12), inset 0 -18px 30px rgba(0,0,0,.35), 0 30px 60px -18px rgba(0,0,0,.9), 0 0 60px -10px rgba(141,198,63,.35);
+      animation: ldSchweben 7s ease-in-out infinite;
+    }
+    .ld-ziel-ring { position: absolute; inset: 9px; border-radius: 999px; border: 1px solid rgba(255,255,255,.1); }
+    .ld-ziel-glanz {
+      position: absolute; inset: -44px; border-radius: 999px; pointer-events: none;
+      background: radial-gradient(circle, rgba(141,198,63,.34) 0%, rgba(141,198,63,0) 65%);
+      opacity: .45; animation: ldAnkunft var(--takt, 3s) ease-out 2.35s infinite;
+    }
+    @keyframes ldSchweben { 50% { transform: translateY(-8px); } }
+
     .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
     .ld-rad { animation: ldDreh var(--umlauf, 21s) linear infinite; }
     @keyframes ldDreh { to { transform: rotate(360deg); } }
@@ -2335,13 +2422,10 @@ function GlobalStyles() {
     @keyframes ldPuls {
       0% { stroke-dashoffset: 42; opacity: 0; }
       1.2% { opacity: 1; }
-      12.5% { stroke-dashoffset: -136; opacity: 1; }
-      13%, 100% { stroke-dashoffset: -136; opacity: 0; }
+      12.5% { stroke-dashoffset: -190; opacity: 1; }
+      13%, 100% { stroke-dashoffset: -190; opacity: 0; }
     }
-    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 21s) ease-out infinite; }
-    @keyframes ldKnoten { 0% { opacity: 0; } 1.7% { opacity: 1; } 17%, 100% { opacity: 0; } }
-    .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 3s) ease-out 2.35s infinite; }
-    @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
+    @keyframes ldAnkunft { 0% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: .45; } }
 
     /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
     .ld-walze {
@@ -2399,9 +2483,9 @@ function GlobalStyles() {
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
       .ld-dial { transform: none; }
-      .ld-rad, .ld-puls, .ld-knoten-an, .ld-kern { animation: none; }
-      .ld-puls, .ld-knoten-an { opacity: 0; }
-      .ld-instrument { translate: none; transition: none; }
+      .ld-rad, .ld-puls, .ld-pille, .ld-ziel, .ld-ziel-glanz { animation: none; }
+      .ld-puls { opacity: 0; }
+      .ld-scheibe, .ld-anker, .ld-saeule { transition: none; }
       .ld-wort { opacity: 1; transition: none; }
       .ld-bar { transform: scaleX(var(--w, 1)); transition: none; }
     }
