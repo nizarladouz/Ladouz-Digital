@@ -191,6 +191,12 @@ const laufband = [
   "Prozess-Automatisierung", "Tracking-Architektur", "Dashboards & Reporting", "Consulting",
 ];
 
+/* Laufband als Walze: Tempo in Pixel pro Sekunde, maximaler Drehwinkel
+   am Rand (Grad) und wie weit die Wörter am Rand nach hinten weichen (px). */
+const WALZE_TEMPO = 34;
+const WALZE_WINKEL = 50;
+const WALZE_TIEFE = 220;
+
 /* Der Leitgedanke wird beim Scrollen Wort für Wort aufgehellt.
    Hervorgehobene Wörter stehen in *Sternchen*. */
 const leitgedanke =
@@ -1183,27 +1189,104 @@ function HeroInstrument() {
 }
 
 /* ══════════════════════════ Laufband ══════════════════════════
-   Zwei identische Listen nebeneinander, um -50 % verschoben: eine nahtlose
-   Endlosschleife ohne Skript. Die zweite Liste ist für Screenreader verborgen.
+   Zwei identische Listen nebeneinander: eine nahtlose Endlosschleife.
+   Die Wörter laufen wie auf einer Walze – vorn in der Mitte, nach hinten
+   weggedreht an den Rändern. Bewegt nur über transform, nur solange sichtbar,
+   bei prefers-reduced-motion steht das Band still.
+   Die zweite Liste ist für Screenreader verborgen.
    ═══════════════════════════════════════════════════════════ */
 
 function Laufband() {
+  const fenster = useRef<HTMLDivElement | null>(null);
+  const spur = useRef<HTMLDivElement | null>(null);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    const f = fenster.current;
+    const sp = spur.current;
+    if (!f || !sp || reduced) return;
+
+    const woerter = Array.from(sp.querySelectorAll<HTMLElement>("[data-wort]"));
+    /* Positionen aus dem Layout (ohne Transformation) – einmal messen, bei Größenänderung neu. */
+    let mitten: number[] = [];
+    let halbeSpur = 0;
+    let breite = 0;
+    const messen = () => {
+      mitten = woerter.map((w) => w.offsetLeft + w.offsetWidth / 2);
+      halbeSpur = sp.scrollWidth / 2;
+      breite = f.clientWidth;
+    };
+    messen();
+
+    let x = 0;
+    let zuletzt = 0;
+    let raf = 0;
+    let laeuft = false;
+    let pause = false;
+
+    const bild = (t: number) => {
+      const dt = zuletzt ? Math.min(0.05, (t - zuletzt) / 1000) : 0;
+      zuletzt = t;
+      if (!pause) {
+        x -= WALZE_TEMPO * dt;
+        if (-x >= halbeSpur) x += halbeSpur;
+        sp.style.transform = `translate3d(${x.toFixed(2)}px,0,0)`;
+      }
+      /* Jedes Wort sitzt auf einer Walze: in der Mitte vorn, zu den Rändern hin
+         dreht es sich nach hinten weg. Die Breite des Bandes bleibt gleich. */
+      const halb = breite / 2;
+      for (let i = 0; i < woerter.length; i++) {
+        const u = Math.max(-1, Math.min(1, (mitten[i] + x - halb) / halb));
+        const w = u * WALZE_WINKEL * (Math.PI / 180);
+        const z = -(1 - Math.cos(w)) * WALZE_TIEFE;
+        woerter[i].style.transform = `translateZ(${z.toFixed(1)}px) rotateY(${(u * WALZE_WINKEL).toFixed(2)}deg)`;
+        woerter[i].style.opacity = (0.2 + 0.8 * Math.cos(w)).toFixed(3);
+      }
+      raf = requestAnimationFrame(bild);
+    };
+
+    const start = () => { if (!laeuft) { laeuft = true; zuletzt = 0; raf = requestAnimationFrame(bild); } };
+    const stopp = () => { laeuft = false; cancelAnimationFrame(raf); };
+
+    /* Nur rechnen, solange das Band zu sehen ist. */
+    const obs = new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stopp()));
+    obs.observe(f);
+    const an = () => { pause = true; };
+    const aus = () => { pause = false; };
+    f.addEventListener("pointerenter", an);
+    f.addEventListener("pointerleave", aus);
+    window.addEventListener("resize", messen, { passive: true });
+
+    return () => {
+      stopp();
+      obs.disconnect();
+      f.removeEventListener("pointerenter", an);
+      f.removeEventListener("pointerleave", aus);
+      window.removeEventListener("resize", messen);
+      sp.style.transform = "";
+      woerter.forEach((w) => { w.style.transform = ""; w.style.opacity = ""; });
+    };
+  }, [reduced]);
+
   return (
-    <section aria-label="Leistungsspektrum" className="relative overflow-hidden border-y border-white/10 bg-[#0b1233] py-5">
-      <div className="ld-band flex w-max">
-        {[0, 1].map((k) => (
-          <ul key={k} aria-hidden={k === 1 ? true : undefined} className="flex flex-none items-center">
-            {laufband.map((t) => (
-              <li key={t} className="flex items-center whitespace-nowrap pr-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#9aa8cc]">
-                <span aria-hidden className="mr-9 block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
-                {t}
-              </li>
+    <section aria-label="Leistungsspektrum" className="bg-[#0b1233] px-6">
+      {/* Gleiche Breite wie der übrige Inhalt – nicht mehr von Bildschirmrand zu Bildschirmrand. */}
+      <div className="mx-auto max-w-[1192px] border-y border-white/10">
+        <div ref={fenster} className="ld-walze relative overflow-hidden py-5">
+          <div ref={spur} className="ld-walze-spur flex w-max">
+            {[0, 1].map((k) => (
+              <ul key={k} aria-hidden={k === 1 ? true : undefined} className="flex flex-none items-center">
+                {laufband.map((t) => (
+                  <li key={t} data-wort className="flex items-center whitespace-nowrap pr-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#9aa8cc]">
+                    <span aria-hidden className="mr-9 block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
-        ))}
+          </div>
+        </div>
       </div>
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-[linear-gradient(90deg,#0b1233,transparent)]" />
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-[linear-gradient(270deg,#0b1233,transparent)]" />
     </section>
   );
 }
@@ -2261,9 +2344,13 @@ function GlobalStyles() {
     @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
 
     /* Laufband: zwei identische Listen, um die Hälfte verschoben. */
-    .ld-band { animation: ldBand 70s linear infinite; }
-    .ld-band:hover { animation-play-state: paused; }
-    @keyframes ldBand { to { transform: translateX(-50%); } }
+    .ld-walze {
+      perspective: 900px; perspective-origin: 50% 50%;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 9%, #000 91%, transparent 100%);
+    }
+    .ld-walze-spur { transform-style: preserve-3d; }
+    .ld-walze-spur li { transform-style: preserve-3d; backface-visibility: hidden; }
 
     /* Leitgedanke: jedes Wort hat --i (0 bis 1), der Abschnitt setzt --p.
        Ein Wort hellt auf, sobald der Fortschritt seine Position erreicht. */
@@ -2312,7 +2399,7 @@ function GlobalStyles() {
       .ld-silber { animation: none; background-position: 30% 50%; }
       .ld-mega { transition: none; }
       .ld-dial { transform: none; }
-      .ld-rad, .ld-puls, .ld-knoten-an, .ld-kern, .ld-band { animation: none; }
+      .ld-rad, .ld-puls, .ld-knoten-an, .ld-kern { animation: none; }
       .ld-puls, .ld-knoten-an { opacity: 0; }
       .ld-instrument { translate: none; transition: none; }
       .ld-wort { opacity: 1; transition: none; }
