@@ -1033,13 +1033,13 @@ function Hero() {
             <p className="flex items-start gap-4">
               <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
               <span className="ld-enter ld-d1 flex flex-wrap gap-x-[0.9em] gap-y-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#9fc65f] sm:text-[0.72rem] sm:tracking-[0.3em]">
-                <span>Für inhabergeführte Unternehmen</span>
+                <span>Für agile inhabergeführte Unternehmen</span>
               </span>
             </p>
 
-            <h1 className="mt-6 text-[clamp(1.75rem,9.4vw,2.15rem)] sm:text-[clamp(2.15rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
-              {/* „Digital- und KI-Agentur“ bleibt immer zusammen und steht in der ersten Zeile. */}
-              <span className="whitespace-nowrap">Digital- und KI-Agentur</span>{" "}
+            <h1 className="mt-6 text-[clamp(1.55rem,7.9vw,2.05rem)] sm:text-[clamp(2.15rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
+              {/* „Digital- und KI-Frameworks“ bleibt immer zusammen und steht in der ersten Zeile. */}
+              <span className="whitespace-nowrap">Digital- und KI-Frameworks</span>{" "}
               <span className="whitespace-nowrap">für mehr Performance.</span>{" "}
               <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
             </h1>
