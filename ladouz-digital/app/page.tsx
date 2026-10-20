@@ -1037,15 +1037,16 @@ function Hero() {
               </span>
             </p>
 
-            <h1 className="mt-6 text-[clamp(1.55rem,7.9vw,2.05rem)] sm:text-[clamp(2.15rem,5vw,4.2rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
-              {/* „Digital- und KI-Frameworks“ bleibt immer zusammen und steht in der ersten Zeile. */}
-              <span className="whitespace-nowrap">Digital- und KI-Frameworks</span>{" "}
+            <h1 className="mt-6 text-[clamp(1.9rem,10vw,2.15rem)] sm:text-[clamp(2.15rem,3.7vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
+              {/* Ab Tablet steht „Digital- und KI-Dienstleistungen“ in einer Zeile.
+                  Auf dem Handy bricht es nur zwischen „Digital- und“ und „KI-Dienstleistungen“ um. */}
+              <span className="sm:whitespace-nowrap"><span className="whitespace-nowrap">Digital- und</span> <span className="whitespace-nowrap">KI-Dienstleistungen</span></span>{" "}
               <span className="whitespace-nowrap">für mehr Performance.</span>{" "}
               <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
             </h1>
 
             <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
-              Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand –
+              Performance-getriebene digitale und KI-Dienstleistungen sowie Consulting für den Mittelstand –
               von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
               Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz, Verbesserung und Kundenzufriedenheit.
             </p>
