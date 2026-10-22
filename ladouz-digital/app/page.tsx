@@ -1037,11 +1037,12 @@ function Hero() {
               </span>
             </p>
 
-            <h1 className="mt-6 text-[clamp(1.9rem,10vw,2.15rem)] sm:text-[clamp(2.15rem,3.7vw,3.5rem)] font-medium leading-[1.02] tracking-[-0.044em] sm:mt-8">
-              {/* Ab Tablet steht „Digital- und KI-Dienstleistungen“ in einer Zeile.
-                  Auf dem Handy bricht es nur zwischen „Digital- und“ und „KI-Dienstleistungen“ um. */}
-              <span className="sm:whitespace-nowrap"><span className="whitespace-nowrap">Digital- und</span> <span className="whitespace-nowrap">KI-Dienstleistungen.</span></span>{" "}
-              <span className="ld-silber mt-3 block text-[0.62em] leading-[1.12] tracking-[-0.03em] sm:mt-4">Präzise gedacht. Präzise umgesetzt.</span>
+            <h1 className="mt-6 text-[clamp(1.6rem,8.2vw,2rem)] sm:text-[clamp(2.15rem,4.2vw,3.75rem)] font-medium leading-[1.04] tracking-[-0.044em] sm:mt-8">
+              {/* Feste Wortgruppen verhindern einzelne Wörter am Zeilenende.
+                  Auf dem Handy darf nur zwischen „Digital- und“ und „KI-Strategien“ umbrechen. */}
+              <span className="whitespace-nowrap">Umsetzungspartner für</span>{" "}
+              <span className="sm:whitespace-nowrap"><span className="whitespace-nowrap">Digital- und</span> <span className="whitespace-nowrap">KI-Strategien</span></span>{" "}
+              <span className="whitespace-nowrap">im Mittelstand.</span>
             </h1>
 
             <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
