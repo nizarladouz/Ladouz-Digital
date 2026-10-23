@@ -97,7 +97,7 @@ const BILDER = {
      Moderne Architektur: Glasfassade, Atrium, Hochhausperspektive, kühles
      Licht oder Dämmerung. Linke Bildhälfte ruhig – dort liegt die Überschrift.
      Der dunkelblaue Farbschleier liegt immer darüber. */
-  hero: { src: "/motive/hero.jpg", fokus: "55% 55%", variante: "wave" },
+  hero: { src: "/motive/hero-berg.jpg", fokus: "65% 30%", variante: "wave" },
 
   /* Datei: motive/phase-analyse.jpg · Hochformat 4:5
      Workshop: Menschen am Tisch, Notizen, konzentrierte Gesprächssituation. */
@@ -1025,6 +1025,8 @@ function Hero() {
         )}
       </div>
       <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+      {/* Diagonales Lichtband – ruhig, nur Akzent. */}
+      <span aria-hidden className="ld-hero-band absolute inset-0 -z-10" />
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
       <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(680px,94svh,1000px)] sm:pt-[clamp(150px,20vh,220px)]">
@@ -2286,17 +2288,28 @@ function GlobalStyles() {
        Unter etwa .70 links wird weißer Text auf hellen Motiven unlesbar. */
     .ld-hero-veil {
       background:
-        linear-gradient(180deg, rgba(7,13,36,.62) 0%, rgba(7,13,36,0) 24%),
-        radial-gradient(78% 62% at 84% 10%, rgba(47,91,215,.30), transparent 62%),
-        radial-gradient(60% 55% at 4% 96%, rgba(141,198,63,.08), transparent 60%),
-        linear-gradient(100deg, rgba(7,13,36,.95) 0%, rgba(8,14,40,.88) 30%, rgba(11,18,51,.62) 60%, rgba(11,18,51,.28) 84%, rgba(11,18,51,.14) 100%);
+        linear-gradient(180deg, rgba(7,13,36,.6) 0%, rgba(7,13,36,0) 22%),
+        linear-gradient(100deg, rgba(7,13,36,.9) 0%, rgba(8,14,40,.78) 30%, rgba(11,18,51,.34) 56%, rgba(11,18,51,.08) 78%, rgba(11,18,51,0) 100%);
     }
-    /* Hero-Foto: liegt ganz hinten, unter dem Farbschleier. Links (hinter dem Text)
-       bleibt es dadurch dezent, rechts ist es deutlicher zu sehen.
-       opacity regelt, wie stark es sichtbar ist. luminosity übernimmt nur die
-       Helligkeit des Fotos – die Farben bleiben die der CI. Zoom minimal (4 %). */
-    .ld-hero-foto { opacity: .32; mix-blend-mode: luminosity; }
-    .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 55% 45%; }
+    @media (max-width: 1023px) {
+      /* Text liegt hier über dem Berg: gleichmäßiger, kräftiger Schleier. */
+      .ld-hero-veil {
+        background:
+          linear-gradient(180deg, rgba(7,13,36,.6) 0%, rgba(7,13,36,.42) 28%, rgba(7,13,36,.7) 55%, rgba(7,13,36,.85) 100%),
+          linear-gradient(100deg, rgba(7,13,36,.55) 0%, rgba(11,18,51,.2) 100%);
+      }
+      .ld-hero-band { display: none; }
+    }
+    /* Diagonales Band (Akzent): durchscheinendes CI-Blau, läuft nach unten aus. */
+    .ld-hero-band {
+      clip-path: polygon(14% 0, 64% 100%, 30% 100%, -20% 0);
+      background: linear-gradient(170deg, rgba(47,91,215,.24) 0%, rgba(47,91,215,.10) 70%, rgba(47,91,215,0) 100%);
+    }
+    /* Hero-Foto (Berg): liegt ganz hinten, unter dem Farbschleier. Links (hinter
+       dem Text) bleibt es dezent, rechts steht der Gipfel frei. Das Foto ist
+       bereits aufgehellt und links/oben/unten weich erweitert. Zoom minimal (4 %). */
+    .ld-hero-foto { opacity: .96; }
+    .ld-hero-zoom { animation: ldHeroZoom 40s ease-in-out infinite alternate; transform-origin: 65% 30%; }
     @keyframes ldHeroZoom { from { transform: scale(1); } to { transform: scale(1.04); } }
     /* Kacheln unter dem Hero – gleiche Formensprache wie der Signatur-Button. */
     .ld-kachel {
