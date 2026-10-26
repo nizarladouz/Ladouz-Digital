@@ -177,13 +177,13 @@ const hauptmenue: MenuEintrag[] = [
 /* ══════════════════════════ Inhalte ══════════════════════════ */
 
 const heroFakten = [
-  { wert: "7", einheit: "Leistungsfelder", text: "Strategie, Marketing, Sichtbarkeit, Conversion, Plattformen, KI und Daten." },
+  { wert: "10", einheit: "Leistungsfelder", text: "Strategie, Management, Marketing, Sichtbarkeit, Conversion, Plattformen, Prozessoptimierung, Automatisierung, KI und Daten." },
   { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
   { wert: "1", einheit: "Partner", text: "Dauerhaft Teil deines Unternehmens." },
 ];
 
-/* Die sieben Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
-const instrumentKnoten = ["Strategie", "Marketing", "Sichtbarkeit", "Conversion", "Plattformen", "KI", "Daten"];
+/* Die zehn Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
+const instrumentKnoten = ["Strategie", "Management", "Marketing", "Sichtbarkeit", "Conversion", "Plattformen", "Prozessoptimierung", "Automatisierung", "KI", "Daten"];
 
 const laufband = [
   "Digitale Strategie", "Performance-Marketing", "Google Ads", "Sichtbarkeit in Google",
@@ -231,7 +231,7 @@ const wandel = [
   },
 ];
 
-type SymbolArt = "kompass" | "ziel" | "lupe" | "trichter" | "fenster" | "knoten" | "kurve";
+type SymbolArt = "kompass" | "struktur" | "ziel" | "lupe" | "trichter" | "fenster" | "ablauf" | "kreislauf" | "knoten" | "kurve";
 
 type Leistungsfeld = {
   nr: string;
@@ -255,6 +255,14 @@ const leistungsfelder: Leistungsfeld[] = [
   },
   {
     nr: "02",
+    titel: "Management & Organisation",
+    wirkung: "Struktur",
+    text: "Klare Rollen, Verantwortlichkeiten und ein fester Führungsrhythmus – damit dein Unternehmen nicht an einzelnen Köpfen hängt und Entscheidungen schneller fallen.",
+    punkte: ["Organisation & Rollen", "Führungsrhythmus & Kennzahlen", "Projekt- und Veränderungsmanagement"],
+    symbol: "struktur",
+  },
+  {
+    nr: "03",
     titel: "Performance-Marketing",
     wirkung: "Nachfrage",
     text: "Bezahlte Reichweite in Suchmaschinen und sozialen Netzwerken – gesteuert nach Anfragen und Aufträgen, nicht nach Klicks.",
@@ -262,7 +270,7 @@ const leistungsfelder: Leistungsfeld[] = [
     symbol: "ziel",
   },
   {
-    nr: "03",
+    nr: "04",
     titel: "Organische Sichtbarkeit",
     wirkung: "Sichtbarkeit",
     text: "Gefunden werden, wenn Kunden suchen – in Google und zunehmend in KI-Antworten. Als Inhaltsarchitektur, die mit jeder Seite stärker wird.",
@@ -270,7 +278,7 @@ const leistungsfelder: Leistungsfeld[] = [
     symbol: "lupe",
   },
   {
-    nr: "04",
+    nr: "05",
     titel: "Conversion-Optimierung",
     wirkung: "Anfragen",
     text: "Mehr Anfragen aus denselben Besuchern: Seiten, Formulare und Nutzerführung werden gemessen, getestet und laufend verbessert.",
@@ -278,7 +286,7 @@ const leistungsfelder: Leistungsfeld[] = [
     symbol: "trichter",
   },
   {
-    nr: "05",
+    nr: "06",
     titel: "Websites, Plattformen & Software",
     wirkung: "Plattformen",
     text: "Websites, die verkaufen. Und Software für die Abläufe, für die es keine passende Standardlösung gibt.",
@@ -286,15 +294,31 @@ const leistungsfelder: Leistungsfeld[] = [
     symbol: "fenster",
   },
   {
-    nr: "06",
-    titel: "KI & Automatisierung",
+    nr: "07",
+    titel: "Prozessoptimierung",
+    wirkung: "Qualität",
+    text: "Abläufe werden aufgenommen, vereinfacht und dokumentiert. So wird Arbeit planbar – und es entsteht die Grundlage für Automatisierung und KI.",
+    punkte: ["Prozessaufnahme & Analyse", "Vereinfachung & Standards", "Dokumentation & SOPs"],
+    symbol: "ablauf",
+  },
+  {
+    nr: "08",
+    titel: "Automatisierung",
+    wirkung: "Zeit",
+    text: "Wiederkehrende Aufgaben laufen automatisch zwischen deinen Systemen – ohne Medienbrüche und ohne manuelles Nacharbeiten.",
+    punkte: ["Workflow-Automatisierung", "Schnittstellen & Integrationen", "Überwachung im Betrieb"],
+    symbol: "kreislauf",
+  },
+  {
+    nr: "09",
+    titel: "KI & Agenten",
     wirkung: "Effizienz",
-    text: "KI-Agenten und automatisierte Abläufe, die wiederkehrende Arbeit übernehmen – eingebettet in deine Prozesse, nicht daneben.",
-    punkte: ["KI-Agenten im Betrieb", "Prozess-Automatisierung", "KI-Governance"],
+    text: "KI-Agenten, die wiederkehrende Arbeit übernehmen – eingebettet in deine Prozesse, nicht daneben. Mit dem Fundament, das sie brauchen: Wissen, Daten und Schnittstellen.",
+    punkte: ["KI-Agenten im Betrieb", "Agentenfähigkeit von Wissen & Daten", "KI-Governance"],
     symbol: "knoten",
   },
   {
-    nr: "07",
+    nr: "10",
     titel: "Daten, Tracking & Steuerung",
     wirkung: "Steuerung",
     text: "Eine saubere Datenbasis vom ersten Kontakt bis zum Auftrag. Damit Entscheidungen auf Zahlen beruhen statt auf Vermutungen.",
@@ -996,7 +1020,7 @@ function SucheIcon() {
 
 /* ══════════════════════════ Hero ══════════════════════════
    Drei Schichten: Motiv → Farbschleier → Inhalt.
-   Rechts das Performance-Instrument: sieben Leistungsfelder, die in ein
+   Rechts das Performance-Instrument: zehn Leistungsfelder, die in ein
    gemeinsames Ziel laufen. Reines SVG, bewegt nur über CSS.
    Die H1 trägt keine Animation: sie ist das LCP-Element.
    ═══════════════════════════════════════════════════════════ */
@@ -1090,7 +1114,7 @@ function HeroInstrument() {
   const KERN = 80;
   /* Ein Takt pro Feld: Der Lichtpunkt erreicht alle TAKT Sekunden das nächste
      Feld, das Feld leuchtet auf und schickt einen Impuls ins Ziel.
-     Sieben Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
+     Zehn Felder × TAKT = eine volle Umdrehung. Immer nur ein Impuls zugleich. */
   const TAKT = 3;
   const UMLAUF = TAKT * instrumentKnoten.length;
   /* Schweif des Lichtpunkts: 60° Bogen hinter dem Kopf (Kopf steht bei 12 Uhr). */
@@ -1100,14 +1124,34 @@ function HeroInstrument() {
     const w = (i / instrumentKnoten.length) * Math.PI * 2 - Math.PI / 2;
     return {
       label,
+      /* Startbreite als Schätzung; nach dem Laden der Schrift wird exakt nachgemessen (siehe unten). */
+      b: Math.round(label.length * 7) + 48,
       x: C + Math.cos(w) * R, y: C + Math.sin(w) * R,
       ix: C + Math.cos(w) * (KERN + 4), iy: C + Math.sin(w) * (KERN + 4),
     };
   });
 
+  /* Pillen exakt auf die Wortbreite setzen: Punkt links, gleicher Innenabstand rechts. */
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const passe = () => {
+      svg.querySelectorAll<SVGGElement>("[data-knoten]").forEach((g) => {
+        const t = g.querySelector("text");
+        if (!t) return;
+        const b = Math.ceil(t.getComputedTextLength()) + 48;
+        g.querySelectorAll("rect").forEach((r) => { r.setAttribute("width", String(b)); r.setAttribute("x", String(-b / 2)); });
+        g.querySelector("circle")?.setAttribute("cx", String(-b / 2 + 19));
+      });
+    };
+    passe();
+    document.fonts?.ready.then(passe);
+  }, []);
+
   return (
     <div aria-hidden className="ld-instrument ld-enter ld-d3 relative hidden aspect-square w-full max-w-[500px] justify-self-end lg:block">
-      <svg viewBox="0 0 560 560" className="h-full w-full overflow-visible" style={{ "--umlauf": `${UMLAUF}s`, "--takt": `${TAKT}s` } as CSSProperties}>
+      <svg ref={svgRef} viewBox="0 0 560 560" className="h-full w-full overflow-visible" style={{ "--umlauf": `${UMLAUF}s`, "--takt": `${TAKT}s` } as CSSProperties}>
         <defs>
           <radialGradient id="ld-hof">
             <stop offset="0%" stopColor="#2f5bd7" stopOpacity="0.42" />
@@ -1160,7 +1204,7 @@ function HeroInstrument() {
           </g>
         ))}
 
-        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die sieben Felder im Uhrzeigersinn. */}
+        {/* Das Rad: ein Lichtpunkt mit Schweif umrundet die zehn Felder im Uhrzeigersinn. */}
         <g className="ld-rot ld-rad">
           <path d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${C} ${C - R}`} fill="none" stroke="url(#ld-schweif)" strokeWidth="2.5" strokeLinecap="round" />
           <circle cx={C} cy={C - R} r="12" fill="#8dc63f" fillOpacity=".18" />
@@ -1177,15 +1221,15 @@ function HeroInstrument() {
 
         {/* Knoten */}
         {knoten.map((k, i) => (
-          <g key={`n-${k.label}`} transform={`translate(${k.x} ${k.y})`}>
-            <rect x="-68" y="-20" width="136" height="40" rx="20" fill="rgba(11,18,51,.86)" stroke="rgba(255,255,255,.22)" strokeWidth="1" />
+          <g key={`n-${k.label}`} data-knoten transform={`translate(${k.x} ${k.y})`}>
+            <rect x={-k.b / 2} y="-17" width={k.b} height="34" rx="17" fill="rgba(11,18,51,.86)" stroke="rgba(255,255,255,.22)" strokeWidth="1" />
             <rect
-              x="-68" y="-20" width="136" height="40" rx="20"
+              x={-k.b / 2} y="-17" width={k.b} height="34" rx="17"
               className="ld-knoten-an" fill="rgba(141,198,63,.14)" stroke="#8dc63f" strokeWidth="1.5"
               style={{ animationDelay: `${i * TAKT}s` }}
             />
-            <circle cx="-47" cy="0" r="4" fill="#8dc63f" />
-            <text x="8" y="5.5" textAnchor="middle" fontSize="16" fontWeight="500" fill="#dfe7f8">{k.label}</text>
+            <circle cx={-k.b / 2 + 19} cy="0" r="3.5" fill="#8dc63f" />
+            <text x="6" y="5" textAnchor="middle" fontSize="15" fontWeight="500" fill="#dfe7f8">{k.label}</text>
           </g>
         ))}
       </svg>
@@ -1382,7 +1426,8 @@ function Wandel() {
 }
 
 /* ══════════════════════════ Leistungsfelder ══════════════════════════
-   Sieben Karten mit Lichtkegel, der dem Mauszeiger folgt (--x/--y). Strategie überspannt die volle Breite.
+   Zehn Karten mit Lichtkegel, der dem Mauszeiger folgt (--x/--y). Strategie überspannt die volle Breite,
+   die letzte Karte auf dem Tablet ebenfalls (sonst stünde sie dort allein).
    Hat eine Karte einen `pfad`, wird sie vollflächig klickbar.
    ═══════════════════════════════════════════════════════════ */
 
@@ -1394,7 +1439,7 @@ function Leistungsfelder() {
           <Reveal>
             <Eyebrow>Leistungsfelder</Eyebrow>
             <h2 id="leistungen-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-              Sieben Leistungsfelder.<br />Ein Ziel: Wachstum.
+              Zehn Leistungsfelder.<br />Ein Ziel: Wachstum.
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -1407,7 +1452,7 @@ function Leistungsfelder() {
 
         <ul className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {leistungsfelder.map((l, i) => (
-            <Reveal as="li" key={l.nr} delay={i === 0 ? 0 : ((i - 1) % 3) * 90} className={`h-full ${i === 0 ? "md:col-span-2 lg:col-span-3" : ""}`}>
+            <Reveal as="li" key={l.nr} delay={i === 0 ? 0 : ((i - 1) % 3) * 90} className={`h-full ${i === 0 ? "md:col-span-2 lg:col-span-3" : ""} ${i === leistungsfelder.length - 1 && (leistungsfelder.length - 1) % 2 === 1 ? "md:col-span-2 lg:col-span-1" : ""}`}>
               <article
                 onPointerMove={setzeZeiger}
                 className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-8 transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#d3ddef] hover:bg-white hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)] sm:p-9"
@@ -1465,6 +1510,9 @@ function Symbol({ art }: { art: SymbolArt }) {
     lupe: (<><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5M8 10.5h5M10.5 8v5" /></>),
     trichter: (<><path d="M3.5 4.5h17l-6.5 8v6.5l-4 1.5v-8z" /></>),
     fenster: (<><rect x="3" y="4" width="18" height="16" rx="2.5" /><path d="M3 9h18M8 13.5h4M8 16.5h7" /></>),
+    struktur: (<><rect x="9" y="3" width="6" height="4.5" rx="1.2" /><rect x="3" y="16.5" width="6" height="4.5" rx="1.2" /><rect x="15" y="16.5" width="6" height="4.5" rx="1.2" /><path d="M12 7.5v4.5M6 16.5V12h12v4.5" /></>),
+    ablauf: (<><circle cx="5" cy="6" r="2" /><rect x="10" y="4" width="10" height="4" rx="1.2" /><circle cx="5" cy="18" r="2" /><rect x="10" y="16" width="10" height="4" rx="1.2" /><path d="M5 8v8M15 8v3.2a1.8 1.8 0 0 1-1.8 1.8H8" /><path d="m9.6 11.4-1.6 1.6 1.6 1.6" /></>),
+    kreislauf: (<><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3" /><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3" /><path d="M17.5 3.2v3.6h-3.6M6.5 20.8v-3.6h3.6" /><circle cx="12" cy="12" r="2" /></>),
     knoten: (<><circle cx="12" cy="12" r="2.6" /><circle cx="5" cy="5.5" r="1.8" /><circle cx="19" cy="5.5" r="1.8" /><circle cx="12" cy="20.2" r="1.8" /><path d="M6.4 6.8 10 10M17.6 6.8 14 10M12 14.6v3.8" /></>),
     kurve: (<><path d="M3 20.5h18" /><path d="M4 16l5-5 4 3 7-8" /><path d="M16 6h4v4" /></>),
   };
@@ -2345,17 +2393,19 @@ function GlobalStyles() {
        beim Laden und bleiben dadurch synchron. */
     .ld-instrument { translate: calc(var(--mx, 0) * -22px) calc(var(--my, 0) * -16px); transition: translate 1s cubic-bezier(.16,.84,.28,1); }
     .ld-rot { transform-box: view-box; transform-origin: 50% 50%; }
-    .ld-rad { animation: ldDreh var(--umlauf, 21s) linear infinite; }
+    .ld-rad { animation: ldDreh var(--umlauf, 30s) linear infinite; }
     @keyframes ldDreh { to { transform: rotate(360deg); } }
-    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 21s) cubic-bezier(.4,0,.3,1) infinite; }
+    .ld-puls { stroke-dasharray: 42 400; stroke-dashoffset: 42; opacity: 0; animation: ldPuls var(--umlauf, 30s) cubic-bezier(.4,0,.3,1) infinite; }
+    /* Die Prozentwerte von ldPuls und ldKnoten sind auf 10 Felder × 3 s = 30 s Umlauf abgestimmt.
+       Ändert sich die Zahl der Felder, die Werte im selben Verhältnis umrechnen. */
     @keyframes ldPuls {
       0% { stroke-dashoffset: 42; opacity: 0; }
-      1.2% { opacity: 1; }
-      12.5% { stroke-dashoffset: -136; opacity: 1; }
-      13%, 100% { stroke-dashoffset: -136; opacity: 0; }
+      0.84% { opacity: 1; }
+      8.75% { stroke-dashoffset: -136; opacity: 1; }
+      9.1%, 100% { stroke-dashoffset: -136; opacity: 0; }
     }
-    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 21s) ease-out infinite; }
-    @keyframes ldKnoten { 0% { opacity: 0; } 1.7% { opacity: 1; } 17%, 100% { opacity: 0; } }
+    .ld-knoten-an { opacity: 0; animation: ldKnoten var(--umlauf, 30s) ease-out infinite; }
+    @keyframes ldKnoten { 0% { opacity: 0; } 1.2% { opacity: 1; } 11.9%, 100% { opacity: 0; } }
     .ld-kern { transform-box: fill-box; transform-origin: center; opacity: .5; animation: ldAnkunft var(--takt, 3s) ease-out 2.35s infinite; }
     @keyframes ldAnkunft { 0% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: .5; } }
 
