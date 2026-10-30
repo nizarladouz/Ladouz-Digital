@@ -589,7 +589,9 @@ function useScrollVariable<T extends HTMLElement>() {
       const r = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const weg = r.height - vh;
-      const p = weg > 0 ? Math.min(Math.max(-r.top / weg, 0), 1) : r.top < vh * 0.5 ? 1 : 0;
+      /* Kompakte Sektion (kürzer als der Viewport): die Wörter hellen auf,
+         während der Abschnitt von unten (90 %) bis ins obere Drittel (30 %) wandert. */
+      const p = weg > 0 ? Math.min(Math.max(-r.top / weg, 0), 1) : Math.min(Math.max((vh * 0.9 - r.top) / (vh * 0.6), 0), 1);
       el.style.setProperty("--p", p.toFixed(4));
     };
     const on = () => {
@@ -1354,8 +1356,8 @@ function Leitgedanke() {
   const n = woerter.length;
 
   return (
-    <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white" style={{ height: "120vh" }}>
-      <div className="sticky top-0 flex h-[100svh] items-center px-6 pt-[74px]">
+    <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white">
+      <div className="px-6 py-[clamp(72px,9vw,120px)]">
         <div className="mx-auto w-full max-w-[1192px]">
           <Eyebrow normalCase>Was Performance heißt</Eyebrow>
           <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
