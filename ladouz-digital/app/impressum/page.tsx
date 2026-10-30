@@ -4,6 +4,7 @@ import LegalLayout from "../components/LegalLayout";
 export const metadata: Metadata = {
   title: "Impressum",
   alternates: { canonical: "/impressum" },
+  openGraph: { url: "/impressum" },
 };
 
 export default function Impressum() {

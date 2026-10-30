@@ -4,6 +4,7 @@ import LegalLayout from "../components/LegalLayout";
 export const metadata: Metadata = {
   title: "Datenschutz",
   alternates: { canonical: "/datenschutz" },
+  openGraph: { url: "/datenschutz" },
 };
 
 export default function Datenschutz() {
