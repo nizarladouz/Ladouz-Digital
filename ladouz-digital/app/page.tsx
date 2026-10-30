@@ -366,7 +366,7 @@ const phasen: Phase[] = [
     nr: "04",
     titel: "Messen, Optimieren, Skalieren",
     stufe: "Fortlaufend",
-    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Wir messen, lernen und verbessern – und bleiben dauerhaft Teil Ihres Unternehmens.",
+    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Viele kleine Verbesserungen summieren sich – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens.",
     ergebnis: "Ein System, das mit jeder Optimierung stärker wird.",
     bild: BILDER.phaseBetrieb,
   },
@@ -396,7 +396,7 @@ const messprinzipien = [
 const prinzipien = [
   { titel: "Wirkung vor Aktivität.", text: "Wir messen uns an Anfragen, Aufträgen und Umsatz – nicht an Stunden, Reichweite oder Klicks." },
   { titel: "Umsetzung, nicht Empfehlung.", text: "Wir bauen, was wir planen. Strategie ohne Umsetzung bleibt eine Präsentation." },
-  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Wachstum nicht – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens." },
+  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Verbesserung nicht – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens." },
 ];
 
 const branchen = [
@@ -441,7 +441,7 @@ const fragen = [
   },
   {
     frage: "Arbeiten Sie projektweise oder dauerhaft?",
-    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit Ihnen auf und bleiben danach Teil Ihres Unternehmens: Wir steuern mit, messen und entwickeln weiter.",
+    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit Ihnen auf und bleiben danach Teil Ihres Unternehmens: Wir steuern mit, messen und verbessern laufend im Detail.",
   },
   {
     frage: "Übernehmen Sie auch die Umsetzung?",
@@ -1075,7 +1075,7 @@ function Hero() {
             <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
               Performance-getriebene digitale und KI-Dienstleistungen sowie Consulting für den Mittelstand –
               von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
-              Gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz, Verbesserung und Kundenzufriedenheit.
+              Stetig verbessert und gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz und Kundenzufriedenheit.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
@@ -1446,7 +1446,7 @@ function Leistungsfelder() {
           <Reveal delay={100}>
             <p className="ld-serif max-w-[46ch] text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.66] text-[#43507a]">
               Einzeln stark, zusammen ein System. Jedes Feld zahlt auf dieselbe Kennzahlenkette
-              ein – und wird gemeinsam mit Ihrem Team dauerhaft weiterentwickelt.
+              ein – und wird gemeinsam mit Ihrem Team kontinuierlich weiterentwickelt.
             </p>
           </Reveal>
         </div>
@@ -1549,7 +1549,7 @@ function Programm() {
           </h2>
           <Lead tone="light">
             Jede Phase baut auf der vorherigen auf. Die letzte endet nicht: Messen, Optimieren
-            und Skalieren laufen fortlaufend – so wird jede Maßnahme mit der Zeit wirksamer.
+            und Skalieren laufen fortlaufend – so summieren sich kleine Verbesserungen zu messbarer Wirkung.
           </Lead>
         </Reveal>
       </div>
