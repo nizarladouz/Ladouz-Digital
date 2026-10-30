@@ -10,7 +10,7 @@ export default function Impressum() {
   return (
     <LegalLayout titel="Impressum">
       <h2>Angaben gemäß § 5 DDG</h2>
-      <p>Ladouz Digital<br />Inhaber: Nizar Ladouz (Einzelunternehmen)<br />Markt 40<br />53721 Siegburg<br />Deutschland</p>
+      <p>Ladouz Digital<br />Inhaber: Nizar Ladouz<br />Markt 40<br />53721 Siegburg<br />Deutschland</p>
 
       <h2>Kontakt</h2>
       <p>
