@@ -1353,7 +1353,7 @@ function Leitgedanke() {
   const n = woerter.length;
 
   return (
-    <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white" style={{ height: "135vh" }}>
+    <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white" style={{ height: "120vh" }}>
       <div className="sticky top-0 flex h-[100svh] items-center px-6 pt-[74px]">
         <div className="mx-auto w-full max-w-[1192px]">
           <Eyebrow>Was Performance heißt</Eyebrow>
