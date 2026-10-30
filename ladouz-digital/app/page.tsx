@@ -180,7 +180,7 @@ const hauptmenue: MenuEintrag[] = [
 const heroFakten = [
   { wert: "10", einheit: "Leistungsfelder", text: "Strategie, Management, Marketing, Sichtbarkeit, Conversion, Plattformen, Prozessoptimierung, Automatisierung, KI und Daten." },
   { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
-  { wert: "1", einheit: "Partner", text: "Dauerhaft Teil deines Unternehmens." },
+  { wert: "1", einheit: "Partner", text: "Dauerhaft Teil Ihres Unternehmens." },
 ];
 
 /* Die zehn Knoten des Hero-Instruments – in der Reihenfolge im Uhrzeigersinn ab 12 Uhr. */
@@ -208,7 +208,7 @@ const wandel = [
   {
     bereich: "Sichtbarkeit",
     heute: "Gefunden wird, wer zufällig gut rankt. Neue Suchwege wie KI-Antworten bleiben unbeachtet.",
-    danach: "Eine Inhaltsarchitektur, die dich dort sichtbar macht, wo deine Kunden suchen – in Google und in KI-Antworten.",
+    danach: "Eine Inhaltsarchitektur, die Sie dort sichtbar macht, wo Ihre Kunden suchen – in Google und in KI-Antworten.",
   },
   {
     bereich: "Marketing",
@@ -222,8 +222,8 @@ const wandel = [
   },
   {
     bereich: "Abläufe",
-    heute: "Wiederkehrende Arbeit bindet dein Team. Standardsoftware bildet die eigenen Abläufe nur teilweise ab.",
-    danach: "Software und KI-Agenten übernehmen, was sich wiederholt. Dein Team gewinnt Zeit für das Wesentliche.",
+    heute: "Wiederkehrende Arbeit bindet Ihr Team. Standardsoftware bildet die eigenen Abläufe nur teilweise ab.",
+    danach: "Software und KI-Agenten übernehmen, was sich wiederholt. Ihr Team gewinnt Zeit für das Wesentliche.",
   },
   {
     bereich: "Steuerung",
@@ -258,7 +258,7 @@ const leistungsfelder: Leistungsfeld[] = [
     nr: "02",
     titel: "Management & Organisation",
     wirkung: "Struktur",
-    text: "Klare Rollen, Verantwortlichkeiten und ein fester Führungsrhythmus – damit dein Unternehmen nicht an einzelnen Köpfen hängt und Entscheidungen schneller fallen.",
+    text: "Klare Rollen, Verantwortlichkeiten und ein fester Führungsrhythmus – damit Ihr Unternehmen nicht an einzelnen Köpfen hängt und Entscheidungen schneller fallen.",
     punkte: ["Organisation & Rollen", "Führungsrhythmus & Kennzahlen", "Projekt- und Veränderungsmanagement"],
     symbol: "struktur",
   },
@@ -306,7 +306,7 @@ const leistungsfelder: Leistungsfeld[] = [
     nr: "08",
     titel: "Automatisierung",
     wirkung: "Zeit",
-    text: "Wiederkehrende Aufgaben laufen automatisch zwischen deinen Systemen – ohne Medienbrüche und ohne manuelles Nacharbeiten.",
+    text: "Wiederkehrende Aufgaben laufen automatisch zwischen Ihren Systemen – ohne Medienbrüche und ohne manuelles Nacharbeiten.",
     punkte: ["Workflow-Automatisierung", "Schnittstellen & Integrationen", "Überwachung im Betrieb"],
     symbol: "kreislauf",
   },
@@ -314,7 +314,7 @@ const leistungsfelder: Leistungsfeld[] = [
     nr: "09",
     titel: "KI & Agenten",
     wirkung: "Effizienz",
-    text: "KI-Agenten, die wiederkehrende Arbeit übernehmen – eingebettet in deine Prozesse, nicht daneben. Mit dem Fundament, das sie brauchen: Wissen, Daten und Schnittstellen.",
+    text: "KI-Agenten, die wiederkehrende Arbeit übernehmen – eingebettet in Ihre Prozesse, nicht daneben. Mit dem Fundament, das sie brauchen: Wissen, Daten und Schnittstellen.",
     punkte: ["KI-Agenten im Betrieb", "Agentenfähigkeit von Wissen & Daten", "KI-Governance"],
     symbol: "knoten",
   },
@@ -342,7 +342,7 @@ const phasen: Phase[] = [
     nr: "01",
     titel: "Analyse & Potenzial",
     stufe: "Verstehen",
-    text: "Wir erfassen, wo dein Unternehmen heute Umsatz gewinnt – und wo es ihn verliert: Sichtbarkeit, Marketing, Website, Abläufe und Daten.",
+    text: "Wir erfassen, wo Ihr Unternehmen heute Umsatz gewinnt – und wo es ihn verliert: Sichtbarkeit, Marketing, Website, Abläufe und Daten.",
     ergebnis: "Ein Zielbild mit Prioritäten, geordnet nach Wirkung.",
     bild: BILDER.phaseAnalyse,
   },
@@ -358,7 +358,7 @@ const phasen: Phase[] = [
     nr: "03",
     titel: "Umsetzung",
     stufe: "Umsetzen",
-    text: "Kampagnen, Website, Software und KI-Anwendungen gehen kontrolliert live – eingebettet in deine Prozesse und vom ersten Tag an gemessen.",
+    text: "Kampagnen, Website, Software und KI-Anwendungen gehen kontrolliert live – eingebettet in Ihre Prozesse und vom ersten Tag an gemessen.",
     ergebnis: "Produktive Systeme statt Pilotprojekte.",
     bild: BILDER.phaseUmsetzung,
   },
@@ -366,7 +366,7 @@ const phasen: Phase[] = [
     nr: "04",
     titel: "Messen, Optimieren, Skalieren",
     stufe: "Fortlaufend",
-    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Wir messen, lernen und verbessern – und bleiben dauerhaft Teil deines Unternehmens.",
+    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Wir messen, lernen und verbessern – und bleiben dauerhaft Teil Ihres Unternehmens.",
     ergebnis: "Ein System, das mit jeder Optimierung stärker wird.",
     bild: BILDER.phaseBetrieb,
   },
@@ -396,7 +396,7 @@ const messprinzipien = [
 const prinzipien = [
   { titel: "Wirkung vor Aktivität.", text: "Wir messen uns an Anfragen, Aufträgen und Umsatz – nicht an Stunden, Reichweite oder Klicks." },
   { titel: "Umsetzung, nicht Empfehlung.", text: "Wir bauen, was wir planen. Strategie ohne Umsetzung bleibt eine Präsentation." },
-  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Wachstum nicht – deshalb bleiben wir dauerhaft Teil deines Unternehmens." },
+  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Wachstum nicht – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens." },
 ];
 
 const branchen = [
@@ -440,11 +440,11 @@ const fragen = [
     antwort: "Für mittelständische Unternehmen, die digitales Wachstum als dauerhafte Aufgabe verstehen – branchenübergreifend. Entscheidend ist die Struktur der Wertschöpfung, nicht das Etikett der Branche.",
   },
   {
-    frage: "Arbeitet ihr projektweise oder dauerhaft?",
-    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit dir auf und bleiben danach Teil deines Unternehmens: Wir steuern mit, messen und entwickeln weiter.",
+    frage: "Arbeiten Sie projektweise oder dauerhaft?",
+    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit Ihnen auf und bleiben danach Teil Ihres Unternehmens: Wir steuern mit, messen und entwickeln weiter.",
   },
   {
-    frage: "Übernehmt ihr auch die Umsetzung?",
+    frage: "Übernehmen Sie auch die Umsetzung?",
     antwort: "Ja. Wir planen nicht nur, wir setzen um – Kampagnen, Websites, Software, KI-Anwendungen und Tracking aus einer Hand.",
   },
   {
@@ -453,7 +453,7 @@ const fragen = [
   },
   {
     frage: "Wie beginnt eine Zusammenarbeit?",
-    antwort: "Mit einer Erstberatung. Darin klären wir, wo dein Unternehmen heute steht und ob eine Zusammenarbeit zu dir passt – unverbindlich und konkret.",
+    antwort: "Mit einer Erstberatung. Darin klären wir, wo Ihr Unternehmen heute steht und ob eine Zusammenarbeit zu Ihnen passt – unverbindlich und konkret.",
   },
 ];
 
@@ -980,7 +980,7 @@ function Kopfbereich() {
               <label htmlFor="suche" className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">
                 Publikationen, Leistungen und Themen durchsuchen
               </label>
-              <input id="suche" type="search" placeholder="Wonach suchst du?" className="mt-4 w-full border-b-2 border-[#e7ecf5] bg-transparent pb-3 text-[clamp(1.2rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-[#0b1233] outline-none transition-colors placeholder:text-[#7d8ba6] focus:border-[#8dc63f]" />
+              <input id="suche" type="search" placeholder="Wonach suchen Sie?" className="mt-4 w-full border-b-2 border-[#e7ecf5] bg-transparent pb-3 text-[clamp(1.2rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-[#0b1233] outline-none transition-colors placeholder:text-[#7d8ba6] focus:border-[#8dc63f]" />
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <span className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-[#5b6b8a]">Häufig gesucht</span>
                 {["KI-Implementierung", "Digitalstrategie", "Framework", "Automatisierung"].map((t) => (
@@ -1446,7 +1446,7 @@ function Leistungsfelder() {
           <Reveal delay={100}>
             <p className="ld-serif max-w-[46ch] text-[clamp(1.05rem,1.6vw,1.2rem)] leading-[1.66] text-[#43507a]">
               Einzeln stark, zusammen ein System. Jedes Feld zahlt auf dieselbe Kennzahlenkette
-              ein – und wird gemeinsam mit deinem Team dauerhaft weiterentwickelt.
+              ein – und wird gemeinsam mit Ihrem Team dauerhaft weiterentwickelt.
             </p>
           </Reveal>
         </div>
@@ -1692,7 +1692,7 @@ function ProgrammSzene() {
               <dl className="min-w-0 space-y-6">
                 <div>
                   <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9aa8cc]">Start</dt>
-                  <dd className="mt-1.5 text-[1.08rem] font-medium leading-[1.35] text-[#c7d6f5]">Analyse deiner Ausgangslage</dd>
+                  <dd className="mt-1.5 text-[1.08rem] font-medium leading-[1.35] text-[#c7d6f5]">Analyse Ihrer Ausgangslage</dd>
                 </div>
                 <div>
                   <dt className="text-[0.66rem] font-semibold uppercase tracking-[0.28em] text-[#9fc65f]">Ergebnis</dt>
@@ -1870,7 +1870,7 @@ function Messbarkeit() {
           <div className="mt-20 flex flex-col gap-7 rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-9 sm:p-12 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="max-w-[26ch] text-[clamp(1.4rem,2.6vw,2rem)] font-medium leading-[1.15] tracking-[-0.026em] text-[#0b1233]">
-                Wo verliert dein Unternehmen heute Wachstum?
+                Wo verliert Ihr Unternehmen heute Wachstum?
               </p>
               <p className="ld-serif mt-3 max-w-[50ch] text-[1.02rem] leading-[1.6] text-[#43507a]">
                 In der Erstberatung finden wir es gemeinsam heraus – unverbindlich und konkret.
@@ -1902,8 +1902,8 @@ function Haltung() {
             </h2>
             <Lead>
               Unser Anspruch: die performancestärksten digitalen Services für den Mittelstand.
-              Wir sind Umsetzungspartner, nicht Folienlieferant – was wir mit dir planen,
-              bauen wir mit dir auf und bleiben Teil davon.
+              Wir sind Umsetzungspartner, nicht Folienlieferant – was wir mit Ihnen planen,
+              bauen wir mit Ihnen auf und bleiben Teil davon.
             </Lead>
           </Reveal>
 
@@ -1946,9 +1946,9 @@ function Branchen() {
             Mittelstand. Branchenübergreifend.
           </h2>
           <Lead>
-            Für dich und deinen Betrieb, wenn du digitales Wachstum nicht dem Zufall
-            überlassen willst. Entscheidend ist die Struktur deiner Wertschöpfung,
-            nicht das Etikett deiner Branche.
+            Für Sie und Ihren Betrieb, wenn Sie digitales Wachstum nicht dem Zufall
+            überlassen wollen. Entscheidend ist die Struktur Ihrer Wertschöpfung,
+            nicht das Etikett Ihrer Branche.
           </Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Passt das zu uns?</CtaButton>
@@ -2043,9 +2043,9 @@ function Fragen() {
         <Reveal>
           <Eyebrow>Häufige Fragen</Eyebrow>
           <h2 id="fragen-titel" className="mt-6 max-w-[16ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-            Was du vorab wissen solltest.
+            Was Sie vorab wissen sollten.
           </h2>
-          <Lead>Und wenn deine Frage fehlt: In der Erstberatung ist Raum für alles Weitere.</Lead>
+          <Lead>Und wenn Ihre Frage fehlt: In der Erstberatung ist Raum für alles Weitere.</Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Frage stellen</CtaButton>
           </div>
@@ -2092,18 +2092,18 @@ function Kontakt() {
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Erstberatung</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
-                Sprechen wir über dein Wachstum.
+                Sprechen wir über Ihr Wachstum.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
-                In der Erstberatung klären wir, wo dein Unternehmen heute Umsatz gewinnt und wo es
-                ihn verliert – und ob eine Zusammenarbeit zu dir passt. Unverbindlich und konkret.
+                In der Erstberatung klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
+                ihn verliert – und ob eine Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
               </p>
               <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
 
               <div className="mt-12 border-t border-white/15 pt-9">
                 <p className="text-[1.05rem] font-bold tracking-[-0.018em]">Oder kurz schreiben</p>
                 <p className="ld-serif mt-2 max-w-[44ch] text-[1rem] leading-[1.6] text-[#c7d6f5]">
-                  Schick uns deine Anfrage per E-Mail – wir melden uns persönlich.
+                  Schicken Sie uns Ihre Anfrage per E-Mail – wir melden uns persönlich.
                 </p>
                 <CtaButton href={mailAnfrage} variant="ghost" className="mt-7 w-full sm:w-auto">Anfrage per E-Mail</CtaButton>
               </div>

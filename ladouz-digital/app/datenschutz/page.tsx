@@ -10,8 +10,8 @@ export default function Datenschutz() {
   return (
     <LegalLayout titel="Datenschutzerklärung" stand="30.10.2026">
       <p>
-        Mit dieser Erklärung informieren wir dich nach Art. 13 und 14 DSGVO darüber, welche personenbezogenen Daten wir
-        beim Besuch dieser Website verarbeiten, zu welchen Zwecken, auf welcher Rechtsgrundlage und welche Rechte du hast.
+        Mit dieser Erklärung informieren wir Sie nach Art. 13 und 14 DSGVO darüber, welche personenbezogenen Daten wir
+        beim Besuch dieser Website verarbeiten, zu welchen Zwecken, auf welcher Rechtsgrundlage und welche Rechte Sie haben.
       </p>
 
       <h2>1. Verantwortlicher</h2>
@@ -23,7 +23,7 @@ export default function Datenschutz() {
       </p>
       <p>
         Ein Datenschutzbeauftragter ist nicht benannt, da hierzu keine gesetzliche Pflicht besteht. Bei Fragen zum
-        Datenschutz erreichst du uns unter den oben genannten Kontaktdaten.
+        Datenschutz erreichen Sie uns unter den oben genannten Kontaktdaten.
       </p>
 
       <h2>2. Überblick: Zwecke und Rechtsgrundlagen</h2>
@@ -32,9 +32,9 @@ export default function Datenschutz() {
       </p>
       <p>
         – zur sicheren und stabilen Bereitstellung der Website (Art. 6 Abs. 1 lit. f DSGVO – berechtigtes Interesse),<br />
-        – zur Bearbeitung deiner Anfragen und zur Anbahnung oder Durchführung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO),<br />
+        – zur Bearbeitung Ihrer Anfragen und zur Anbahnung oder Durchführung eines Vertrags (Art. 6 Abs. 1 lit. b DSGVO),<br />
         – zur Erfüllung gesetzlicher Pflichten, etwa handels- und steuerrechtlicher Aufbewahrungspflichten (Art. 6 Abs. 1 lit. c DSGVO),<br />
-        – sowie auf Grundlage deiner Einwilligung, sofern wir sie gesondert einholen (Art. 6 Abs. 1 lit. a DSGVO).
+        – sowie auf Grundlage Ihrer Einwilligung, sofern wir sie gesondert einholen (Art. 6 Abs. 1 lit. a DSGVO).
       </p>
 
       <h2>3. Hosting und Server-Logs</h2>
@@ -59,38 +59,38 @@ export default function Datenschutz() {
       <h2>4. Cookies, Tracking und Schriftarten</h2>
       <p>
         Wir setzen keine Analyse-, Marketing- oder Werbe-Cookies und keine Tracking- oder Profiling-Dienste ein. Es werden
-        keine Informationen auf deinem Endgerät gespeichert oder ausgelesen, die nicht für die Darstellung der Website
+        keine Informationen auf Ihrem Endgerät gespeichert oder ausgelesen, die nicht für die Darstellung der Website
         unbedingt erforderlich sind (§ 25 Abs. 2 TDDDG). Eine Einwilligung ist daher nicht erforderlich.
       </p>
       <p>
         Die Schriftarten dieser Website werden lokal von unserem Server ausgeliefert. Es findet keine Verbindung zu Servern
-        von Google statt. Sollten wir künftig einwilligungspflichtige Dienste nutzen, holen wir vorher deine Einwilligung
+        von Google statt. Sollten wir künftig einwilligungspflichtige Dienste nutzen, holen wir vorher Ihre Einwilligung
         ein und passen diese Erklärung an.
       </p>
 
       <h2>5. Kontaktaufnahme per E-Mail oder Telefon</h2>
       <p>
-        Wenn du uns per E-Mail oder Telefon kontaktierst, verarbeiten wir die von dir
-        mitgeteilten Daten (z. B. Name, E-Mail-Adresse, Telefonnummer und Inhalt deiner Anfrage), um deine Anfrage zu
+        Wenn Sie uns per E-Mail oder Telefon kontaktierst, verarbeiten wir die von Ihnen
+        mitgeteilten Daten (z. B. Name, E-Mail-Adresse, Telefonnummer und Inhalt Ihrer Anfrage), um Ihre Anfrage zu
         bearbeiten und zu beantworten.
       </p>
       <p>
-        Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn deine Anfrage mit einem Vertrag oder dessen Anbahnung
+        Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn Ihre Anfrage mit einem Vertrag oder dessen Anbahnung
         zusammenhängt, im Übrigen Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen).
-        Wir löschen deine Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen
+        Wir löschen Ihre Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen
         Aufbewahrungspflichten entgegenstehen.
       </p>
       <h2>6. Terminbuchung über zeeg</h2>
       <p>
-        Für die Buchung einer Erstberatung verlinken wir auf das externe Buchungstool zeeg (zeeg.me). Erst wenn du den Link
-        anklickst, wirst du zum Anbieter weitergeleitet; vorher werden keine Daten an zeeg übertragen. Für die Verarbeitung
+        Für die Buchung einer Erstberatung verlinken wir auf das externe Buchungstool zeeg (zeeg.me). Erst wenn Sie den Link
+        anklickst, werden Sie zum Anbieter weitergeleitet; vorher werden keine Daten an zeeg übertragen. Für die Verarbeitung
         auf der Buchungsseite gelten die Datenschutzhinweise von zeeg. Die bei der Buchung angegebenen Daten nutzen wir zur
         Vorbereitung und Durchführung des Termins (Art. 6 Abs. 1 lit. b DSGVO).
       </p>
 
       <h2>7. Empfänger</h2>
       <p>
-        Deine Daten erhalten nur wir sowie Dienstleister, die uns beim Betrieb der Website unterstützen (Hosting, siehe
+        Ihre Daten erhalten nur wir sowie Dienstleister, die uns beim Betrieb der Website unterstützen (Hosting, siehe
         Abschnitt 3), und – im Rahmen einer Terminbuchung – der Anbieter des Buchungstools. Eine Weitergabe an sonstige
         Dritte erfolgt nur, wenn wir gesetzlich dazu verpflichtet sind. Wir verkaufen keine Daten.
       </p>
@@ -104,9 +104,9 @@ export default function Datenschutz() {
 
       <h2>9. Pflicht zur Bereitstellung</h2>
       <p>
-        Du bist weder gesetzlich noch vertraglich verpflichtet, uns personenbezogene Daten bereitzustellen. Ohne die
+        Sie sind weder gesetzlich noch vertraglich verpflichtet, uns personenbezogene Daten bereitzustellen. Ohne die
         technisch notwendigen Verbindungsdaten kann die Website jedoch nicht angezeigt werden, und ohne Kontaktdaten können
-        wir deine Anfrage nicht beantworten.
+        wir Ihre Anfrage nicht beantworten.
       </p>
 
       <h2>10. Keine automatisierte Entscheidungsfindung</h2>
@@ -114,19 +114,19 @@ export default function Datenschutz() {
         Eine automatisierte Entscheidungsfindung einschließlich Profiling im Sinne von Art. 22 DSGVO findet nicht statt.
       </p>
 
-      <h2>11. Deine Rechte</h2>
+      <h2>11. Ihre Rechte</h2>
       <p>
-        Du hast jederzeit das Recht auf Auskunft über deine bei uns gespeicherten Daten (Art. 15 DSGVO), auf Berichtigung
+        Sie haben jederzeit das Recht auf Auskunft über Ihre bei uns gespeicherten Daten (Art. 15 DSGVO), auf Berichtigung
         (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18) und Datenübertragbarkeit (Art. 20 DSGVO).
-        Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3 DSGVO).
+        Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3 DSGVO).
       </p>
       <p>
         <strong>Widerspruchsrecht:</strong> Soweit wir Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO verarbeiten,
-        kannst du aus Gründen, die sich aus deiner besonderen Situation ergeben, jederzeit widersprechen (Art. 21 DSGVO).
+        können Sie aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit widersprechen (Art. 21 DSGVO).
         Eine formlose Nachricht an <a href="mailto:management@ladouz.digital">management@ladouz.digital</a> genügt.
       </p>
       <p>
-        Außerdem hast du das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO). Für uns
+        Außerdem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO). Für uns
         zuständig ist die Landesbeauftragte für Datenschutz und Informationsfreiheit Nordrhein-Westfalen,
         Kavalleriestraße 2–4, 40213 Düsseldorf, <a href="https://www.ldi.nrw.de" target="_blank" rel="noopener">www.ldi.nrw.de</a>.
       </p>
