@@ -1359,7 +1359,7 @@ function Leitgedanke() {
     <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white">
       <div className="px-6 py-[clamp(72px,9vw,120px)]">
         <div className="mx-auto w-full max-w-[1192px]">
-          <Eyebrow normalCase>Was Performance heißt</Eyebrow>
+          <span aria-hidden className="block h-px w-8 bg-[#8dc63f]" />
           <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
             {woerter.map((w, i) => {
               const hervor = w.startsWith("*");
