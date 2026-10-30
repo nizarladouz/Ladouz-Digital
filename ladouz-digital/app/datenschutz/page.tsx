@@ -80,6 +80,12 @@ export default function Datenschutz() {
         Wir löschen deine Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen
         Aufbewahrungspflichten entgegenstehen.
       </p>
+      <p>
+        Anfragen über das Formular werden per E-Mail an uns zugestellt. Für den Versand nutzen wir den Dienst Resend
+        (Resend, Inc., 2261 Market Street #5039, San Francisco, CA 94114, USA) als Auftragsverarbeiter. Dabei werden Name
+        und E-Mail-Adresse übermittelt. Eine Übermittlung in die USA erfolgt auf Grundlage von EU-Standardvertragsklauseln
+        (Art. 46 DSGVO) bzw. des EU-US Data Privacy Framework, soweit der Anbieter zertifiziert ist.
+      </p>
 
       <h2>6. Terminbuchung über zeeg</h2>
       <p>
@@ -92,7 +98,7 @@ export default function Datenschutz() {
       <h2>7. Empfänger</h2>
       <p>
         Deine Daten erhalten nur wir sowie Dienstleister, die uns beim Betrieb der Website unterstützen (Hosting, siehe
-        Abschnitt 3), und – im Rahmen einer Terminbuchung – der Anbieter des Buchungstools. Eine Weitergabe an sonstige
+        Abschnitt 3; E-Mail-Versand von Formularanfragen, siehe Abschnitt 5), und – im Rahmen einer Terminbuchung – der Anbieter des Buchungstools. Eine Weitergabe an sonstige
         Dritte erfolgt nur, wenn wir gesetzlich dazu verpflichtet sind. Wir verkaufen keine Daten.
       </p>
 
