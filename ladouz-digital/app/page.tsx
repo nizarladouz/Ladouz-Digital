@@ -2077,38 +2077,7 @@ function Fragen() {
 type Status = "idle" | "sending" | "success" | "error";
 
 function Kontakt() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  /* Honeypot mit semantisch leerem Namen: ein Feld "firma" wird von
-     Browsern und Passwort-Managern mitunter befüllt – echte Anfragen
-     würden dann still als Spam verworfen. */
-  const [hp, setHp] = useState("");
-  const [status, setStatus] = useState<Status>("idle");
-
-  const bereit = name.trim().length >= 2 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-
-  /* Fällt die API aus, geht die Anfrage nicht verloren: der Mail-Link
-     enthält Name und Adresse bereits vorausgefüllt. */
-  const mailFallback = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage Erstberatung")}&body=${encodeURIComponent(`Name: ${name}\nE-Mail: ${email}\n\n`)}`;
-
-  async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!bereit || status === "sending") return;
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), hp }),
-      });
-      if (!res.ok) throw new Error();
-      setStatus("success");
-      setName("");
-      setEmail("");
-    } catch {
-      setStatus("error");
-    }
-  }
+  const mailAnfrage = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage Erstberatung")}&body=${encodeURIComponent("Hallo Nizar,\n\nich interessiere mich für eine Erstberatung.\n\nName:\nUnternehmen:\nTelefon:\n\n")}`;
 
   return (
     <section id="kontakt" aria-labelledby="kontakt-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
@@ -2131,46 +2100,12 @@ function Kontakt() {
               </p>
               <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
 
-              <div className="mt-12 border-t border-white/15 pt-9" aria-live="polite">
-                {status === "success" ? (
-                  <div>
-                    <p className="text-[1.15rem] font-bold tracking-[-0.018em]">Vielen Dank.</p>
-                    <p className="ld-serif mt-2 text-[1rem] leading-[1.6] text-[#c7d6f5]">Deine Anfrage ist angekommen. Wir melden uns persönlich.</p>
-                    <button type="button" onClick={() => setStatus("idle")} className="mt-5 text-[0.88rem] font-medium text-[#b6e57a] underline underline-offset-4">
-                      Weitere Anfrage senden
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={onSubmit} noValidate>
-                    <p className="text-[1.05rem] font-bold tracking-[-0.018em]">Oder kurz schreiben</p>
-                    <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                      <Feld id="name" label="Name" type="text" value={name} placeholder="Vor- und Nachname" autoComplete="name" onChange={setName} />
-                      <Feld id="email" label="E-Mail" type="email" value={email} placeholder="name@unternehmen.de" autoComplete="email" onChange={setEmail} />
-                    </div>
-
-                    <div aria-hidden className="ld-hp">
-                      <label htmlFor="ld-kennung">Bitte frei lassen</label>
-                      <input id="ld-kennung" name="ld-kennung" type="text" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
-                    </div>
-
-                    <CtaButton submit auf="dunkel" disabled={!bereit || status === "sending"} className="mt-7 w-full sm:w-auto">
-                      {status === "sending" ? "Wird gesendet …" : "Anfrage senden"}
-                    </CtaButton>
-
-                    {status === "error" && (
-                      <p role="alert" className="mt-5 text-[0.92rem] leading-relaxed text-[#ffc2b3]">
-                        Die Übermittlung hat nicht geklappt.{" "}
-                        <a href={mailFallback} className="font-semibold text-white underline underline-offset-4">Anfrage per E-Mail senden</a>
-                        {" "}– deine Angaben sind bereits eingetragen.
-                      </p>
-                    )}
-
-                    <p className="ld-serif mt-5 text-[0.82rem] leading-[1.6] text-[#8695bd]">
-                      Mit dem Absenden stimmst du der Verarbeitung deiner Angaben zur Bearbeitung der Anfrage zu.
-                      Details in der <a href="/datenschutz" className="underline underline-offset-2 hover:text-white">Datenschutzerklärung</a>.
-                    </p>
-                  </form>
-                )}
+              <div className="mt-12 border-t border-white/15 pt-9">
+                <p className="text-[1.05rem] font-bold tracking-[-0.018em]">Oder kurz schreiben</p>
+                <p className="ld-serif mt-2 max-w-[44ch] text-[1rem] leading-[1.6] text-[#c7d6f5]">
+                  Schick uns deine Anfrage per E-Mail – wir melden uns persönlich.
+                </p>
+                <CtaButton href={mailAnfrage} variant="ghost" className="mt-7 w-full sm:w-auto">Anfrage per E-Mail</CtaButton>
               </div>
 
               <dl className="mt-10 grid gap-5 border-t border-white/15 pt-8 sm:grid-cols-2">

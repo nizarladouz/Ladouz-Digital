@@ -68,9 +68,9 @@ export default function Datenschutz() {
         ein und passen diese Erklärung an.
       </p>
 
-      <h2>5. Kontaktaufnahme per E-Mail, Telefon oder Formular</h2>
+      <h2>5. Kontaktaufnahme per E-Mail oder Telefon</h2>
       <p>
-        Wenn du uns per E-Mail, Telefon oder über ein Formular auf dieser Website kontaktierst, verarbeiten wir die von dir
+        Wenn du uns per E-Mail oder Telefon kontaktierst, verarbeiten wir die von dir
         mitgeteilten Daten (z. B. Name, E-Mail-Adresse, Telefonnummer und Inhalt deiner Anfrage), um deine Anfrage zu
         bearbeiten und zu beantworten.
       </p>
@@ -80,13 +80,6 @@ export default function Datenschutz() {
         Wir löschen deine Daten, sobald die Anfrage abschließend bearbeitet ist und keine gesetzlichen
         Aufbewahrungspflichten entgegenstehen.
       </p>
-      <p>
-        Anfragen über das Formular werden per E-Mail an uns zugestellt. Für den Versand nutzen wir den Dienst Resend
-        (Resend, Inc., 2261 Market Street #5039, San Francisco, CA 94114, USA) als Auftragsverarbeiter. Dabei werden Name
-        und E-Mail-Adresse übermittelt. Eine Übermittlung in die USA erfolgt auf Grundlage von EU-Standardvertragsklauseln
-        (Art. 46 DSGVO) bzw. des EU-US Data Privacy Framework, soweit der Anbieter zertifiziert ist.
-      </p>
-
       <h2>6. Terminbuchung über zeeg</h2>
       <p>
         Für die Buchung einer Erstberatung verlinken wir auf das externe Buchungstool zeeg (zeeg.me). Erst wenn du den Link
@@ -98,7 +91,7 @@ export default function Datenschutz() {
       <h2>7. Empfänger</h2>
       <p>
         Deine Daten erhalten nur wir sowie Dienstleister, die uns beim Betrieb der Website unterstützen (Hosting, siehe
-        Abschnitt 3; E-Mail-Versand von Formularanfragen, siehe Abschnitt 5), und – im Rahmen einer Terminbuchung – der Anbieter des Buchungstools. Eine Weitergabe an sonstige
+        Abschnitt 3), und – im Rahmen einer Terminbuchung – der Anbieter des Buchungstools. Eine Weitergabe an sonstige
         Dritte erfolgt nur, wenn wir gesetzlich dazu verpflichtet sind. Wir verkaufen keine Daten.
       </p>
 
