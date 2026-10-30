@@ -16,7 +16,7 @@ export default function Datenschutz() {
 
       <h2>1. Verantwortlicher</h2>
       <p>
-        Ladouz Digital, Inhaber Nizar Ladouz (Einzelunternehmen)<br />
+        Ladouz Digital, Inhaber Nizar Ladouz<br />
         Markt 40, 53721 Siegburg, Deutschland<br />
         Telefon: <a href="tel:+4915770206552">01577 0206552</a><br />
         E-Mail: <a href="mailto:management@ladouz.digital">management@ladouz.digital</a>
