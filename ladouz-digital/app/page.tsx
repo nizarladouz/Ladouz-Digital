@@ -250,7 +250,7 @@ const leistungsfelder: Leistungsfeld[] = [
     nr: "01",
     titel: "Strategie & Consulting",
     wirkung: "Richtung",
-    text: "Ein Zielbild mit klaren Prioritäten und Kennzahlen – die Grundlage, auf der jede Maßnahme ihren Beitrag zum Umsatz nachweisen muss.",
+    text: "Ein Zielbild mit klaren Prioritäten und Kennzahlen – die Grundlage, auf der jede Maßnahme ihren Beitrag zum Ziel nachweisen muss.",
     punkte: ["Zielbild & Roadmap", "Kennzahlen-Architektur", "Steuerung & Governance"],
     symbol: "kompass",
   },
