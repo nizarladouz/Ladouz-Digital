@@ -10,7 +10,7 @@ export default function Impressum() {
   return (
     <LegalLayout titel="Impressum">
       <h2>Angaben gemäß § 5 DDG</h2>
-      <p>Ladouz Digital<br />Inhaber: Nizar Ladouz<br />Markt 40<br />53721 Siegburg<br />Deutschland</p>
+      <p>Ladouz Digital<br />Inhaber: Nizar Ladouz (Einzelunternehmen)<br />Markt 40<br />53721 Siegburg<br />Deutschland</p>
 
       <h2>Kontakt</h2>
       <p>
@@ -27,8 +27,17 @@ export default function Impressum() {
       <h2>Haftung für Inhalte und Links</h2>
       <p>
         Die Inhalte dieser Website werden mit Sorgfalt erstellt. Sie dienen der allgemeinen Information und ersetzen
-        keine individuelle Beratung. Für Inhalte externer Websites, auf die wir verlinken, sind ausschließlich deren
-        Betreiber verantwortlich. Werden uns Rechtsverletzungen bekannt, entfernen wir betroffene Inhalte oder Links umgehend.
+        keine individuelle Beratung. Als Diensteanbieter sind wir für eigene Inhalte nach den allgemeinen Gesetzen
+        verantwortlich, jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen.
+        Für Inhalte externer Websites, auf die wir verlinken, sind ausschließlich deren Betreiber verantwortlich; zum
+        Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar. Werden uns Rechtsverletzungen bekannt, entfernen
+        wir betroffene Inhalte oder Links umgehend.
+      </p>
+
+      <h2>Urheberrecht</h2>
+      <p>
+        Die Inhalte und Werke auf dieser Website unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung und
+        Verbreitung außerhalb der Grenzen des Urheberrechts bedürfen der vorherigen schriftlichen Zustimmung.
       </p>
     </LegalLayout>
   );
