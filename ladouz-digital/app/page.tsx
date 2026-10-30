@@ -56,7 +56,7 @@ import {
 import Image from "next/image";
 import Footer from "./components/Footer";
 
-const SITE = "https://ladouz.digital";
+const SITE = "https://www.ladouz.digital";
 const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
 const MAIL = "management@ladouz.digital";
 const TEL = "01577 0206552";

@@ -20,7 +20,7 @@ const sourceSerif = Source_Serif_4({
   weight: ["400"],
 });
 
-const SITE = "https://ladouz.digital";
+const SITE = "https://www.ladouz.digital";
 const TITEL = "Ladouz Digital – Performance & Consulting für den Mittelstand";
 const BESCHREIBUNG =
   "Performance-getriebene Digitalberatung für den Mittelstand: Strategie, Marketing, Sichtbarkeit, Websites, Software, KI und Daten – gemessen an Anfragen, Aufträgen und Umsatz.";
