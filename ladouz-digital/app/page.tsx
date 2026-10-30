@@ -639,11 +639,12 @@ function Reveal({
   );
 }
 
-function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone?: "dark" | "light" }) {
+/* normalCase: für Labels mit ß – uppercase würde „ß“ zu „SS“ machen. */
+function Eyebrow({ children, tone = "dark", normalCase = false }: { children: ReactNode; tone?: "dark" | "light"; normalCase?: boolean }) {
   return (
     <span className="flex items-center gap-3.5">
       <span aria-hidden className="block h-px w-8 flex-none bg-[#8dc63f]" />
-      <span className={`text-[0.72rem] font-semibold uppercase tracking-[0.3em] ${tone === "light" ? "text-[#9fc65f]" : "text-[#2f5bd7]"}`}>
+      <span className={`font-semibold ${normalCase ? "text-[0.82rem] tracking-[0.14em]" : "text-[0.72rem] uppercase tracking-[0.3em]"} ${tone === "light" ? "text-[#9fc65f]" : "text-[#2f5bd7]"}`}>
         {children}
       </span>
     </span>
@@ -1356,7 +1357,7 @@ function Leitgedanke() {
     <section ref={ref} aria-label="Was Performance heißt" className="relative bg-white" style={{ height: "120vh" }}>
       <div className="sticky top-0 flex h-[100svh] items-center px-6 pt-[74px]">
         <div className="mx-auto w-full max-w-[1192px]">
-          <Eyebrow>Was Performance heißt</Eyebrow>
+          <Eyebrow normalCase>Was Performance heißt</Eyebrow>
           <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
             {woerter.map((w, i) => {
               const hervor = w.startsWith("*");
