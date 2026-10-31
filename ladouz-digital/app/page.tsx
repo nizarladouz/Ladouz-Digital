@@ -1504,8 +1504,8 @@ function Bestandsaufnahme() {
    ═══════════════════════════════════════════════════════════ */
 
 function Leistungsfelder() {
-  /* Module füllen sich strikt nacheinander – das nächste erst, wenn das vorige voll ist
-     im Bild ist; Start überlappend (1,4 s Versatz), Abschlüsse nie gleichzeitig. */
+  /* Silber-Schimmer gleitet strikt nacheinander über die Module – nur während gescrollt wird
+     (Animation pausiert, sobald das Scrollen stoppt). Nächstes Modul nach Ende des vorigen. */
   const secRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     const sec = secRef.current;
@@ -1516,16 +1516,23 @@ function Leistungsfelder() {
     let next = 0, busy = false, timer = 0;
     const weiter = () => {
       if (busy || next >= els.length || !gesehen[next]) return;
-      els[next].classList.add("is-voll");
+      const el = els[next];
+      el.classList.add("is-voll");
       busy = true;
-      timer = window.setTimeout(() => { busy = false; next++; weiter(); }, 1400);
+      el.addEventListener("animationend", () => { busy = false; next++; weiter(); }, { once: true });
     };
+    const onScroll = () => {
+      sec.classList.add("ld-scrollt");
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => sec.classList.remove("ld-scrollt"), 140);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((e) => { if (e.isIntersecting) { gesehen[els.findIndex((el) => el.parentElement === e.target)] = true; obs.unobserve(e.target); } });
       weiter();
     }, { threshold: 0, rootMargin: "0px 0px -35% 0px" });
     els.forEach((el) => el.parentElement && obs.observe(el.parentElement));
-    return () => { obs.disconnect(); window.clearTimeout(timer); };
+    return () => { obs.disconnect(); window.clearTimeout(timer); window.removeEventListener("scroll", onScroll); };
   }, []);
   return (
     <section ref={secRef} id="leistungen" aria-labelledby="leistungen-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
@@ -2436,7 +2443,8 @@ function GlobalStyles() {
     .ld-fuell::before { content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; width: 70%; transform: translateX(-110%) skewX(-14deg); opacity: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(176,188,208,.16) 34%, rgba(255,255,255,.9) 48%, rgba(255,255,255,.9) 52%, rgba(176,188,208,.16) 66%, rgba(255,255,255,0) 100%); }
     .ld-reveal.is-visible .ld-fuell::before, .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation: ldsilber 2.2s cubic-bezier(.45,.05,.25,1) var(--fd, 0s) 1 both; }
     .ld-fuell-seq .ld-reveal.is-visible .ld-fuell:not(.is-voll)::before { animation: none; }
-    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation-delay: 0s; }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation-delay: 0s; animation-play-state: paused; }
+    .ld-fuell-seq.ld-scrollt .ld-reveal .ld-fuell.is-voll::before { animation-play-state: running; }
     @keyframes ldsilber { 0% { transform: translateX(-110%) skewX(-14deg); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(210%) skewX(-14deg); opacity: 0; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
