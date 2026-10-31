@@ -203,6 +203,9 @@ const WALZE_TIEFE = 220;
 const leitgedanke =
   "*Digitale Infrastruktur* ist die Voraussetzung für *Performance durch KI.* Erst wenn *Strategie,* *Management,* *Marketing,* *Sichtbarkeit,* *Conversion,* *Plattformen,* *Prozessoptimierung,* *Automatisierung,* *KI* und *Daten* als ein System sitzen, lässt sich die Performance des *gesamten Systems* wirklich verbessern.";
 
+const kernsatz =
+  "Sie brauchen keinen *einzelnen Experten* mehr. Sie brauchen eine *Infrastruktur aus Experten,* die sich austauschen und *fortlaufend optimieren* — und eine *ganzheitliche Digital- und KI-Strategie,* in der alles miteinander zusammenhängt.";
+
 /* Jede Zeile ist ein Paar: derselbe Bereich vorher und nachher. */
 const wandel = [
   {
@@ -1376,6 +1379,24 @@ function Leitgedanke() {
   );
 }
 
+function Kernsatz() {
+  const ref = useScrollVariable<HTMLDivElement>();
+  const woerter = kernsatz.split(" ");
+  const n = woerter.length;
+  return (
+    <div ref={ref} className="mt-12">
+      <span aria-hidden className="block h-px w-8 bg-[#8dc63f]" />
+      <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
+        {woerter.map((w, i) => (
+          <span key={i} className={`ld-wort ${w.startsWith("*") ? "text-[#2f5bd7]" : ""}`} style={{ "--i": (i / n).toFixed(4) } as CSSProperties}>
+            {w.replace(/\*/g, "")}{i < n - 1 ? " " : ""}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 /* ══════════════════════════ Wandel ══════════════════════════
    Die A-nach-B-Logik als Tabelle: jede Zeile ist derselbe Bereich
    vorher und nachher. Dadurch ist der Wert ohne Erklärung lesbar.
@@ -1395,24 +1416,7 @@ function Wandel() {
             sondern die intelligente Verbindung von Kanälen, Websites, Systemen und Mitarbeitern — so dass
             alles miteinander arbeitet.
           </Lead>
-          <Lead className="!mt-5 font-semibold italic !text-[#0b1233]">
-            <mark
-              className="box-decoration-clone px-1.5 -mx-1 rounded-sm text-inherit"
-              style={{
-                backgroundColor: "transparent",
-                backgroundImage: "linear-gradient(100deg, rgba(141,198,63,0) 0%, rgba(141,198,63,0.45) 1.5%, rgba(141,198,63,0.5) 50%, rgba(141,198,63,0.42) 98.5%, rgba(141,198,63,0) 100%)",
-                backgroundSize: "100% 72%",
-                backgroundPosition: "0 70%",
-                backgroundRepeat: "no-repeat",
-                WebkitBoxDecorationBreak: "clone",
-                boxDecorationBreak: "clone",
-              }}
-            >
-              Sie brauchen keinen einzelnen Experten mehr. Sie brauchen eine Infrastruktur aus Experten, die sich
-              austauschen und fortlaufend optimieren — und eine ganzheitliche Digital- und KI-Strategie, in der
-              alles miteinander zusammenhängt.
-            </mark>
-          </Lead>
+          <Kernsatz />
         </Reveal>
 
         <div className="mt-16">
