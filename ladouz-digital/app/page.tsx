@@ -1475,7 +1475,9 @@ function Bestandsaufnahme() {
     <section id="bestandsaufnahme" aria-labelledby="bestandsaufnahme-titel" className="bg-[#f7f9fc] px-6 py-[clamp(72px,9vw,112px)]">
       <div className="mx-auto grid max-w-[1000px] items-center gap-12 md:grid-cols-[300px_1fr]">
         <Reveal className="order-2 md:order-1">
-          <div aria-hidden="true" className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] bg-[linear-gradient(150deg,#131f5c_0%,#0b1233_70%)] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]" />
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] bg-[#0b1233] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
+            <Image src="/bestandsaufnahme.webp" alt="30 Minuten Videocall, kostenlos: Potenzialanalyse mit Ist-Analyse, Potenzialen und nächsten Schritten" fill className="object-cover" sizes="300px" />
+          </div>
         </Reveal>
         <Reveal delay={100} className="order-1 md:order-2">
           <h2 id="bestandsaufnahme-titel" className="text-[clamp(1.7rem,3vw,2.3rem)] font-medium leading-[1.12] tracking-[-0.025em] text-[#0b1233]">
