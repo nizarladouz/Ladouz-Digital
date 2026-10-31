@@ -1409,7 +1409,7 @@ function Wandel() {
       {/* Dezenter Berg-Schimmer aus dem Hero, aus dem Weiß heraus */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-[position:65%_30%] opacity-[0.10] grayscale-[35%]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-[position:65%_30%] opacity-[0.12] grayscale-[35%]"
         style={{ backgroundImage: "url(/motive/hero-berg.jpg)" }}
       />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#f7f9fc] via-[#f7f9fc]/40 to-[#f7f9fc]" />
