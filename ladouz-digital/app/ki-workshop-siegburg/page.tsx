@@ -180,13 +180,8 @@ export default function KiWorkshopSiegburg() {
             {ablauf.map((s, i) => (
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
                 {s.img && (
-                  <div className={`relative isolate p-4 sm:p-7 ${s.hoch ? "mx-auto w-full max-w-[440px]" : ""} ${i % 2 ? "md:order-2" : ""}`}>
-                    {/* CI-Formen hinter dem Bild */}
-                    <div aria-hidden className={`absolute -z-10 h-[78%] w-[72%] rounded-[32px] bg-gradient-to-br from-[#131f5c] to-[#0b1233] ${i % 2 ? "right-0 top-0" : "left-0 top-0"}`} />
-                    <div aria-hidden className={`absolute -z-10 h-[46%] w-[46%] rounded-[28px] bg-gradient-to-tr from-[#8dc63f]/35 to-[#8dc63f]/5 ${i % 2 ? "bottom-0 left-0" : "bottom-0 right-0"}`} />
-                    <div aria-hidden className={`absolute -z-10 h-24 w-24 rounded-full border border-[#8dc63f]/60 ${i % 2 ? "-bottom-3 right-10" : "-bottom-3 left-10"}`} />
-                    <div aria-hidden className={`absolute -z-10 h-20 w-28 bg-[radial-gradient(#2f5bd7_1.2px,transparent_1.2px)] [background-size:12px_12px] opacity-40 ${i % 2 ? "-top-2 left-6" : "-top-2 right-6"}`} />
-                    <div className={`relative overflow-hidden rounded-[24px] ring-1 ring-white/70 ${s.hoch ? "aspect-[3/4]" : "aspect-[4/3]"} shadow-[0_34px_70px_-30px_rgba(11,18,51,.6)]`}>
+                  <div className={`relative ${s.hoch ? "mx-auto w-full max-w-[380px]" : ""} ${i % 2 ? "md:order-2" : ""}`}>
+                    <div className={`relative overflow-hidden rounded-[28px] ring-1 ring-[#e7ecf5] ${s.hoch ? "aspect-[3/4]" : "aspect-[4/3]"} shadow-[0_30px_60px_-34px_rgba(11,18,51,.4)]`}>
                       <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
                     </div>
                   </div>
