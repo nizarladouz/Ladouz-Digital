@@ -130,7 +130,8 @@ export default function KiWorkshopSiegburg() {
         <div className="mx-auto grid max-w-[1192px] gap-12 lg:grid-cols-[1fr_1.1fr]">
           <div><p className={label}>Die Ausgangslage</p><h2 className={`${h2} mt-4`}>Jeder redet über KI. Überall sieht man KI. Doch wie sehr profitieren Sie wirklich davon?</h2></div>
           <div className={`${serif} space-y-5 text-[1.08rem] leading-[1.7] text-[#43507a]`}>
-            <p>Sie haben ChatGPT, Claude und weitere KI-Modelle ausprobiert – vielleicht sogar schon erste Workflows. Ein Mitarbeiter hat ein paar Texte geschrieben, ein paar Bilder erzeugt. Und dann ging der Alltag weiter wie vorher.</p>
+            <p>Sie haben ChatGPT, Claude und weitere KI-Modelle ausprobiert – vielleicht sogar schon erste Workflows. Ein Mitarbeiter hat ein paar Texte geschrieben, ein paar Flyer erstellt, etwas fürs Marketing – ordentlich, aber nicht auf Top-Niveau. Und dann ging der Alltag weiter wie vorher.</p>
+            <p>Das ist nicht der wahre Hebel. Der wahre Hebel sind KI-Agenten, die für Sie im Stundentakt erledigen, was erledigt werden muss. Genau dorthin wollen wir mit Ihnen.</p>
             <p>Das liegt nicht am Potenzial der Technologie. Es fehlt die Übersetzung in tatsächliche Produktivität – in erledigte Aufgaben, die sich für Ihren Betrieb wirklich lohnen.</p>
             <ul className="space-y-3 border-l-2 border-[#8dc63f] pl-5 text-[#0b1233]">
               <li>Welche Aufgaben in Ihrem Betrieb lohnen sich wirklich?</li>
