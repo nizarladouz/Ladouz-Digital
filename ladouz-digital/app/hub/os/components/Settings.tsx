@@ -10,7 +10,7 @@ export function Settings({ client, dispatch, canDelete }: { client: Client; disp
     <div style={{ maxWidth: 720 }}>
       <div style={{ width: 40, height: 3, background: client.primaryColor, marginBottom: 14 }} />
       <h1 className="os-h" style={{ fontSize: "clamp(26px,3vw,36px)" }}>CI-Einstellungen</h1>
-      <p style={{ color: "rgba(255,255,255,.6)", margin: "6px 0 28px" }}>Corporate Identity des Mandanten – steuert Logo und Akzentfarbe im gesamten System.</p>
+      <p style={{ color: "#5b6478", margin: "6px 0 28px" }}>Corporate Identity des Mandanten – steuert Logo und Akzentfarbe im gesamten System.</p>
       <div className="os-card" style={{ padding: 24, display: "grid", gap: 20 }}>
         <label style={{ display: "grid", gap: 6 }}><span className="os-eyebrow">Mandantenname</span>
           <input className="os-in" value={client.name} onChange={(e) => up({ name: e.target.value })} /></label>
@@ -20,11 +20,11 @@ export function Settings({ client, dispatch, canDelete }: { client: Client; disp
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
             {PRESETS.map((p) => <button key={p} onClick={() => up({ primaryColor: p })} title={p} style={{ width: 32, height: 32, borderRadius: 10, background: p, cursor: "pointer", border: client.primaryColor === p ? "3px solid #0b1233" : "0", boxShadow: client.primaryColor === p ? `0 0 0 2px ${p}` : "none" }} />)}
             <input type="color" value={client.primaryColor} onChange={(e) => up({ primaryColor: e.target.value })} style={{ width: 40, height: 34, border: 0, background: "none", cursor: "pointer" }} />
-            <code style={{ color: "rgba(255,255,255,.6)" }}>{client.primaryColor}</code>
+            <code style={{ color: "#5b6478" }}>{client.primaryColor}</code>
           </div></div>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 12, background: "rgba(255,255,255,.04)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, padding: 16, borderRadius: 12, background: "rgba(141,198,63,.06)" }}>
           <Logo client={client} size={44} />
-          <div><div className="os-h" style={{ fontSize: 17 }}>{client.name || "Mandant"}</div><div style={{ color: "rgba(255,255,255,.6)", fontSize: 12 }}>Vorschau</div></div>
+          <div><div className="os-h" style={{ fontSize: 17 }}>{client.name || "Mandant"}</div><div style={{ color: "#5b6478", fontSize: 12 }}>Vorschau</div></div>
         </div>
       </div>
       <div style={{ display: "flex", gap: 10, marginTop: 24, flexWrap: "wrap" }}>

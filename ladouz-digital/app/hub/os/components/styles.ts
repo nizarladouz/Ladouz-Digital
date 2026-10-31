@@ -40,4 +40,24 @@ export const CSS = `
 .os-sel option{color:${NAVY};background:#fff}
 .os-menu{display:none}
 @media(max-width:860px){.os{grid-template-columns:1fr}.os-side{display:none;position:fixed;top:64px;left:0;bottom:0;width:280px;z-index:40;background:#0b1233;box-shadow:8px 0 24px rgba(0,0,0,.4)}.os-side.open{display:block}.os-menu{display:inline-flex}.os-hide-m{display:none}}
+/* Hauptfläche hell: weiß mit dezentem CI-Grün, Sidebar/Topbar bleiben Navy-Premium */
+.os-main{background:radial-gradient(900px 420px at 100% 0%,rgba(141,198,63,.07),transparent 60%),#fff;color:#0b1233;border-top-left-radius:18px;box-shadow:inset 1px 1px 0 rgba(255,255,255,.6)}
+.os-main .os-h{color:#0b1233}
+.os-main .os-eyebrow{color:#6b7385}
+.os-main .os-btn{border-color:rgba(11,18,51,.16);background:#fff;color:#0b1233}
+.os-main .os-btn:hover{border-color:${GREEN};background:rgba(141,198,63,.07)}
+.os-main .os-btn.ghost{border-color:transparent;background:none;color:#7a8296}
+.os-main .os-btn.ghost:hover{color:#0b1233;background:rgba(11,18,51,.05)}
+.os-main .os-in{border-color:rgba(11,18,51,.14);background:#fff;color:#0b1233}
+.os-main .os-in::placeholder{color:#9aa1b2}
+.os-main .os-bar{background:rgba(11,18,51,.07)}
+.os-main .os-card{background:#fff;border:1px solid rgba(11,18,51,.08);outline:0;box-shadow:0 1px 2px rgba(11,18,51,.04),0 14px 32px -22px rgba(11,18,51,.25);backdrop-filter:none;border-left:3px solid rgba(141,198,63,.55)}
+.os-main .os-card:hover{border-color:rgba(11,18,51,.12);border-left-color:${GREEN}}
+.os-main .os-task{border-top-color:rgba(11,18,51,.06)}
+.os-main .os-task:hover{background:rgba(141,198,63,.04)}
+.os-main .os-chk{border-color:rgba(11,18,51,.25);background:#fff;color:#fff}
+.os-main .os-chk.ok{border-color:${GREEN};background:${GREEN}}
+.os-main .os-pill a{color:#0b1233}
+.os-main .hub-pill-d{--pill:linear-gradient(100deg,#0b1233 0%,#16205a 100%);--ring:rgba(141,198,63,.45);--kante:rgba(255,255,255,.2);--schatten:rgba(11,18,51,.25);color:#fff}
+@media(max-width:860px){.os-main{border-radius:0}}
 `;
