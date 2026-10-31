@@ -108,7 +108,7 @@ export default function KiWorkshopSiegburg() {
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
           <div className="mt-20 max-w-[780px]">
-            <p className={label}>Vor Ort in Siegburg · 20 Minuten von Bonn · jeden zweiten Samstag</p>
+            <p className={label}>Vor Ort in Siegburg · Region Bonn/Rhein-Sieg · ca. 20 Minuten von Bonn</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
               KI-Workshop Siegburg & Bonn: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
             </h1>
