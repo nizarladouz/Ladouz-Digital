@@ -16,11 +16,11 @@ const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
 const ANFRAGE = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage KI-Workshop Siegburg")}&body=${encodeURIComponent("Guten Tag Herr Ladouz,\n\nwir interessieren uns für den KI-Workshop vor Ort in Siegburg.\n\nName:\nUnternehmen:\nBranche / Mitarbeiterzahl:\nTeilnehmer (Anzahl):\nWunschtermin (Samstag):\nTelefon:\n\n")}`;
 
 export const metadata: Metadata = {
-  title: "KI-Workshop Siegburg – vor Ort für den Mittelstand im Rhein-Sieg-Kreis",
+  title: "KI-Workshop Siegburg & Bonn – vor Ort für den Mittelstand im Rhein-Sieg-Kreis",
   description:
-    "KI-Workshop in Siegburg: Jeden zweiten Samstag vor Ort, für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Keine Spielereien – nur KI, die Zeit, Nerven und Geld spart. Mit Umsetzungsplan für Montag.",
+    "KI-Workshop für Siegburg & Bonn: Jeden zweiten Samstag vor Ort in unserem Büro in Siegburg, 20 Minuten von Bonn, für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Keine Spielereien – nur KI, die Zeit, Nerven und Geld spart. Mit Umsetzungsplan für Montag.",
   alternates: { canonical: "/ki-workshop-siegburg" },
-  openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg | ladouz.digital", images: ["/standort/buero-1.webp"] },
+  openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg & Bonn | ladouz.digital", images: ["/standort/buero-1.webp"] },
 };
 
 const serif = "font-[family-name:var(--font-source-serif)]";
@@ -87,7 +87,7 @@ export default function KiWorkshopSiegburg() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Event", name: "KI-Workshop Siegburg für den Mittelstand", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        "@type": "Event", name: "KI-Workshop Siegburg & Bonn für den Mittelstand", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled", description: metadata.description,
         location: { "@type": "Place", name: "Ladouz Digital – Büro Siegburg", address: { "@type": "PostalAddress", streetAddress: "Markt 40", postalCode: "53721", addressLocality: "Siegburg", addressRegion: "NRW", addressCountry: "DE" } },
         organizer: { "@type": "Organization", name: "Ladouz Digital", url: SITE }, url: `${SITE}/ki-workshop-siegburg`,
@@ -108,9 +108,9 @@ export default function KiWorkshopSiegburg() {
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
           <div className="mt-20 max-w-[780px]">
-            <p className={label}>Vor Ort in Siegburg · jeden zweiten Samstag</p>
+            <p className={label}>Vor Ort in Siegburg · 20 Minuten von Bonn · jeden zweiten Samstag</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
-              KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
+              KI-Workshop Siegburg & Bonn: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
             </h1>
             <p className={`${serif} mt-7 max-w-[56ch] text-[clamp(1.05rem,1.6vw,1.22rem)] leading-[1.65] text-[#c7d6f5]`}>
               Für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Ein Samstag in unserem Büro – und Sie wissen genau,
@@ -180,8 +180,15 @@ export default function KiWorkshopSiegburg() {
             {ablauf.map((s, i) => (
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
                 {s.img && (
-                  <div className={`relative overflow-hidden rounded-[28px] ${s.hoch ? "mx-auto aspect-[3/4] w-full max-w-[380px]" : "aspect-[4/3]"} shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)] ${i % 2 ? "md:order-2" : ""}`}>
-                    <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
+                  <div className={`relative isolate p-4 sm:p-7 ${s.hoch ? "mx-auto w-full max-w-[440px]" : ""} ${i % 2 ? "md:order-2" : ""}`}>
+                    {/* CI-Formen hinter dem Bild */}
+                    <div aria-hidden className={`absolute -z-10 h-[78%] w-[72%] rounded-[32px] bg-gradient-to-br from-[#131f5c] to-[#0b1233] ${i % 2 ? "right-0 top-0" : "left-0 top-0"}`} />
+                    <div aria-hidden className={`absolute -z-10 h-[46%] w-[46%] rounded-[28px] bg-gradient-to-tr from-[#8dc63f]/35 to-[#8dc63f]/5 ${i % 2 ? "bottom-0 left-0" : "bottom-0 right-0"}`} />
+                    <div aria-hidden className={`absolute -z-10 h-24 w-24 rounded-full border border-[#8dc63f]/60 ${i % 2 ? "-bottom-3 right-10" : "-bottom-3 left-10"}`} />
+                    <div aria-hidden className={`absolute -z-10 h-20 w-28 bg-[radial-gradient(#2f5bd7_1.2px,transparent_1.2px)] [background-size:12px_12px] opacity-40 ${i % 2 ? "-top-2 left-6" : "-top-2 right-6"}`} />
+                    <div className={`relative overflow-hidden rounded-[24px] ring-1 ring-white/70 ${s.hoch ? "aspect-[3/4]" : "aspect-[4/3]"} shadow-[0_34px_70px_-30px_rgba(11,18,51,.6)]`}>
+                      <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
+                    </div>
                   </div>
                 )}
                 <div className={s.img ? "" : "max-w-[640px]"}>
