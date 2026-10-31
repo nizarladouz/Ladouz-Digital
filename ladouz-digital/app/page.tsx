@@ -2432,15 +2432,15 @@ function GlobalStyles() {
     }
 
     /* Leistungsfelder: Modul füllt sich beim Einblenden mit CI-Grün (Flüssigkeit von unten). */
-    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(101%); transition: transform 2.4s cubic-bezier(.22,.8,.24,1) var(--fd, 0s); background: linear-gradient(to top, rgba(141,198,63,.20) 0%, rgba(141,198,63,.10) 45%, rgba(141,198,63,.05) 100%); }
-    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.22'/%3E%3C/svg%3E\") repeat-x; background-size: 240px 14px; animation: ldwelle 3.2s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
+    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(101%); transition: transform 2.4s cubic-bezier(.22,.8,.24,1) var(--fd, 0s); background: linear-gradient(to top, rgba(141,198,63,.09) 0%, rgba(141,198,63,.045) 50%, rgba(141,198,63,.015) 100%); }
+    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -7px; height: 8px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.09'/%3E%3C/svg%3E\") repeat-x; background-size: 320px 8px; animation: ldwelle 7s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
     .ld-reveal.is-visible .ld-fuell { transform: translateY(0); }
     .ld-reveal.is-visible .ld-fuell::before { opacity: 0; }
     .ld-fuell-seq .ld-reveal.is-visible .ld-fuell { transform: translateY(101%); transition-delay: 0s; }
     .ld-fuell-seq .ld-reveal.is-visible .ld-fuell::before { opacity: 1; }
     .ld-fuell-seq .ld-reveal .ld-fuell.is-voll { transform: translateY(0); }
     .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { opacity: 0; transition-delay: 2.4s; }
-    @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 240px; } }
+    @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 320px; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
