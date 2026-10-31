@@ -1466,7 +1466,7 @@ function Wandel() {
    Bildsprache wie Schritt 01 der Workshop-Seite (Portrait links, Text + Checkliste rechts). */
 function Bestandsaufnahme() {
   const punkte = [
-    "Wo steht Ihr Unternehmen heute digital – und wo verlieren Sie Zeit und Umsatz?",
+    "Wo steht Ihr Unternehmen heute digital – und wo steht KI in Ihrem Unternehmen?",
     "Welche Systeme sind vorhanden und wie spielen sie zusammen?",
     "Wo sitzt der größte Hebel für Automation und KI?",
     "Klare Empfehlung für die nächsten Schritte – unverbindlich",
