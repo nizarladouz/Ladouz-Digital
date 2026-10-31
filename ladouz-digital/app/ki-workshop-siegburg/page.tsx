@@ -280,9 +280,13 @@ export default function KiWorkshopSiegburg() {
 }
 
 /* ── CI-Grafiken für Ablauf 02/03 (bis echte Mockups kommen) ── */
-const kfStyles = `@keyframes ldflow{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--w));opacity:0}}
-@keyframes ldpop{0%,60%{opacity:.25}75%,100%{opacity:1}}
+const kfStyles = `@keyframes ldflow{0%{transform:translateX(0);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(var(--w));opacity:0}}
+@keyframes ldpop{0%,55%{opacity:.35}70%,100%{opacity:1}}
+@keyframes ldglow{0%,100%{opacity:.55}50%{opacity:.9}}
 @media (prefers-reduced-motion:reduce){.ld-anim{animation:none!important;opacity:1!important}}`;
+
+const karte = "relative overflow-hidden rounded-[14px] sm:aspect-[4/3] sm:flex sm:flex-col sm:justify-center";
+const schatten = "shadow-[0_1px_2px_rgba(11,18,51,.06),0_12px_32px_-12px_rgba(11,18,51,.18),0_40px_80px_-40px_rgba(11,18,51,.22)]";
 
 function GrafikAgenten() {
   const zeilen = [
@@ -292,25 +296,36 @@ function GrafikAgenten() {
     ["Monatszahlen", "Bericht bereit"],
   ];
   return (
-    <div className="relative overflow-hidden rounded-[6px] sm:aspect-[4/3] bg-gradient-to-br from-[#131f5c] to-[#0b1233] p-6 sm:p-8 shadow-[0_18px_40px_-24px_rgba(11,18,51,.35)]" aria-hidden>
+    <div className={`${karte} ${schatten} bg-[#0b1233] p-6 sm:p-8`} aria-hidden>
       <style>{kfStyles}</style>
-      <div className="flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#9aa8cc]">
-        <span>Von Hand</span><span className="rounded-full border border-[#8dc63f]/50 px-3 py-1 text-[#8dc63f]">KI-Agent</span><span>Erledigt</span>
+      {/* weiche Lichtflächen */}
+      <div className="ld-anim pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#2f5bd7]/30 blur-3xl" style={{ animation: "ldglow 9s ease-in-out infinite" }} />
+      <div className="ld-anim pointer-events-none absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#8dc63f]/15 blur-3xl" style={{ animation: "ldglow 11s 2s ease-in-out infinite" }} />
+      <div className="pointer-events-none absolute inset-0 rounded-[14px] ring-1 ring-inset ring-white/10" />
+      <div className="relative">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 text-[0.64rem] font-medium uppercase tracking-[0.18em] text-white/45 sm:gap-3">
+          <span>Von Hand</span>
+          <span className="rounded-full bg-white/[0.06] px-3 py-1 text-[#b7dd85] ring-1 ring-inset ring-[#8dc63f]/30 backdrop-blur">KI-Agent</span>
+          <span className="text-right">Erledigt</span>
+        </div>
+        <div className="mt-6 space-y-2.5 sm:mt-7 sm:space-y-3">
+          {zeilen.map(([a, b], k) => (
+            <div key={a} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-3">
+              <span className="rounded-[10px] bg-white/[0.05] px-3 py-2.5 text-[0.74rem] leading-tight text-white/75 ring-1 ring-inset ring-white/[0.08] backdrop-blur sm:text-[0.82rem]">{a}</span>
+              <span className="relative block h-px w-8 bg-gradient-to-r from-white/5 via-white/20 to-white/5 sm:w-14" style={{ ["--w" as string]: "28px" }}>
+                <span className="ld-anim absolute -top-[2.5px] left-0 h-[6px] w-[6px] rounded-full bg-[#8dc63f] shadow-[0_0_10px_2px_rgba(141,198,63,.45)]" style={{ animation: `ldflow 3.6s ${k * 0.9}s cubic-bezier(.4,0,.2,1) infinite` }} />
+              </span>
+              <span className="ld-anim flex items-center gap-2 rounded-[10px] bg-gradient-to-br from-[#8dc63f]/[0.16] to-[#8dc63f]/[0.04] px-3 py-2.5 text-[0.74rem] leading-tight text-white ring-1 ring-inset ring-[#8dc63f]/25 sm:text-[0.82rem]" style={{ animation: `ldpop 3.6s ${k * 0.9}s ease-in-out infinite` }}>
+                <span className="grid h-4 w-4 flex-none place-items-center rounded-full bg-[#8dc63f] text-[0.6rem] font-bold text-[#0b1233]">✓</span>{b}
+              </span>
+            </div>
+          ))}
+        </div>
+        <p className="mt-7 flex items-center gap-2 text-[0.7rem] text-white/45 sm:mt-8">
+          <span className="ld-anim h-1.5 w-1.5 rounded-full bg-[#8dc63f]" style={{ animation: "ldglow 2.4s ease-in-out infinite" }} />
+          Läuft im Hintergrund – Stunde für Stunde.
+        </p>
       </div>
-      <div className="mt-6 space-y-3 sm:mt-8 sm:space-y-4">
-        {zeilen.map(([a, b], k) => (
-          <div key={a} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-3">
-            <span className="rounded-[6px] bg-white/[0.06] px-2.5 py-2 text-[0.74rem] leading-tight text-[#c7d6f5] sm:text-[0.85rem]">{a}</span>
-            <span className="relative block h-[2px] w-8 bg-white/10 sm:w-16" style={{ ["--w" as string]: "28px" }}>
-              <span className="ld-anim absolute -top-[3px] left-0 h-2 w-2 rounded-full bg-[#8dc63f]" style={{ animation: `ldflow 2.4s ${k * 0.5}s ease-in-out infinite` }} />
-            </span>
-            <span className="ld-anim flex items-center gap-1.5 rounded-[6px] bg-[#8dc63f]/10 px-2.5 py-2 text-[0.74rem] leading-tight text-white sm:text-[0.85rem]" style={{ animation: `ldpop 2.4s ${k * 0.5}s ease-in-out infinite` }}>
-              <span className="text-[#8dc63f]">✓</span>{b}
-            </span>
-          </div>
-        ))}
-      </div>
-      <p className="mt-6 text-[0.72rem] sm:absolute sm:bottom-5 sm:left-8 sm:mt-0 tracking-[0.08em] text-[#9aa8cc] ">Läuft im Hintergrund – Stunde für Stunde.</p>
     </div>
   );
 }
@@ -318,27 +333,36 @@ function GrafikAgenten() {
 function GrafikFramework() {
   const stufen = [["01", "Prozess klären"], ["02", "Automatisieren"], ["03", "KI einsetzen"]];
   return (
-    <div className="relative overflow-hidden rounded-[6px] sm:aspect-[4/3] bg-white p-6 ring-1 ring-[#e7ecf5] sm:p-8 shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]" aria-hidden>
+    <div className={`${karte} ${schatten} bg-gradient-to-b from-white to-[#f7f9fc] p-6 sm:p-8`} aria-hidden>
       <style>{kfStyles}</style>
-      <div className="flex items-center justify-between">
-        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#8dc63f]">Umsetzungsprotokoll</span>
-        <span className="text-[0.7rem] text-[#9aa8cc]">30 Tage</span>
-      </div>
-      <div className="mt-6 flex items-stretch gap-2 sm:mt-8">
-        {stufen.map(([n, t], k) => (
-          <div key={n} className="ld-anim flex-1 rounded-[6px] border border-[#e7ecf5] bg-[#f7f9fc] p-3" style={{ animation: `ldpop 3s ${k * 0.6}s ease-in-out infinite` }}>
-            <p className="font-[family-name:var(--font-jost)] text-[1.3rem] font-light text-[#8dc63f]">{n}</p>
-            <p className="mt-1 text-[0.78rem] font-medium text-[#0b1233] sm:text-[0.85rem]">{t}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-5 space-y-2.5 sm:mt-7">
-        {[["Prozesse nach Hebel priorisiert", 92], ["Zuständigkeiten festgelegt", 74], ["Kennzahlen definiert", 58]].map(([t, w]) => (
-          <div key={t as string}>
-            <div className="flex justify-between text-[0.76rem] text-[#43507a]"><span>{t}</span><span className="text-[#8dc63f]">✓</span></div>
-            <div className="mt-1 h-[5px] rounded-full bg-[#eef2f8]"><div className="h-full rounded-full bg-gradient-to-r from-[#0b1233] to-[#2f5bd7]" style={{ width: `${w}%` }} /></div>
-          </div>
-        ))}
+      <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#8dc63f]/10 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 rounded-[14px] ring-1 ring-inset ring-[#0b1233]/[0.06]" />
+      <div className="relative">
+        <div className="flex items-center justify-between">
+          <span className="text-[0.64rem] font-medium uppercase tracking-[0.18em] text-[#0b1233]/50">Umsetzungsprotokoll</span>
+          <span className="rounded-full bg-[#8dc63f]/10 px-2.5 py-1 text-[0.66rem] font-medium text-[#5d8f1f] ring-1 ring-inset ring-[#8dc63f]/25">30 Tage</span>
+        </div>
+        <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:gap-3">
+          {stufen.map(([n, t], k) => (
+            <div key={n} className="ld-anim rounded-[10px] bg-white p-3 ring-1 ring-inset ring-[#0b1233]/[0.07] shadow-[0_1px_2px_rgba(11,18,51,.04),0_6px_16px_-8px_rgba(11,18,51,.12)] sm:p-3.5" style={{ animation: `ldpop 4.5s ${k * 1.1}s ease-in-out infinite` }}>
+              <p className="font-[family-name:var(--font-jost)] text-[0.72rem] font-medium tracking-[0.08em] text-[#8dc63f]">{n}</p>
+              <p className="mt-1.5 text-[0.76rem] font-medium leading-tight text-[#0b1233] sm:text-[0.84rem]">{t}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 space-y-3.5 sm:mt-7">
+          {[["Prozesse nach Hebel priorisiert", 92], ["Zuständigkeiten festgelegt", 74], ["Kennzahlen definiert", 58]].map(([t, w]) => (
+            <div key={t as string}>
+              <div className="flex items-center justify-between text-[0.74rem] text-[#0b1233]/70">
+                <span>{t}</span>
+                <span className="grid h-4 w-4 place-items-center rounded-full bg-[#8dc63f]/15 text-[0.58rem] font-bold text-[#5d8f1f]">✓</span>
+              </div>
+              <div className="mt-1.5 h-[4px] overflow-hidden rounded-full bg-[#0b1233]/[0.06]">
+                <div className="h-full rounded-full bg-gradient-to-r from-[#0b1233] via-[#2f5bd7] to-[#8dc63f]" style={{ width: `${w}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
