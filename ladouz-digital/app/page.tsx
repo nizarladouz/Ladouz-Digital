@@ -1504,40 +1504,28 @@ function Bestandsaufnahme() {
    ═══════════════════════════════════════════════════════════ */
 
 function Leistungsfelder() {
-  /* Scroll-getrieben, ruhig: jedes Modul füllt sich, während es durch den unteren
-     Bildschirmbereich wandert – in einer Reihe nebeneinanderliegende Module strikt
-     nacheinander (links → rechts), jedes vollständig, bevor das nächste beginnt. */
+  /* Module füllen sich strikt nacheinander – das nächste erst, wenn das vorige voll ist
+     im Bild ist; Start überlappend (1,4 s Versatz), Abschlüsse nie gleichzeitig. */
   const secRef = useRef<HTMLElement | null>(null);
   useEffect(() => {
     const sec = secRef.current;
     if (!sec || window.matchMedia(MQ_REDUCED).matches) return;
     const els = Array.from(sec.querySelectorAll<HTMLElement>(".ld-fuell"));
-    if (!els.length) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const vh = window.innerHeight;
-      const liste = els[0].closest("ul") as HTMLElement;
-      const basis = liste.getBoundingClientRect().top - liste.offsetTop;
-      const tops = els.map((el) => Math.round(basis + ((el.closest("li") as HTMLElement).offsetTop)));
-      const start = vh * 0.92;
-      let vorher = 1;
-      els.forEach((el, i) => {
-        const reihe = tops.filter((t) => Math.abs(t - tops[i]) < 4).length;
-        const spalte = tops.slice(0, i).filter((t) => Math.abs(t - tops[i]) < 4).length;
-        const strecke = (reihe > 1 ? 0.66 : 0.38) * vh / reihe;
-        const roh = Math.min(1, Math.max(0, (start - tops[i] - spalte * strecke) / strecke));
-        const f = vorher >= 0.999 ? roh : 0;
-        vorher = f;
-        el.style.setProperty("--f", f.toFixed(4));
-        el.style.setProperty("--wv", f > 0.01 && f < 0.99 ? "1" : "0");
-      });
+    sec.classList.add("ld-fuell-seq");
+    const gesehen = els.map(() => false);
+    let next = 0, busy = false, timer = 0;
+    const weiter = () => {
+      if (busy || next >= els.length || !gesehen[next]) return;
+      els[next].classList.add("is-voll");
+      busy = true;
+      timer = window.setTimeout(() => { busy = false; next++; weiter(); }, 1400);
     };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { gesehen[els.findIndex((el) => el.parentElement === e.target)] = true; obs.unobserve(e.target); } });
+      weiter();
+    }, { threshold: 0, rootMargin: "0px 0px -35% 0px" });
+    els.forEach((el) => el.parentElement && obs.observe(el.parentElement));
+    return () => { obs.disconnect(); window.clearTimeout(timer); };
   }, []);
   return (
     <section ref={secRef} id="leistungen" aria-labelledby="leistungen-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
@@ -1564,7 +1552,7 @@ function Leistungsfelder() {
                 onPointerMove={setzeZeiger}
                 className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-8 transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#d3ddef] hover:bg-white hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)] sm:p-9"
               >
-                <span aria-hidden className="ld-fuell" />
+                <span aria-hidden className="ld-fuell" style={{ "--fd": `${i === 0 ? 0 : 0.25 + ((i - 1) % 3) * 0.22 + Math.floor((i - 1) / 3) * 0.08}s` } as CSSProperties} />
                 <span aria-hidden className="ld-licht pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-transform duration-500 group-hover:scale-x-100" />
 
@@ -2444,8 +2432,14 @@ function GlobalStyles() {
     }
 
     /* Leistungsfelder: Modul füllt sich beim Einblenden mit CI-Grün (Flüssigkeit von unten). */
-    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(calc((1 - var(--f, 0)) * 101%)); transition: transform .18s linear; background: linear-gradient(to top, rgba(141,198,63,.20) 0%, rgba(141,198,63,.10) 45%, rgba(141,198,63,.05) 100%); }
-    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.22'/%3E%3C/svg%3E\") repeat-x; background-size: 240px 14px; animation: ldwelle 3.2s linear infinite; opacity: var(--wv, 0); transition: opacity .6s ease; }
+    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(101%); transition: transform 2.4s cubic-bezier(.22,.8,.24,1) var(--fd, 0s); background: linear-gradient(to top, rgba(141,198,63,.20) 0%, rgba(141,198,63,.10) 45%, rgba(141,198,63,.05) 100%); }
+    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.22'/%3E%3C/svg%3E\") repeat-x; background-size: 240px 14px; animation: ldwelle 3.2s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
+    .ld-reveal.is-visible .ld-fuell { transform: translateY(0); }
+    .ld-reveal.is-visible .ld-fuell::before { opacity: 0; }
+    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell { transform: translateY(101%); transition-delay: 0s; }
+    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell::before { opacity: 1; }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll { transform: translateY(0); }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { opacity: 0; transition-delay: 2.4s; }
     @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 240px; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
