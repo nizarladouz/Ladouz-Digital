@@ -49,11 +49,18 @@ const nachher = [
   "Klare Regeln für Datenschutz und Einsatz im Team",
   "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
-const ablauf = [
-  { t: "Ankommen & Bestandsaufnahme", d: "Wir schauen auf Ihren Betrieb, nicht auf Folien: Wo gehen heute Zeit, Geld und Nerven verloren?", img: "/standort/buero-1.webp", hoch: false },
-  { t: "Was KI heute faktisch leistet", d: "Live an echten Beispielen aus dem Mittelstand: Angebote, Kommunikation, Auswertung, Dokumentation. Ohne Hype.", img: "/standort/rollup.webp", hoch: true },
-  { t: "Organisieren statt ausprobieren", d: "Wie Sie KI in Abläufe, Rollen und Regeln einbauen – damit es im Alltag hält, nicht nur im Workshop.", img: "/standort/buero-2.webp", hoch: false },
-  { t: "Ihr Umsetzungsplan", d: "Sie gehen mit einem konkreten Plan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null, hoch: false },
+const ablauf: { t: string; d: string; img: string | null; hoch: boolean; punkte?: string[] }[] = [
+  { t: "Ankunft & Bestandsaufnahme", d: "Wir empfangen Sie vor Ort in unserem Büro am Markt in Siegburg. Dann eine kurze Bestandsaufnahme: Welchen Stand hat KI heute in Ihrem Betrieb? Wir schauen auf Ihre Abläufe, nicht auf Folien. Unser Fokus liegt auf mittelständischen Betrieben, die bereits digital arbeiten – mit Kundenmails, ERP-System und bestehender Technik. Denn ein Grundmaß an Digitalisierung ist die Voraussetzung, damit KI greift. Gemeinsam identifizieren wir Ihre digitalen Geschäftsprozesse – und wo der größte Hebel sitzt.", img: "/standort/buero-1.webp", hoch: false },
+  { t: "Was heute noch Menschen machen – und nicht mehr müssen", d: "Welche Aufgaben werden bei Ihnen noch von Hand erledigt, die längst kein Mensch mehr machen muss – und die eine KI oft sogar präziser erledigt? Wir zeigen es live, an echten Beispielen:", img: "/standort/rollup.webp", hoch: true, punkte: [
+    "Buchhaltung: Belege erfassen, zuordnen, vorbereiten",
+    "Angebotserstellung: vom Anfrage-Eingang zum fertigen Angebot",
+    "Management und Steuerung: Kennzahlen, Berichte, Entscheidungsvorlagen",
+    "Kundenkommunikation: E-Mails vorsortieren, beantworten, nachfassen",
+    "Dokumentation, Onboarding und Analysen",
+    "Agentische Workflows: KI-Agenten, die mehrstufige Aufgaben selbstständig erledigen – bis hin zum Marketing",
+  ] },
+  { t: "Ihr Umsetzungsprotokoll & Framework", d: "Wir übersetzen das Gesehene in Ihren Betrieb: ein klares Framework für den Weg zum AI-first- und Automation-first-Betrieb – genau dort, wo Aufgaben heute Kosten und Zeit fressen. Prozess zuerst, dann Automation, dann KI. Ohne Hype, nach klaren Grundprinzipien.", img: "/standort/buero-2.webp", hoch: false },
+  { t: "Ihr Umsetzungsplan", d: "Sie gehen mit Ihrem konkreten Umsetzungsplan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null, hoch: false },
 ];
 const fragen = [
   ["Wann findet der Workshop statt?", "Jeden zweiten Samstag in unserem Büro, Markt 40, 53721 Siegburg. Den nächsten freien Termin nennen wir Ihnen nach Ihrer Anfrage."],
@@ -169,6 +176,7 @@ export default function KiWorkshopSiegburg() {
                   <p className="font-[family-name:var(--font-jost)] text-[3rem] font-light leading-none text-[#8dc63f]">0{i + 1}</p>
                   <h3 className="mt-3 font-[family-name:var(--font-jost)] text-[1.6rem] font-medium">{s.t}</h3>
                   <p className={`${serif} mt-3 text-[1.06rem] leading-[1.7] text-[#43507a]`}>{s.d}</p>
+                  {s.punkte && <ul className="mt-5 space-y-2.5">{s.punkte.map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-[#0b1233]"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}</ul>}
                 </div>
               </div>
             ))}
