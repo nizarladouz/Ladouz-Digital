@@ -1481,18 +1481,7 @@ function Bestandsaufnahme() {
           <p className="mt-4 text-center text-[0.88rem] text-[#9aa8cc]">Nizar Ladouz, Inhaber</p>
         </Reveal>
         <Reveal delay={100} className="order-1 md:order-2">
-          <div aria-hidden="true" className="relative inline-flex h-14 w-14 items-center justify-center rounded-[16px] bg-[#0b1233] shadow-[0_12px_28px_-14px_rgba(11,18,51,.55)]">
-            <style>{`@keyframes ldvcring{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.45);opacity:0}}@keyframes ldvcrec{0%,100%{opacity:1}50%{opacity:.25}}.ld-vc-ring{animation:ldvcring 2.8s cubic-bezier(.4,0,.2,1) infinite}.ld-vc-rec{animation:ldvcrec 2.2s ease-in-out infinite}@media (prefers-reduced-motion:reduce){.ld-vc-ring,.ld-vc-rec{animation:none}.ld-vc-ring{opacity:0}}`}</style>
-            <span className="ld-vc-ring absolute inset-0 rounded-[16px] border border-[#8dc63f]" />
-            <svg viewBox="0 0 24 24" className="relative h-7 w-7" fill="none" stroke="#8dc63f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2.5" y="6" width="13" height="12" rx="2.5" />
-              <path d="M15.5 10.2 21 7v10l-5.5-3.2" />
-              <circle cx="7.6" cy="10.6" r="1.6" stroke="#fff" />
-              <path d="M5 15.2c.6-1.3 1.6-2 2.6-2s2 .7 2.6 2" stroke="#fff" />
-            </svg>
-            <span className="ld-vc-rec absolute right-[7px] top-[7px] h-[7px] w-[7px] rounded-full bg-[#8dc63f]" />
-          </div>
-          <h2 id="bestandsaufnahme-titel" className="mt-3 text-[clamp(1.7rem,3vw,2.3rem)] font-medium leading-[1.12] tracking-[-0.025em] text-[#0b1233]">
+          <h2 id="bestandsaufnahme-titel" className="text-[clamp(1.7rem,3vw,2.3rem)] font-medium leading-[1.12] tracking-[-0.025em] text-[#0b1233]">
             Kostenlose Bestandsaufnahme &amp; Potenzialanalyse
           </h2>
           <p className="ld-serif mt-4 text-[1.06rem] leading-[1.7] text-[#43507a]">
