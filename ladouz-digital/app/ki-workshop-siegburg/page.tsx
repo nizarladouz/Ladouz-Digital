@@ -110,7 +110,7 @@ export default function KiWorkshopSiegburg() {
           <div className="mt-20 max-w-[780px]">
             <p className={label}>Vor Ort in Siegburg · Region Bonn/Rhein-Sieg · ca. 20 Minuten von Bonn</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
-              KI-Workshop Siegburg & Bonn: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
+              KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
             </h1>
             <p className={`${serif} mt-7 max-w-[56ch] text-[clamp(1.05rem,1.6vw,1.22rem)] leading-[1.65] text-[#c7d6f5]`}>
               Für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Ein Samstag in unserem Büro – und Sie wissen genau,
