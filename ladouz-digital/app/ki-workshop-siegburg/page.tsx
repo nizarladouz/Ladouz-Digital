@@ -50,7 +50,7 @@ const nachher = [
   "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
 const ablauf: { t: string; d: string; img: "stapel" | "platzhalter" | null; hoch: boolean; punkte?: string[] }[] = [
-  { t: "Ankunft in unserem Office & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: "stapel", hoch: false, punkte: [
+  { t: "Ankunft in unserem Office & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: null, hoch: false, punkte: [
     "Wo steht KI heute weltweit – und wo steht sie in Ihrem Unternehmen?",
     "Welche Geschäftsprozesse laufen bereits digital?",
     "Welche Systeme sind vorhanden: ERP, E-Mail, Branchensoftware?",
