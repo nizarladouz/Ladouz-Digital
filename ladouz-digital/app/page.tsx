@@ -1388,7 +1388,7 @@ function Wandel() {
         <Reveal>
           <Eyebrow>Ausgangslage und Ergebnis</Eyebrow>
           <h2 id="wandel-titel" className="mt-6 max-w-[22ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-            Wo Wachstum heute verloren geht.
+            Wo Wirksamkeit in kleinen und mittelständischen Betrieben heute verloren geht.
           </h2>
           <Lead>
             In den meisten Unternehmen fehlt nicht der Einsatz, sondern die Verbindung:
