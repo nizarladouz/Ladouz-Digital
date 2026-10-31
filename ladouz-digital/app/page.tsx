@@ -1405,7 +1405,14 @@ function Kernsatz() {
 
 function Wandel() {
   return (
-    <section id="system" aria-labelledby="wandel-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
+    <section id="system" aria-labelledby="wandel-titel" className="relative isolate overflow-hidden bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
+      {/* Dezenter Berg-Schimmer aus dem Hero, aus dem Weiß heraus */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-cover bg-[position:65%_30%] opacity-[0.07] grayscale-[35%]"
+        style={{ backgroundImage: "url(/motive/hero-berg.jpg)" }}
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-[#f7f9fc] via-[#f7f9fc]/40 to-[#f7f9fc]" />
       <div className="mx-auto max-w-[1192px]">
         <Reveal>
           <Eyebrow>Ausgangslage und Ergebnis</Eyebrow>
