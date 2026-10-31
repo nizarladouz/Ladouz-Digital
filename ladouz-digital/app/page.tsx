@@ -1395,10 +1395,10 @@ function Wandel() {
             sondern die intelligente Verbindung von Kanälen, Websites, Systemen und Mitarbeitern — so dass
             alles miteinander arbeitet.
           </Lead>
-          <Lead className="!mt-5 font-[family-name:var(--font-dm-sans)] font-bold italic !text-[#0b1233]">
+          <p className="mt-5 max-w-[56ch] font-[family-name:var(--font-dm-sans)] text-[clamp(1.05rem,1.6vw,1.2rem)] font-bold italic leading-[1.66] text-[#0b1233]">
             Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
             austauschen und fortlaufend optimieren.
-          </Lead>
+          </p>
         </Reveal>
 
         <div className="mt-16">
