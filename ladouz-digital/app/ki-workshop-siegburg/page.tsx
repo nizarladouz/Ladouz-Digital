@@ -49,15 +49,15 @@ const nachher = [
   "Klare Regeln für Datenschutz und Einsatz im Team",
   "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
-const ablauf: { t: string; d: string; img: string | null; hoch: boolean; punkte?: string[] }[] = [
-  { t: "Ankunft & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: "/standort/buero-1.webp", hoch: false, punkte: [
+const ablauf: { t: string; d: string; img: "stapel" | "platzhalter" | null; hoch: boolean; punkte?: string[] }[] = [
+  { t: "Ankunft in unserem Office & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: "stapel", hoch: false, punkte: [
     "Wo steht KI heute weltweit – und wo steht sie in Ihrem Unternehmen?",
     "Welche Geschäftsprozesse laufen bereits digital?",
     "Welche Systeme sind vorhanden: ERP, E-Mail, Branchensoftware?",
     "Wo gehen heute die meisten Stunden und Kosten verloren?",
     "Wo sitzt der größte Hebel für KI und Automation?",
   ] },
-  { t: "Was heute noch Menschen machen – und nicht mehr müssen", d: "Welche Aufgaben werden bei Ihnen noch von Hand erledigt, die längst kein Mensch mehr machen muss – und die eine KI oft sogar präziser erledigt? Wir zeigen es live, an echten Beispielen:", img: "/standort/rollup.webp", hoch: true, punkte: [
+  { t: "Was heute noch Menschen machen – und nicht mehr müssen", d: "Welche Aufgaben werden bei Ihnen noch von Hand erledigt, die längst kein Mensch mehr machen muss – und die eine KI oft sogar präziser erledigt? Wir zeigen es live, an echten Beispielen:", img: "platzhalter", hoch: false, punkte: [
     "Buchhaltung weitgehend automatisiert: Belege erfassen, kontieren, abgleichen",
     "Angebotserstellung in Minuten: vom Anfrage-Eingang zum fertigen Angebot",
     "Management und Steuerung: Kennzahlen, Berichte, Entscheidungsvorlagen",
@@ -65,7 +65,7 @@ const ablauf: { t: string; d: string; img: string | null; hoch: boolean; punkte?
     "Dokumentation, Onboarding und Analysen",
     "Agentische Workflows: KI-Agenten, die mehrstufige Aufgaben selbstständig erledigen – bis hin zum Marketing",
   ] },
-  { t: "Ihr Umsetzungsprotokoll & Framework", d: "Wir übersetzen das Gesehene in Ihren Betrieb – AI-first und Automation-first dort, wo Aufgaben heute Zeit und Kosten fressen:", img: "/standort/buero-2.webp", hoch: false, punkte: [
+  { t: "Ihr Umsetzungsprotokoll & Framework", d: "Wir übersetzen das Gesehene in Ihren Betrieb – AI-first und Automation-first dort, wo Aufgaben heute Zeit und Kosten fressen:", img: "platzhalter", hoch: false, punkte: [
     "Ihre Prozesse priorisiert nach Zeit- und Kostenhebel",
     "Die Reihenfolge: erst Prozess klären, dann automatisieren, dann KI einsetzen",
     "Klare Zuständigkeiten: wer was ab Montag umsetzt",
@@ -179,14 +179,19 @@ export default function KiWorkshopSiegburg() {
           <div className="mt-14 space-y-16">
             {ablauf.map((s, i) => (
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
-                {s.img && (
-                  <div className={`relative ${s.hoch ? "mx-auto w-full max-w-[380px]" : ""} ${i % 2 ? "md:order-2" : ""}`}>
-                    <div className={`relative overflow-hidden rounded-[28px] ring-1 ring-[#e7ecf5] ${s.hoch ? "aspect-[3/4]" : "aspect-[4/3]"} shadow-[0_30px_60px_-34px_rgba(11,18,51,.4)]`}>
-                      <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
-                      {/* dezente CI-Kante: Navy-Verlauf unten, Hauch Grün in der Ecke */}
-                      <div aria-hidden className={`pointer-events-none absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-[#0b1233] to-transparent ${s.hoch ? "opacity-[0.12]" : "opacity-[0.22]"}`} />
-                      <div aria-hidden className={`pointer-events-none absolute inset-0 ${i % 2 ? "bg-[radial-gradient(circle_at_0%_100%,rgba(141,198,63,.16),transparent_45%)]" : "bg-[radial-gradient(circle_at_100%_100%,rgba(141,198,63,.16),transparent_45%)]"}`} />
+                {s.img === "stapel" && (
+                  <div className="relative mx-auto w-full max-w-[520px] pb-[14%] pr-[10%]">
+                    <div className="relative aspect-[4/3] -rotate-[3deg] overflow-hidden rounded-[24px] ring-1 ring-[#e7ecf5] shadow-[0_24px_50px_-30px_rgba(11,18,51,.4)]">
+                      <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – Arbeitsplätze" fill className="object-cover" sizes="(min-width:768px) 40vw, 90vw" />
                     </div>
+                    <div className="absolute bottom-0 right-0 aspect-[4/3] w-[78%] rotate-[2deg] overflow-hidden rounded-[24px] ring-4 ring-white shadow-[0_34px_70px_-30px_rgba(11,18,51,.55)]">
+                      <Image src="/standort/buero-1.webp" alt="Ladouz Digital Office Siegburg – Besprechungsbereich" fill className="object-cover" sizes="(min-width:768px) 32vw, 72vw" />
+                    </div>
+                  </div>
+                )}
+                {s.img === "platzhalter" && (
+                  <div className={`relative aspect-[4/3] rounded-[28px] border border-dashed border-[#d5dcea] bg-gradient-to-br from-[#f7f9fc] to-[#eef2f8] ${i % 2 ? "md:order-2" : ""}`} aria-hidden>
+                    <span className="absolute bottom-5 left-6 h-2 w-2 rounded-full bg-[#8dc63f]/70" />
                   </div>
                 )}
                 <div className={s.img ? "" : "max-w-[640px]"}>
