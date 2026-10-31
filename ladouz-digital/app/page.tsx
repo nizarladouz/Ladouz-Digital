@@ -187,9 +187,10 @@ const heroFakten = [
 const instrumentKnoten = ["Strategie", "Management", "Marketing", "Sichtbarkeit", "Conversion", "Plattformen", "Prozessoptimierung", "Automatisierung", "KI", "Daten"];
 
 const laufband = [
-  "Digitale Strategie", "Performance-Marketing", "Google Ads", "Sichtbarkeit in Google",
-  "Sichtbarkeit in KI-Suche", "Conversion-Optimierung", "Websites & Plattformen", "Softwareentwicklung", "KI-Agenten",
-  "Prozess-Automatisierung", "Tracking-Architektur", "Dashboards & Reporting", "Consulting",
+  "Google Ads", "Meta Ads", "LinkedIn Ads",
+  "OpenAI", "Anthropic", "n8n", "Make", "Zapier",
+  "Google Analytics", "Search Console", "Tag Manager",
+  "Notion", "HubSpot", "Salesforce", "Stripe", "Shopify", "WordPress", "Webflow",
 ];
 
 /* Laufband als Walze: Tempo in Pixel pro Sekunde, maximaler Drehwinkel
@@ -1322,9 +1323,10 @@ function Laufband() {
   }, [reduced]);
 
   return (
-    <section aria-label="Leistungsspektrum" className="bg-[#0b1233] px-6">
+    <section aria-label="Tools, mit denen wir arbeiten" className="bg-[#0b1233] px-6">
       {/* Gleiche Breite wie der übrige Inhalt – nicht mehr von Bildschirmrand zu Bildschirmrand. */}
       <div className="mx-auto max-w-[1192px] border-y border-white/10">
+        <p className="pt-4 text-center text-[0.66rem] font-medium uppercase tracking-[0.28em] text-white/40">Tools, mit denen wir arbeiten</p>
         <div ref={fenster} className="ld-walze relative overflow-hidden py-5">
           <div ref={spur} className="ld-walze-spur flex w-max">
             {[0, 1].map((k) => (
