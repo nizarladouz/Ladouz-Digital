@@ -1384,9 +1384,9 @@ function Kernsatz() {
   const woerter = kernsatz.split(" ");
   const n = woerter.length;
   return (
-    <div ref={ref} className="mt-12">
+    <div ref={ref} className="mt-8">
       <span aria-hidden className="block h-px w-8 bg-[#8dc63f]" />
-      <p className="mt-8 max-w-[30ch] text-[clamp(1.85rem,4.3vw,3.5rem)] font-medium leading-[1.13] tracking-[-0.032em] text-[#0b1233]">
+      <p className="mt-5 max-w-[56ch] text-[clamp(1.05rem,1.4vw,1.2rem)] font-medium leading-[1.6] tracking-[-0.01em] text-[#0b1233]">
         {woerter.map((w, i) => (
           <span key={i} className={`ld-wort ${w.startsWith("*") ? "text-[#2f5bd7]" : ""}`} style={{ "--i": (i / n).toFixed(4) } as CSSProperties}>
             {w.replace(/\*/g, "")}{i < n - 1 ? " " : ""}
