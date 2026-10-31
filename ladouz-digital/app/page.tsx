@@ -179,7 +179,7 @@ const hauptmenue: MenuEintrag[] = [
 
 const heroFakten = [
   { wert: "10", einheit: "Leistungsfelder", text: "Strategie, Management, Marketing, Sichtbarkeit, Conversion, Plattformen, Prozessoptimierung, Automatisierung, KI und Daten." },
-  { wert: "4", einheit: "Phasen", text: "Von der Analyse bis zur fortlaufenden Optimierung." },
+  { wert: "4", einheit: "Phasen", text: "Vom Hebelpunkt zur Daueroptimierung — erst der eine Engpass mit maximaler Wirkung, dann laufend verbessern." },
   { wert: "1", einheit: "Abteilung", text: "Wir bilden Ihre Digital- und KI-Abteilung ab — fest in Ihrer Infrastruktur, nicht als externes Projekt." },
 ];
 
