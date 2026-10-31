@@ -55,6 +55,7 @@ import {
 } from "react";
 import Image from "next/image";
 import Footer from "./components/Footer";
+import Umsetzungsweg from "./components/Umsetzungsweg";
 
 const SITE = "https://www.ladouz.digital";
 const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
@@ -828,6 +829,7 @@ export default function Home() {
           <Laufband />
           <Leitgedanke />
           <Wandel />
+          <Umsetzungsweg />
           <Leistungsfelder />
           <Programm />
           <Messbarkeit />
