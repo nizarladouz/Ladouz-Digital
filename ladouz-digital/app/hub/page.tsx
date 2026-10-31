@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { currentUser, login, logout, register } from "./auth";
+import { ALLOWED_EMAIL, currentUser, login, logout, register } from "./auth";
 import { Brand, G, HUB_CSS, Marke } from "./ui";
 
 const TILES = [
@@ -46,7 +46,7 @@ export default function Hub() {
           <button disabled={busy} className="hub-pill hub-pill-d" style={{ marginTop: 10, padding: "14px 24px", fontSize: 15 }}><Marke hell /><span>{busy ? "Bitte warten …" : mode === "login" ? "Anmelden" : "Zugang erstellen"}</span>{!busy && <i aria-hidden className="hub-sweep" />}</button>
         </form>
         <button onClick={() => { setMode(mode === "login" ? "register" : "login"); setErr(""); }} style={{ marginTop: 18, background: "none", border: 0, color: "rgba(255,255,255,.6)", cursor: "pointer", fontSize: 14 }}>
-          {mode === "login" ? "Noch kein Zugang? Jetzt anlegen" : "Bereits registriert? Anmelden"}
+          {ALLOWED_EMAIL ? (mode === "login" ? "Zugang nur auf Einladung" : "Bereits registriert? Anmelden") : mode === "login" ? "Noch kein Zugang? Jetzt anlegen" : "Bereits registriert? Anmelden"}
         </button>
         <p style={{ marginTop: 40, fontSize: 12, opacity: .35 }}>Beta – Zugangsdaten werden ausschließlich lokal in Ihrem Browser gespeichert.</p>
       </div>

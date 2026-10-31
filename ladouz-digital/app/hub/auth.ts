@@ -2,6 +2,10 @@
 // Beta: lokale Konten (localStorage), PBKDF2-gehasht. Kein Server-Backend.
 const USERS = "ldhub_users";
 const SESSION = "ldhub_session";
+// TEMPORÄR: Nur dieses Konto hat Zugang. Zum Zurücksetzen auf null setzen.
+export const ALLOWED_EMAIL: string | null = "management@ladouz.digital";
+const CLOSED = "Der Zugang ist derzeit nur auf Einladung möglich.";
+const allowed = (e: string) => !ALLOWED_EMAIL || e === ALLOWED_EMAIL.toLowerCase();
 type User = { email: string; name: string; salt: string; hash: string };
 
 const enc = new TextEncoder();
@@ -16,6 +20,7 @@ const users = (): User[] => JSON.parse(localStorage.getItem(USERS) || "[]");
 
 export async function register(name: string, email: string, pw: string) {
   email = email.trim().toLowerCase();
+  if (!allowed(email)) throw new Error(CLOSED);
   if (pw.length < 8) throw new Error("Das Passwort benötigt mindestens 8 Zeichen.");
   const list = users();
   if (list.some((u) => u.email === email)) throw new Error("Für diese E-Mail besteht bereits ein Zugang.");
@@ -26,6 +31,7 @@ export async function register(name: string, email: string, pw: string) {
 }
 export async function login(email: string, pw: string) {
   email = email.trim().toLowerCase();
+  if (!allowed(email)) throw new Error(CLOSED);
   const u = users().find((x) => x.email === email);
   if (!u || (await derive(pw, u.salt)) !== u.hash) throw new Error("E-Mail oder Passwort ist nicht korrekt.");
   startSession(email);
@@ -36,7 +42,7 @@ function startSession(email: string) {
 export function currentUser(): User | null {
   try {
     const s = JSON.parse(sessionStorage.getItem(SESSION) || "null");
-    if (!s || s.exp < Date.now()) return null;
+    if (!s || s.exp < Date.now() || !allowed(s.email)) return null;
     return users().find((u) => u.email === s.email) || null;
   } catch { return null; }
 }
