@@ -180,12 +180,15 @@ export default function KiWorkshopSiegburg() {
             {ablauf.map((s, i) => (
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
                 {s.img === "stapel" && (
-                  <div className="relative mx-auto w-full max-w-[520px] pb-[14%] pr-[10%]">
-                    <div className="relative aspect-[4/3] -rotate-[3deg] overflow-hidden rounded-[24px] ring-1 ring-[#e7ecf5] shadow-[0_24px_50px_-30px_rgba(11,18,51,.4)]">
-                      <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – Arbeitsplätze" fill className="object-cover" sizes="(min-width:768px) 40vw, 90vw" />
+                  <div className="relative mx-auto aspect-[4/3] w-full max-w-[560px]">
+                    <div className="absolute left-0 top-[8%] h-[84%] w-[62%] overflow-hidden rounded-[6px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
+                      <Image src="/standort/buero-1.webp" alt="Ladouz Digital Office Siegburg – Arbeitsplatz am Fenster" fill className="object-cover" sizes="(min-width:768px) 32vw, 62vw" />
                     </div>
-                    <div className="absolute bottom-0 right-0 aspect-[4/3] w-[78%] rotate-[2deg] overflow-hidden rounded-[24px] ring-4 ring-white shadow-[0_34px_70px_-30px_rgba(11,18,51,.55)]">
-                      <Image src="/standort/buero-1.webp" alt="Ladouz Digital Office Siegburg – Besprechungsbereich" fill className="object-cover" sizes="(min-width:768px) 32vw, 72vw" />
+                    <div className="absolute right-[3%] top-0 h-[66%] w-[27%] overflow-hidden rounded-[6px] ring-[3px] ring-white shadow-[0_24px_50px_-28px_rgba(11,18,51,.45)]">
+                      <Image src="/standort/rollup.webp" alt="Ladouz Digital Roll-up im Office Siegburg" fill className="object-cover object-top" sizes="(min-width:768px) 15vw, 27vw" />
+                    </div>
+                    <div className="absolute bottom-0 right-0 h-[40%] w-[46%] overflow-hidden rounded-[6px] ring-[3px] ring-white shadow-[0_30px_60px_-28px_rgba(11,18,51,.5)]">
+                      <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – Arbeitsbereich" fill className="object-cover" sizes="(min-width:768px) 24vw, 46vw" />
                     </div>
                   </div>
                 )}
