@@ -1395,9 +1395,18 @@ function Wandel() {
             sondern die intelligente Verbindung von Kanälen, Websites, Systemen und Mitarbeitern — so dass
             alles miteinander arbeitet.
           </Lead>
-          <Lead className="!mt-5 font-semibold !text-[#0b1233]">
-            Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
-            austauschen und fortlaufend optimieren.
+          <Lead className="!mt-5 font-semibold italic !text-[#0b1233]">
+            <mark
+              className="box-decoration-clone rounded-[2px] px-1 text-inherit"
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent 38%, rgba(141,198,63,0.32) 38%, rgba(141,198,63,0.32) 92%, transparent 92%)",
+                WebkitBoxDecorationBreak: "clone",
+              }}
+            >
+              Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
+              austauschen und fortlaufend optimieren.
+            </mark>
           </Lead>
         </Reveal>
 
