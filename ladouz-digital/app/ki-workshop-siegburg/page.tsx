@@ -182,7 +182,7 @@ export default function KiWorkshopSiegburg() {
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
                 {s.img === "stapel" && (
                   <div className="relative mx-auto aspect-[4/3] w-full max-w-[560px]">
-                    <div className="absolute left-0 top-[8%] h-[84%] w-[62%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
+                    <div className="absolute left-0 top-[27%] aspect-[2400/1351] w-[62%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
                       <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – offener Workshop-Raum" fill className="object-cover" sizes="(min-width:768px) 32vw, 62vw" />
                     </div>
                     <div className="absolute right-[3%] top-0 h-[66%] w-[27%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
