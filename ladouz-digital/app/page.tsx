@@ -2431,16 +2431,13 @@ function GlobalStyles() {
       .ld-rail-inset { padding-inline: max(1.5rem, calc((100vw - 1240px) / 2 + 1.5rem)); scroll-padding-inline: max(1.5rem, calc((100vw - 1240px) / 2 + 1.5rem)); }
     }
 
-    /* Leistungsfelder: Modul füllt sich beim Einblenden mit CI-Grün (Flüssigkeit von unten). */
-    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(101%); transition: transform 2.4s cubic-bezier(.22,.8,.24,1) var(--fd, 0s); background: linear-gradient(to top, rgba(141,198,63,.09) 0%, rgba(141,198,63,.045) 50%, rgba(141,198,63,.015) 100%); }
-    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -7px; height: 8px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.09'/%3E%3C/svg%3E\") repeat-x; background-size: 320px 8px; animation: ldwelle 7s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
-    .ld-reveal.is-visible .ld-fuell { transform: translateY(0); }
-    .ld-reveal.is-visible .ld-fuell::before { opacity: 0; }
-    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell { transform: translateY(101%); transition-delay: 0s; }
-    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell::before { opacity: 1; }
-    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll { transform: translateY(0); }
-    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { opacity: 0; transition-delay: 2.4s; }
-    @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 320px; } }
+    /* Leistungsfelder: dezenter Silber-Schimmer, der einmal diagonal über jedes Modul gleitet (nacheinander). */
+    .ld-fuell { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .ld-fuell::before { content: ""; position: absolute; top: -20%; bottom: -20%; left: 0; width: 70%; transform: translateX(-110%) skewX(-14deg); opacity: 0; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(176,188,208,.16) 34%, rgba(255,255,255,.9) 48%, rgba(255,255,255,.9) 52%, rgba(176,188,208,.16) 66%, rgba(255,255,255,0) 100%); }
+    .ld-reveal.is-visible .ld-fuell::before, .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation: ldsilber 2.2s cubic-bezier(.45,.05,.25,1) var(--fd, 0s) 1 both; }
+    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell:not(.is-voll)::before { animation: none; }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation-delay: 0s; }
+    @keyframes ldsilber { 0% { transform: translateX(-110%) skewX(-14deg); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(210%) skewX(-14deg); opacity: 0; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
@@ -2448,7 +2445,7 @@ function GlobalStyles() {
       .ld-reveal { opacity: 1; transform: none; }
       .ld-wort { opacity: 1; }
       .ld-bar { transform: scaleX(var(--w, 1)); }
-      .ld-fuell { transform: none; }
+      .ld-fuell { display: none; }
     }
     @media (prefers-contrast: more) {
       .ld-reveal, .ld-wort { opacity: 1; transform: none; }
@@ -2457,8 +2454,7 @@ function GlobalStyles() {
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .ld-reveal { opacity: 1; transform: none; transition: none; }
-      .ld-fuell { transform: none; transition: none; }
-      .ld-fuell::before { display: none; }
+      .ld-fuell { display: none; }
       .ld-btn .ld-sweep { display: none; }
       .ld-kenburns, .ld-hero-zoom, .ld-enter, .ld-rule, .ld-swap { animation: none; opacity: 1; transform: none; }
       .ld-silber { animation: none; background-position: 30% 50%; }
