@@ -1484,8 +1484,8 @@ function Bestandsaufnahme() {
             Kostenlose Bestandsaufnahme &amp; Potenzialanalyse
           </h2>
           <p className="ld-serif mt-4 text-[1.06rem] leading-[1.7] text-[#43507a]">
-            Per Video-Call oder vor Ort: Wir schauen gemeinsam auf Ihre digitale Infrastruktur – und zeigen Ihnen,
-            wo Ladouz Digital als Umsetzungspartner den größten Unterschied macht.
+            Per Video-Call oder vor Ort: Wir schauen gemeinsam auf Ihre digitale Infrastruktur und prüfen,
+            ob unsere Unternehmen sich als Partner eignen.
           </p>
           <ul className="mt-5 space-y-2.5">
             {punkte.map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-[#0b1233]"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}
