@@ -201,7 +201,7 @@ const WALZE_TIEFE = 220;
 /* Der Leitgedanke wird beim Scrollen Wort für Wort aufgehellt.
    Hervorgehobene Wörter stehen in *Sternchen*. */
 const leitgedanke =
-  "Performance ist kein Kanal und keine Kampagne. Sie entsteht, wenn *Strategie,* *Sichtbarkeit,* *Website,* *Software,* *KI* und *Daten* als ein System arbeiten – und jede Maßnahme sich an dem messen lässt, was am Ende zählt: *Verbesserung.*";
+  "*Digitale Infrastruktur* ist die Voraussetzung für *Performance durch KI.* Erst wenn *Strategie,* *Management,* *Marketing,* *Sichtbarkeit,* *Conversion,* *Plattformen,* *Prozessoptimierung,* *Automatisierung,* *KI* und *Daten* als ein System sitzen, lässt sich die Performance des *gesamten Systems* wirklich verbessern.";
 
 /* Jede Zeile ist ein Paar: derselbe Bereich vorher und nachher. */
 const wandel = [
