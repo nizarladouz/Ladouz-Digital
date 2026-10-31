@@ -36,23 +36,23 @@ function Cta({ hell = false, children = "Platz anfragen" }: { hell?: boolean; ch
 }
 
 const vorher = [
-  "KI wird „mal ausprobiert“ – ohne Plan, ohne Ergebnis",
-  "Angebote, E-Mails und Dokumentation fressen täglich Stunden",
-  "Wissen steckt in Köpfen, nicht in Abläufen",
-  "Unsicherheit: Was ist erlaubt, was ist Datenschutz-Risiko?",
-  "Jedes Tool-Versprechen klingt gleich – nichts davon passt zum Betrieb",
+  "KI wird mal ausprobiert und ab und zu genutzt – aber nicht als festes System",
+  "Angebotserstellung, Onboardings, Analysen, Dokumentation und E-Mails fressen weiter Stunden",
+  "Keine festen, dokumentierten Abläufe: Wissen steckt in Köpfen, nicht im System",
+  "Unsicherheit, was beim Einsatz von KI erlaubt ist und was nicht",
+  "Bei der Vielzahl an Tools ist unklar, was sich wofür eignet",
 ];
 const nachher = [
-  "Sie kennen die 3–5 Stellen, an denen KI in Ihrem Betrieb wirklich spart",
-  "Fertige Vorlagen und Arbeitsanweisungen für Ihre wiederkehrenden Aufgaben",
-  "Ein klarer 30-Tage-Plan: wer macht was ab Montag",
+  "Ein klarer 30-Tage-Plan: KI wird ab Montag fester Teil Ihrer Abläufe – wer macht was",
+  "Fertige Vorlagen und Arbeitsanweisungen für Ihre zeitintensiven, wiederkehrenden Aufgaben",
+  "Erste Abläufe dokumentiert: Wissen wandert aus den Köpfen ins System",
   "Klare Regeln für Datenschutz und Einsatz im Team",
-  "Messbar: Zeit, Kosten und Fehler – vorher und nachher",
+  "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
 const ablauf = [
   { t: "Ankommen & Bestandsaufnahme", d: "Wir schauen auf Ihren Betrieb, nicht auf Folien: Wo gehen heute Zeit, Geld und Nerven verloren?", img: "/standort/standort-1.webp" },
   { t: "Was KI heute faktisch leistet", d: "Live an echten Beispielen aus dem Mittelstand: Angebote, Kommunikation, Auswertung, Dokumentation. Ohne Hype.", img: "/standort/standort-2.webp" },
-  { t: "Organisieren statt ausprobieren", d: "Wie Sie KI in Abläufe, Rollen und Regeln einbauen – damit es im Alltag hält, nicht nur im Workshop.", img: "/standort/standort-3.webp" },
+  { t: "Organisieren statt ausprobieren", d: "Wie Sie KI in Abläufe, Rollen und Regeln einbauen – damit es im Alltag hält, nicht nur im Workshop.", img: null },
   { t: "Ihr Umsetzungsplan", d: "Sie gehen mit einem konkreten Plan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null },
 ];
 const fragen = [
@@ -88,7 +88,8 @@ export default function KiWorkshopSiegburg() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0b1233]/40 to-[#0b1233]" aria-hidden />
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
-          <div className="mt-20 max-w-[780px]">
+          <div className="mt-20 grid items-center gap-12 lg:grid-cols-[1fr_340px]">
+          <div className="max-w-[780px]">
             <p className={label}>Vor Ort in Siegburg · jeden zweiten Samstag</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
               KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
@@ -103,16 +104,30 @@ export default function KiWorkshopSiegburg() {
             </div>
             <p className="mt-6 text-[0.85rem] text-[#9aa8cc]">Kleine Gruppe · begrenzte Plätze · Markt 40, 53721 Siegburg</p>
           </div>
+          {/* Abtei Michaelsberg, Foto: Daniel Tibi, 2005, gemeinfrei (Public Domain),
+              https://commons.wikimedia.org/wiki/File:Abtei_michaelsberg-2005_12_25.jpg */}
+          <figure className="hidden lg:block">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] ring-1 ring-white/15 shadow-[0_40px_80px_-40px_rgba(0,0,0,.6)]">
+              <Image src="/standort/michaelsberg.webp" alt="Abtei Michaelsberg in Siegburg" fill className="object-cover object-[50%_40%]" sizes="340px" />
+            </div>
+            <figcaption className="mt-3 text-[0.78rem] text-[#9aa8cc]">Siegburg · Michaelsberg</figcaption>
+          </figure>
+          </div>
         </div>
       </section>
 
       {/* Ausgangslage */}
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-[1192px] gap-12 lg:grid-cols-[1fr_1.1fr]">
-          <div><p className={label}>Die Ausgangslage</p><h2 className={`${h2} mt-4`}>Jeder redet über KI. Kaum ein Betrieb hat davon etwas auf dem Konto.</h2></div>
+          <div><p className={label}>Die Ausgangslage</p><h2 className={`${h2} mt-4`}>Jeder redet über KI. Überall sieht man KI. Doch wie sehr profitieren Sie wirklich davon?</h2></div>
           <div className={`${serif} space-y-5 text-[1.08rem] leading-[1.7] text-[#43507a]`}>
-            <p>Sie haben ChatGPT ausprobiert. Vielleicht ein Mitarbeiter auch. Ein paar Texte, ein paar Spielereien – und dann ging der Alltag weiter wie vorher.</p>
-            <p>Das liegt nicht an der Technik. Es fehlt die Übersetzung: Welche Aufgaben in <em>Ihrem</em> Betrieb lohnen sich wirklich? Und wie wird daraus ein fester Ablauf statt eines Experiments?</p>
+            <p>Sie haben ChatGPT, Claude und weitere KI-Modelle ausprobiert – vielleicht sogar schon erste Workflows. Ein Mitarbeiter hat ein paar Texte geschrieben, ein paar Bilder erzeugt. Und dann ging der Alltag weiter wie vorher.</p>
+            <p>Das liegt nicht am Potenzial der Technologie. Es fehlt die Übersetzung in tatsächliche Produktivität – in erledigte Aufgaben, die sich für Ihren Betrieb wirklich lohnen.</p>
+            <ul className="space-y-3 border-l-2 border-[#8dc63f] pl-5 text-[#0b1233]">
+              <li>Welche Aufgaben in Ihrem Betrieb lohnen sich wirklich?</li>
+              <li>Wie wird daraus ein fester Ablauf der Implementierung?</li>
+              <li>Wie entwickelt man systematisch KI-Agenten, die Wertvolles erledigen statt Spielereien – für mehr Produktivität, mehr Genauigkeit und mehr Zeit für das Wesentliche?</li>
+            </ul>
           </div>
         </div>
       </section>
@@ -121,10 +136,10 @@ export default function KiWorkshopSiegburg() {
       <section className="bg-[#f7f9fc] px-6 py-24">
         <div className="mx-auto max-w-[900px] text-center">
           <p className={label}>Der Unterschied</p>
-          <h2 className={`${h2} mt-4`}>KI bringt nichts, solange sie nicht organisiert ist.</h2>
+          <h2 className={`${h2} mt-4`}>KI bringt nichts, solange sie nicht richtig organisiert und orchestriert ist.</h2>
           <p className={`${serif} mx-auto mt-6 max-w-[60ch] text-[1.1rem] leading-[1.7] text-[#43507a]`}>
             Deshalb zeigen wir keine Tool-Parade. Wir arbeiten an Ihren Abläufen – und zeigen nur, was faktisch Mehrwert hat:
-            schneller, präziser, mit weniger Aufwand.
+            welcher Case sich für KI und Automation wirklich lohnt.
           </p>
         </div>
       </section>
@@ -199,6 +214,25 @@ export default function KiWorkshopSiegburg() {
                 <p className={`${serif} mt-3 leading-[1.7] text-[#43507a]`}>{a}</p>
               </details>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gründer */}
+      <section className="px-6 py-24">
+        <div className="mx-auto grid max-w-[1000px] items-center gap-12 md:grid-cols-[300px_1fr]">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
+            <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Inhaber Ladouz Digital" fill className="object-cover" sizes="300px" />
+          </div>
+          <div>
+            <p className={label}>Wer den Workshop leitet</p>
+            <h2 className={`${h2} mt-4`}>Nizar Ladouz</h2>
+            <p className={`${serif} mt-6 text-[1.08rem] leading-[1.7] text-[#43507a]`}>
+              „Als Agenturinhaber kenne ich die digitale Tool-Landschaft sehr genau. Seit ich selbst KI-Agenten einsetze, die Aufgaben für mich erledigen
+              und meinen Arbeitsalltag spürbar vereinfachen, weiß ich: Das ist in jeder Branche genauso möglich – gerade dort, wo die fachliche KI-Expertise fehlt.
+              Wir onboarden KI-Agenten und passen sie an Ihren Case an, damit Sie wirklich davon profitieren.“
+            </p>
+            <p className="mt-4 text-[0.9rem] text-[#9aa8cc]">Inhaber, Ladouz Digital · Siegburg</p>
           </div>
         </div>
       </section>
