@@ -1504,8 +1504,31 @@ function Bestandsaufnahme() {
    ═══════════════════════════════════════════════════════════ */
 
 function Leistungsfelder() {
+  /* Module füllen sich strikt nacheinander – das nächste erst, wenn das vorige voll ist
+     im Bild ist; Start überlappend (1,4 s Versatz), Abschlüsse nie gleichzeitig. */
+  const secRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const sec = secRef.current;
+    if (!sec || window.matchMedia(MQ_REDUCED).matches) return;
+    const els = Array.from(sec.querySelectorAll<HTMLElement>(".ld-fuell"));
+    sec.classList.add("ld-fuell-seq");
+    const gesehen = els.map(() => false);
+    let next = 0, busy = false, timer = 0;
+    const weiter = () => {
+      if (busy || next >= els.length || !gesehen[next]) return;
+      els[next].classList.add("is-voll");
+      busy = true;
+      timer = window.setTimeout(() => { busy = false; next++; weiter(); }, 1400);
+    };
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) { gesehen[els.findIndex((el) => el.parentElement === e.target)] = true; obs.unobserve(e.target); } });
+      weiter();
+    }, { threshold: 0, rootMargin: "0px 0px -35% 0px" });
+    els.forEach((el) => el.parentElement && obs.observe(el.parentElement));
+    return () => { obs.disconnect(); window.clearTimeout(timer); };
+  }, []);
   return (
-    <section id="leistungen" aria-labelledby="leistungen-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
+    <section ref={secRef} id="leistungen" aria-labelledby="leistungen-titel" className="bg-white px-6 py-[clamp(88px,11vw,140px)]">
       <div className="mx-auto max-w-[1192px]">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-end">
           <Reveal>
@@ -2413,6 +2436,10 @@ function GlobalStyles() {
     .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.22'/%3E%3C/svg%3E\") repeat-x; background-size: 240px 14px; animation: ldwelle 3.2s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
     .ld-reveal.is-visible .ld-fuell { transform: translateY(0); }
     .ld-reveal.is-visible .ld-fuell::before { opacity: 0; }
+    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell { transform: translateY(101%); transition-delay: 0s; }
+    .ld-fuell-seq .ld-reveal.is-visible .ld-fuell::before { opacity: 1; }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll { transform: translateY(0); }
+    .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { opacity: 0; transition-delay: 2.4s; }
     @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 240px; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
