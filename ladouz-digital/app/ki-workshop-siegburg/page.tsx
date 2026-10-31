@@ -183,6 +183,9 @@ export default function KiWorkshopSiegburg() {
                   <div className={`relative ${s.hoch ? "mx-auto w-full max-w-[380px]" : ""} ${i % 2 ? "md:order-2" : ""}`}>
                     <div className={`relative overflow-hidden rounded-[28px] ring-1 ring-[#e7ecf5] ${s.hoch ? "aspect-[3/4]" : "aspect-[4/3]"} shadow-[0_30px_60px_-34px_rgba(11,18,51,.4)]`}>
                       <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
+                      {/* dezente CI-Kante: Navy-Verlauf unten, Hauch Grün in der Ecke */}
+                      <div aria-hidden className={`pointer-events-none absolute inset-x-0 bottom-0 h-[38%] bg-gradient-to-t from-[#0b1233] to-transparent ${s.hoch ? "opacity-[0.12]" : "opacity-[0.22]"}`} />
+                      <div aria-hidden className={`pointer-events-none absolute inset-0 ${i % 2 ? "bg-[radial-gradient(circle_at_0%_100%,rgba(141,198,63,.16),transparent_45%)]" : "bg-[radial-gradient(circle_at_100%_100%,rgba(141,198,63,.16),transparent_45%)]"}`} />
                     </div>
                   </div>
                 )}
