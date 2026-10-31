@@ -1408,8 +1408,9 @@ function Wandel() {
                 boxDecorationBreak: "clone",
               }}
             >
-              Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
-              austauschen und fortlaufend optimieren.
+              Sie brauchen keinen einzelnen Experten mehr. Sie brauchen eine Infrastruktur aus Experten, die sich
+              austauschen und fortlaufend optimieren — und eine ganzheitliche Digital- und KI-Strategie, in der
+              alles miteinander zusammenhängt.
             </mark>
           </Lead>
         </Reveal>
