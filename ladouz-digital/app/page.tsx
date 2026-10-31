@@ -829,6 +829,7 @@ export default function Home() {
           <Leitgedanke />
           <Wandel />
           <Leistungsfelder />
+          <Bestandsaufnahme />
           <Programm />
           <Messbarkeit />
           <Haltung />
@@ -1455,6 +1456,44 @@ function Wandel() {
             ))}
           </ol>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════ Bestandsaufnahme (CTA) ══════════════════════════
+   Kompakter Aufruf nach den Leistungsfeldern: kostenlose Potenzialanalyse,
+   Bildsprache wie Schritt 01 der Workshop-Seite (Portrait links, Text + Checkliste rechts). */
+function Bestandsaufnahme() {
+  const punkte = [
+    "Wo steht Ihr Unternehmen heute digital – und wo verlieren Sie Zeit und Umsatz?",
+    "Welche Systeme sind vorhanden und wie spielen sie zusammen?",
+    "Wo sitzt der größte Hebel für Automation und KI?",
+    "Klare Empfehlung für die nächsten Schritte – unverbindlich",
+  ];
+  return (
+    <section id="bestandsaufnahme" aria-labelledby="bestandsaufnahme-titel" className="bg-[#f7f9fc] px-6 py-[clamp(72px,9vw,112px)]">
+      <div className="mx-auto grid max-w-[1000px] items-center gap-12 md:grid-cols-[300px_1fr]">
+        <Reveal>
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
+            <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Inhaber Ladouz Digital" fill className="object-cover" sizes="300px" />
+          </div>
+        </Reveal>
+        <Reveal delay={100}>
+          <p className="font-[family-name:var(--font-jost)] text-[3rem] font-light leading-none text-[#8dc63f]">01</p>
+          <h2 id="bestandsaufnahme-titel" className="mt-3 text-[clamp(1.7rem,3vw,2.3rem)] font-medium leading-[1.12] tracking-[-0.025em] text-[#0b1233]">
+            Kostenlose Bestandsaufnahme &amp; Potenzialanalyse
+          </h2>
+          <p className="ld-serif mt-4 text-[1.06rem] leading-[1.7] text-[#43507a]">
+            Per Video-Call oder vor Ort: Wir schauen gemeinsam auf Ihre digitale Infrastruktur – und zeigen Ihnen,
+            wo Ladouz Digital als Umsetzungspartner den größten Unterschied macht.
+          </p>
+          <ul className="mt-5 space-y-2.5">
+            {punkte.map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-[#0b1233]"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}
+          </ul>
+          <div className="mt-8"><CtaButton href={BOOKING_URL}>Bestandsaufnahme vereinbaren</CtaButton></div>
+          <p className="mt-3 text-[0.88rem] text-[#9aa8cc]">Nizar Ladouz, Inhaber · kostenlos und unverbindlich</p>
+        </Reveal>
       </div>
     </section>
   );
