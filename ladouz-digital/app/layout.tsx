@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Jost, Source_Serif_4 } from "next/font/google";
+import { DM_Sans, Jost, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 
 /* Die Schriften, die das Design tatsächlich vorsieht.
@@ -18,6 +18,14 @@ const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
   display: "swap",
   weight: ["400"],
+});
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["600"],
+  style: ["italic"],
 });
 
 const SITE = "https://www.ladouz.digital";
@@ -46,7 +54,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="de" className={`${jost.variable} ${sourceSerif.variable} h-full antialiased`}>
+    <html lang="de" className={`${jost.variable} ${sourceSerif.variable} ${dmSans.variable} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

@@ -1330,7 +1330,7 @@ function Laufband() {
             {[0, 1].map((k) => (
               <ul key={k} aria-hidden={k === 1 ? true : undefined} className="flex flex-none items-center">
                 {laufband.map((t) => (
-                  <li key={t} data-wort className="flex items-center whitespace-nowrap pr-9 text-[0.76rem] font-semibold uppercase tracking-[0.24em] text-[#9aa8cc]">
+                  <li key={t} data-wort className="flex items-center whitespace-nowrap pr-9 font-[family-name:var(--font-dm-sans)] text-[0.76rem] font-semibold italic uppercase tracking-[0.24em] text-[#9aa8cc]">
                     <span aria-hidden className="mr-9 block h-1.5 w-1.5 flex-none rounded-full bg-[#8dc63f]" />
                     {t}
                   </li>
