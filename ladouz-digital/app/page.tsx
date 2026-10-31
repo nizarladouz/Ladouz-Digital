@@ -1391,8 +1391,13 @@ function Wandel() {
             Wo Wirksamkeit in kleinen und mittelständischen Betrieben heute verloren geht.
           </h2>
           <Lead>
-            In den meisten Unternehmen fehlt nicht der Einsatz, sondern die Verbindung:
-            Kanäle, Website, Systeme und Daten arbeiten nebeneinander statt miteinander.
+            In den meisten mittelständischen Unternehmen fehlt nicht der Einsatz von Technologie und Tools,
+            sondern die intelligente Verbindung von Kanälen, Websites, Systemen und Mitarbeitern — so dass
+            alles miteinander arbeitet.
+          </Lead>
+          <Lead className="!mt-5 font-semibold !text-[#0b1233]">
+            Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
+            austauschen und fortlaufend optimieren.
           </Lead>
         </Reveal>
 
