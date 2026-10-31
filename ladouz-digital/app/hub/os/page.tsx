@@ -6,6 +6,7 @@ import { currentUser } from "../auth";
 import { load, reduce, save, type Action } from "./lib/store";
 import type { Workspace } from "./lib/types";
 import { CSS } from "./components/styles";
+import { HUB_CSS } from "../ui";
 import { Sidebar } from "./components/Sidebar";
 import { Framework } from "./components/Framework";
 import { Settings, Logo } from "./components/Settings";
@@ -35,12 +36,13 @@ export default function OS() {
 
   return (
     <div className="os">
-      <style>{CSS}</style>
+      <style>{HUB_CSS + CSS}</style>
+      <div className="hub-bg" />
       <header className="os-top">
         <button className="os-btn ghost os-menu" onClick={() => setMenu(!menu)}>☰</button>
-        <Link href="/hub" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", color: "#0b1233" }}>
-          <span style={{ width: 28, height: 28, borderRadius: 8, background: "#0b1233", color: "#8dc63f", display: "grid", placeItems: "center", fontWeight: 700 }}>L</span>
-          <span className="os-hide-m"><b className="os-h" style={{ fontSize: 15 }}>Brand Controlling Center</b><span style={{ color: "#9aa0b4", marginLeft: 8, fontSize: 12 }}>L Digital Hub · OS</span></span>
+        <Link href="/hub" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", color: "#fff" }}>
+          <span style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.18)", color: "#8dc63f", display: "grid", placeItems: "center", fontWeight: 700 }}>L</span>
+          <span className="os-hide-m"><b className="os-h" style={{ fontSize: 15 }}>Brand Controlling Center</b><span style={{ color: "rgba(255,255,255,.42)", marginLeft: 8, fontSize: 12 }}>L Digital Hub · OS</span></span>
         </Link>
         <div style={{ flex: 1 }} />
         {client && <Logo client={client} size={28} />}
@@ -62,7 +64,7 @@ export default function OS() {
       </>) : (
         <main className="os-main" style={{ gridColumn: "1/-1" }}>
           <h1 className="os-h">Noch kein Mandant angelegt.</h1>
-          <button className="os-btn pri" style={{ marginTop: 16 }} onClick={addClient}>Ersten Mandanten anlegen</button>
+          <button className="hub-pill hub-pill-d" style={{ marginTop: 16, padding: "12px 22px" }} onClick={addClient}><span className="hub-sweep" /><span>Ersten Mandanten anlegen</span></button>
         </main>
       )}
     </div>

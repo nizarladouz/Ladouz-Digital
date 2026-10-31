@@ -4,9 +4,9 @@ import type { ModuleDef, TaskStatus } from "../lib/types";
 import { type Action, nextStatus, progress } from "../lib/store";
 
 const LABEL: Record<TaskStatus, [string, string, string]> = {
-  pending: ["Offen", "#f1f3f7", "#7a8199"],
-  "in-progress": ["In Arbeit", "#fff3dc", "#b77400"],
-  completed: ["Erledigt", "#eef7e2", "#4c7a12"],
+  pending: ["Offen", "rgba(255,255,255,.08)", "rgba(255,255,255,.7)"],
+  "in-progress": ["In Arbeit", "rgba(240,160,32,.16)", "#f6b94a"],
+  completed: ["Erledigt", "rgba(141,198,63,.16)", "#a8d86a"],
 };
 
 export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; color: string; dispatch: (a: Action) => void }) {
@@ -22,10 +22,10 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
         <div>
           <div style={{ width: 40, height: 3, background: color, marginBottom: 14 }} />
           <h1 className="os-h" style={{ fontSize: "clamp(26px,3vw,36px)" }}>{m.title}</h1>
-          <p style={{ color: "#7a8199", margin: "6px 0 0" }}>{m.phases.length} Phasen · {p.done} von {p.total} Aufgaben erledigt</p>
+          <p style={{ color: "rgba(255,255,255,.6)", margin: "6px 0 0" }}>{m.phases.length} Phasen · {p.done} von {p.total} Aufgaben erledigt</p>
         </div>
         <div style={{ minWidth: 220 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#7a8199", marginBottom: 6 }}><span>Fortschritt</span><b style={{ color: "#0b1233" }}>{p.pct}%</b></div>
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "rgba(255,255,255,.6)", marginBottom: 6 }}><span>Fortschritt</span><b style={{ color: "#fff" }}>{p.pct}%</b></div>
           <div className="os-bar"><i style={{ width: `${p.pct}%`, background: color }} /></div>
         </div>
       </div>
@@ -34,8 +34,8 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", margin: "24px 0 8px" }}>
         <span className="os-eyebrow" style={{ marginRight: 4 }}>Ressourcen</span>
         {(m.links ?? []).map((l) => (
-          <span key={l.id} className="os-pill" style={{ background: "#f1f3f7", display: "inline-flex", gap: 6 }}>
-            <a href={l.url} target="_blank" rel="noreferrer" style={{ color: "#0b1233" }}>{l.title}</a>
+          <span key={l.id} className="os-pill" style={{ background: "rgba(255,255,255,.08)", display: "inline-flex", gap: 6 }}>
+            <a href={l.url} target="_blank" rel="noreferrer" style={{ color: "#fff" }}>{l.title}</a>
             <button className="os-btn ghost" style={{ padding: 0, fontSize: 11 }} onClick={() => dispatch({ type: "deleteLink", c, m: m.id, id: l.id })}>✕</button>
           </span>
         ))}
@@ -52,11 +52,11 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
           return (
             <section key={ph.id} className="os-card">
               <header style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 20px" }}>
-                <span style={{ width: 30, height: 30, borderRadius: 9, display: "grid", placeItems: "center", background: "#0b1233", color: "#fff", fontWeight: 600, fontSize: 13, flex: "none" }}>{i + 1}</span>
+                <span style={{ width: 30, height: 30, borderRadius: 9, display: "grid", placeItems: "center", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.16)", color: "#fff", fontWeight: 600, fontSize: 13, flex: "none" }}>{i + 1}</span>
                 <input className="os-h" defaultValue={ph.title} onBlur={(e) => e.target.value.trim() && e.target.value !== ph.title && dispatch({ type: "renamePhase", c, m: m.id, p: ph.id, title: e.target.value.trim() })}
-                  style={{ flex: 1, fontSize: 18, border: 0, outline: "none", background: "none", color: "#0b1233", minWidth: 0 }} />
+                  style={{ flex: 1, fontSize: 18, border: 0, outline: "none", background: "none", color: "#fff", minWidth: 0 }} />
                 <div className="os-hide-m" style={{ width: 120 }}><div className="os-bar"><i style={{ width: `${pp.pct}%`, background: color }} /></div></div>
-                <span style={{ fontSize: 12, color: "#7a8199", width: 44, textAlign: "right" }}>{pp.done}/{pp.total}</span>
+                <span style={{ fontSize: 12, color: "rgba(255,255,255,.6)", width: 44, textAlign: "right" }}>{pp.done}/{pp.total}</span>
                 <button className="os-btn ghost" title="Phase löschen" onClick={() => ask(`Phase „${ph.title}“ löschen?`) && dispatch({ type: "deletePhase", c, m: m.id, p: ph.id })}>✕</button>
               </header>
               {ph.tasks.map((t) => {
@@ -69,8 +69,8 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
                       {t.status === "completed" ? "✓" : t.status === "in-progress" ? <i style={{ width: 8, height: 8, borderRadius: 8, background: "#f0a020" }} /> : null}
                     </button>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 600, textDecoration: t.status === "completed" ? "line-through" : "none", color: t.status === "completed" ? "#9aa0b4" : "#0b1233" }}>{t.title}</div>
-                      {t.description && <div style={{ color: "#7a8199", marginTop: 3, lineHeight: 1.5 }}>{t.description}</div>}
+                      <div style={{ fontWeight: 600, textDecoration: t.status === "completed" ? "line-through" : "none", color: t.status === "completed" ? "rgba(255,255,255,.42)" : "#0b1233" }}>{t.title}</div>
+                      {t.description && <div style={{ color: "rgba(255,255,255,.6)", marginTop: 3, lineHeight: 1.5 }}>{t.description}</div>}
                     </div>
                     <span className="os-pill" style={{ background: bg, color: fg }}>{lab}</span>
                     <button className="os-btn ghost os-del" title="Aufgabe löschen" onClick={() => dispatch({ type: "deleteTask", c, m: m.id, p: ph.id, t: t.id })}>✕</button>
@@ -78,7 +78,7 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
                 );
               })}
               <form className="os-task" onSubmit={(e) => { e.preventDefault(); const v = (draft[ph.id] || "").trim(); if (!v) return; const [title, ...d] = v.split(" — "); dispatch({ type: "addTask", c, m: m.id, p: ph.id, title, description: d.join(" — ") }); setDraft({ ...draft, [ph.id]: "" }); }}>
-                <span style={{ width: 22, textAlign: "center", color: "#9aa0b4" }}>＋</span>
+                <span style={{ width: 22, textAlign: "center", color: "rgba(255,255,255,.42)" }}>＋</span>
                 <input className="os-in" style={{ border: 0, padding: 0, boxShadow: "none" }} placeholder="Aufgabe hinzufügen …  (optional: Titel — Beschreibung)" value={draft[ph.id] || ""} onChange={(e) => setDraft({ ...draft, [ph.id]: e.target.value })} />
               </form>
             </section>
@@ -86,7 +86,7 @@ export function Framework({ m, c, color, dispatch }: { m: ModuleDef; c: string; 
         })}
         <form className="os-card" style={{ display: "flex", gap: 10, padding: 14, borderStyle: "dashed" }} onSubmit={(e) => { e.preventDefault(); if (!newPhase.trim()) return; dispatch({ type: "addPhase", c, m: m.id, title: newPhase.trim() }); setNewPhase(""); }}>
           <input className="os-in" placeholder="Neue Phase, z. B. „Skalierung“" value={newPhase} onChange={(e) => setNewPhase(e.target.value)} />
-          <button className="os-btn pri">Phase hinzufügen</button>
+          <button className="hub-pill hub-pill-d" style={{ padding: "10px 20px", whiteSpace: "nowrap" }}><span className="hub-sweep" /><span>Phase hinzufügen</span></button>
         </form>
         <div><button className="os-btn ghost" onClick={() => ask(`Framework „${m.title}“ entfernen?`) && dispatch({ type: "deleteModule", c, m: m.id })}>Framework entfernen</button></div>
       </div>
