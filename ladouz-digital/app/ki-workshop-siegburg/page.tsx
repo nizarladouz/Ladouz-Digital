@@ -194,9 +194,7 @@ export default function KiWorkshopSiegburg() {
                   </div>
                 )}
                 {s.img === "platzhalter" && (
-                  <div className={`relative aspect-[4/3] rounded-[28px] border border-dashed border-[#d5dcea] bg-gradient-to-br from-[#f7f9fc] to-[#eef2f8] ${i % 2 ? "md:order-2" : ""}`} aria-hidden>
-                    <span className="absolute bottom-5 left-6 h-2 w-2 rounded-full bg-[#8dc63f]/70" />
-                  </div>
+                  <div className={i % 2 ? "md:order-2" : ""}>{i === 1 ? <GrafikAgenten /> : <GrafikFramework />}</div>
                 )}
                 <div className={s.img ? "" : "max-w-[640px]"}>
                   <p className="font-[family-name:var(--font-jost)] text-[3rem] font-light leading-none text-[#8dc63f]">0{i + 1}</p>
@@ -278,5 +276,70 @@ export default function KiWorkshopSiegburg() {
       </section>
       <Footer basis="/" />
     </main>
+  );
+}
+
+/* ── CI-Grafiken für Ablauf 02/03 (bis echte Mockups kommen) ── */
+const kfStyles = `@keyframes ldflow{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(var(--w));opacity:0}}
+@keyframes ldpop{0%,60%{opacity:.25}75%,100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ld-anim{animation:none!important;opacity:1!important}}`;
+
+function GrafikAgenten() {
+  const zeilen = [
+    ["Eingangsrechnung", "kontiert & abgeglichen"],
+    ["Kundenanfrage", "Angebot erstellt"],
+    ["E-Mail-Postfach", "sortiert & beantwortet"],
+    ["Monatszahlen", "Bericht bereit"],
+  ];
+  return (
+    <div className="relative overflow-hidden rounded-[6px] sm:aspect-[4/3] bg-gradient-to-br from-[#131f5c] to-[#0b1233] p-6 sm:p-8 shadow-[0_18px_40px_-24px_rgba(11,18,51,.35)]" aria-hidden>
+      <style>{kfStyles}</style>
+      <div className="flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#9aa8cc]">
+        <span>Von Hand</span><span className="rounded-full border border-[#8dc63f]/50 px-3 py-1 text-[#8dc63f]">KI-Agent</span><span>Erledigt</span>
+      </div>
+      <div className="mt-6 space-y-3 sm:mt-8 sm:space-y-4">
+        {zeilen.map(([a, b], k) => (
+          <div key={a} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-3">
+            <span className="rounded-[6px] bg-white/[0.06] px-2.5 py-2 text-[0.74rem] leading-tight text-[#c7d6f5] sm:text-[0.85rem]">{a}</span>
+            <span className="relative block h-[2px] w-8 bg-white/10 sm:w-16" style={{ ["--w" as string]: "28px" }}>
+              <span className="ld-anim absolute -top-[3px] left-0 h-2 w-2 rounded-full bg-[#8dc63f]" style={{ animation: `ldflow 2.4s ${k * 0.5}s ease-in-out infinite` }} />
+            </span>
+            <span className="ld-anim flex items-center gap-1.5 rounded-[6px] bg-[#8dc63f]/10 px-2.5 py-2 text-[0.74rem] leading-tight text-white sm:text-[0.85rem]" style={{ animation: `ldpop 2.4s ${k * 0.5}s ease-in-out infinite` }}>
+              <span className="text-[#8dc63f]">✓</span>{b}
+            </span>
+          </div>
+        ))}
+      </div>
+      <p className="mt-6 text-[0.72rem] sm:absolute sm:bottom-5 sm:left-8 sm:mt-0 tracking-[0.08em] text-[#9aa8cc] ">Läuft im Hintergrund – Stunde für Stunde.</p>
+    </div>
+  );
+}
+
+function GrafikFramework() {
+  const stufen = [["01", "Prozess klären"], ["02", "Automatisieren"], ["03", "KI einsetzen"]];
+  return (
+    <div className="relative overflow-hidden rounded-[6px] sm:aspect-[4/3] bg-white p-6 ring-1 ring-[#e7ecf5] sm:p-8 shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]" aria-hidden>
+      <style>{kfStyles}</style>
+      <div className="flex items-center justify-between">
+        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#8dc63f]">Umsetzungsprotokoll</span>
+        <span className="text-[0.7rem] text-[#9aa8cc]">30 Tage</span>
+      </div>
+      <div className="mt-6 flex items-stretch gap-2 sm:mt-8">
+        {stufen.map(([n, t], k) => (
+          <div key={n} className="ld-anim flex-1 rounded-[6px] border border-[#e7ecf5] bg-[#f7f9fc] p-3" style={{ animation: `ldpop 3s ${k * 0.6}s ease-in-out infinite` }}>
+            <p className="font-[family-name:var(--font-jost)] text-[1.3rem] font-light text-[#8dc63f]">{n}</p>
+            <p className="mt-1 text-[0.78rem] font-medium text-[#0b1233] sm:text-[0.85rem]">{t}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 space-y-2.5 sm:mt-7">
+        {[["Prozesse nach Hebel priorisiert", 92], ["Zuständigkeiten festgelegt", 74], ["Kennzahlen definiert", 58]].map(([t, w]) => (
+          <div key={t as string}>
+            <div className="flex justify-between text-[0.76rem] text-[#43507a]"><span>{t}</span><span className="text-[#8dc63f]">✓</span></div>
+            <div className="mt-1 h-[5px] rounded-full bg-[#eef2f8]"><div className="h-full rounded-full bg-gradient-to-r from-[#0b1233] to-[#2f5bd7]" style={{ width: `${w}%` }} /></div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
