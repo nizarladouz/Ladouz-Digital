@@ -1397,18 +1397,15 @@ function Wandel() {
           </Lead>
           <Lead className="!mt-5 font-semibold italic !text-[#0b1233]">
             <mark
-              className="box-decoration-clone px-1.5 -mx-0.5 text-inherit"
+              className="box-decoration-clone px-2 -mx-1 text-inherit"
               style={{
                 backgroundColor: "transparent",
-                backgroundImage: [
-                  "linear-gradient(100deg, rgba(141,198,63,0) 0%, rgba(141,198,63,0.42) 1.2%, rgba(141,198,63,0.30) 18%, rgba(141,198,63,0.40) 45%, rgba(141,198,63,0.28) 72%, rgba(141,198,63,0.44) 97%, rgba(141,198,63,0) 100%)",
-                  "linear-gradient(176deg, transparent 40%, rgba(141,198,63,0.18) 44%, transparent 52%, transparent 78%, rgba(141,198,63,0.16) 86%, transparent 90%)",
-                ].join(","),
-                backgroundSize: "100% 58%, 100% 70%",
-                backgroundPosition: "0 62%, 0 58%",
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='f' x='-5%25' y='-20%25' width='110%25' height='140%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.35' numOctaves='3' seed='7' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='5' xChannelSelector='R' yChannelSelector='G' result='d'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04 0.9' numOctaves='2' seed='3' result='g'/%3E%3CfeColorMatrix in='g' type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.9 1.25' result='m'/%3E%3CfeComposite in='d' in2='m' operator='in'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(#f)' fill='rgb(141,198,63)'%3E%3Cpath fill-opacity='0.42' d='M3 9 C60 6 140 8 220 6.5 S350 7 397 8.5 L398 31 C330 33 250 31.5 170 33 S60 32 2 33.5 Z'/%3E%3Cpath fill-opacity='0.16' d='M6 12 C120 10 260 11.5 394 10 L395 15 C260 16 120 14.5 5 16 Z'/%3E%3Cpath fill-opacity='0.14' d='M4 27 C130 28.5 270 26.5 396 28 L396 32 C270 31 130 33 4 31.5 Z'/%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundSize: "100% 0.95em",
+                backgroundPosition: "0 58%",
                 backgroundRepeat: "no-repeat",
-                borderRadius: "0.6em 0.25em 0.7em 0.3em / 0.4em 0.7em 0.35em 0.6em",
                 WebkitBoxDecorationBreak: "clone",
+                boxDecorationBreak: "clone",
               }}
             >
               Sie brauchen keinen einzelnen Experten. Sie brauchen eine Infrastruktur aus Experten, die sich
