@@ -828,8 +828,8 @@ export default function Home() {
           <Laufband />
           <Leitgedanke />
           <Wandel />
-          <Leistungsfelder />
           <Bestandsaufnahme />
+          <Leistungsfelder />
           <Programm />
           <Messbarkeit />
           <Haltung />
@@ -1478,6 +1478,7 @@ function Bestandsaufnahme() {
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
             <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Inhaber Ladouz Digital" fill className="object-cover" sizes="300px" />
           </div>
+          <p className="mt-4 text-center text-[0.88rem] text-[#9aa8cc]">Nizar Ladouz, Inhaber · kostenlos und unverbindlich</p>
         </Reveal>
         <Reveal delay={100}>
           <p className="font-[family-name:var(--font-jost)] text-[3rem] font-light leading-none text-[#8dc63f]">01</p>
@@ -1492,7 +1493,6 @@ function Bestandsaufnahme() {
             {punkte.map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-[#0b1233]"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}
           </ul>
           <div className="mt-8"><CtaButton href={BOOKING_URL}>Bestandsaufnahme vereinbaren</CtaButton></div>
-          <p className="mt-3 text-[0.88rem] text-[#9aa8cc]">Nizar Ladouz, Inhaber · kostenlos und unverbindlich</p>
         </Reveal>
       </div>
     </section>
