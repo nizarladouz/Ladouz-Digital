@@ -1511,7 +1511,7 @@ function Leistungsfelder() {
           <Reveal>
             <Eyebrow>Leistungsfelder</Eyebrow>
             <h2 id="leistungen-titel" className="mt-6 text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-              Zehn Leistungsfelder.<br />Ein Ziel: Wachstum.
+              Zehn Leistungsfelder.<span className="mt-3 block text-[0.6em] leading-[1.18] tracking-[-0.025em] text-[#43507a]">Zehnmal besser aufgestellt in Ihrer Digital- und KI-Strategie.</span>
             </h2>
           </Reveal>
           <Reveal delay={100}>
@@ -1529,6 +1529,7 @@ function Leistungsfelder() {
                 onPointerMove={setzeZeiger}
                 className="group relative flex h-full flex-col overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-8 transition-[background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[#d3ddef] hover:bg-white hover:shadow-[0_28px_64px_rgba(11,18,51,0.10)] sm:p-9"
               >
+                <span aria-hidden className="ld-fuell" style={{ "--fd": `${i === 0 ? 0 : 0.25 + ((i - 1) % 3) * 0.22 + Math.floor((i - 1) / 3) * 0.08}s` } as CSSProperties} />
                 <span aria-hidden className="ld-licht pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-[linear-gradient(90deg,#8dc63f,#2f5bd7)] transition-transform duration-500 group-hover:scale-x-100" />
 
@@ -2407,12 +2408,20 @@ function GlobalStyles() {
       .ld-rail-inset { padding-inline: max(1.5rem, calc((100vw - 1240px) / 2 + 1.5rem)); scroll-padding-inline: max(1.5rem, calc((100vw - 1240px) / 2 + 1.5rem)); }
     }
 
+    /* Leistungsfelder: Modul füllt sich beim Einblenden mit CI-Grün (Flüssigkeit von unten). */
+    .ld-fuell { position: absolute; inset: 0; pointer-events: none; transform: translateY(101%); transition: transform 2.4s cubic-bezier(.22,.8,.24,1) var(--fd, 0s); background: linear-gradient(to top, rgba(141,198,63,.20) 0%, rgba(141,198,63,.10) 45%, rgba(141,198,63,.05) 100%); }
+    .ld-fuell::before { content: ""; position: absolute; left: 0; right: 0; top: -13px; height: 14px; background: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 14' preserveAspectRatio='none'%3E%3Cpath d='M0 8 C20 0 40 0 60 8 S100 16 120 8 V14 H0Z' fill='%238dc63f' fill-opacity='.22'/%3E%3C/svg%3E\") repeat-x; background-size: 240px 14px; animation: ldwelle 3.2s linear infinite; opacity: 1; transition: opacity 1.2s ease calc(var(--fd, 0s) + 2.4s); }
+    .ld-reveal.is-visible .ld-fuell { transform: translateY(0); }
+    .ld-reveal.is-visible .ld-fuell::before { opacity: 0; }
+    @keyframes ldwelle { from { background-position-x: 0; } to { background-position-x: 240px; } }
+
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
     @media (scripting: none) {
       .ld-reveal { opacity: 1; transform: none; }
       .ld-wort { opacity: 1; }
       .ld-bar { transform: scaleX(var(--w, 1)); }
+      .ld-fuell { transform: none; }
     }
     @media (prefers-contrast: more) {
       .ld-reveal, .ld-wort { opacity: 1; transform: none; }
@@ -2421,6 +2430,8 @@ function GlobalStyles() {
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .ld-reveal { opacity: 1; transform: none; transition: none; }
+      .ld-fuell { transform: none; transition: none; }
+      .ld-fuell::before { display: none; }
       .ld-btn .ld-sweep { display: none; }
       .ld-kenburns, .ld-hero-zoom, .ld-enter, .ld-rule, .ld-swap { animation: none; opacity: 1; transform: none; }
       .ld-silber { animation: none; background-position: 30% 50%; }
