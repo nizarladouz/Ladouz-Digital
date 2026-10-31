@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "KI-Workshop in Siegburg: Jeden zweiten Samstag vor Ort, für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Keine Spielereien – nur KI, die Zeit, Nerven und Geld spart. Mit Umsetzungsplan für Montag.",
   alternates: { canonical: "/ki-workshop-siegburg" },
-  openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg | ladouz.digital", images: ["/standort/standort-1.webp"] },
+  openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg | ladouz.digital", images: ["/standort/buero-1.webp"] },
 };
 
 const serif = "font-[family-name:var(--font-source-serif)]";
@@ -50,10 +50,10 @@ const nachher = [
   "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
 const ablauf = [
-  { t: "Ankommen & Bestandsaufnahme", d: "Wir schauen auf Ihren Betrieb, nicht auf Folien: Wo gehen heute Zeit, Geld und Nerven verloren?", img: "/standort/standort-1.webp" },
-  { t: "Was KI heute faktisch leistet", d: "Live an echten Beispielen aus dem Mittelstand: Angebote, Kommunikation, Auswertung, Dokumentation. Ohne Hype.", img: "/standort/standort-2.webp" },
-  { t: "Organisieren statt ausprobieren", d: "Wie Sie KI in Abläufe, Rollen und Regeln einbauen – damit es im Alltag hält, nicht nur im Workshop.", img: null },
-  { t: "Ihr Umsetzungsplan", d: "Sie gehen mit einem konkreten Plan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null },
+  { t: "Ankommen & Bestandsaufnahme", d: "Wir schauen auf Ihren Betrieb, nicht auf Folien: Wo gehen heute Zeit, Geld und Nerven verloren?", img: "/standort/buero-1.webp", hoch: false },
+  { t: "Was KI heute faktisch leistet", d: "Live an echten Beispielen aus dem Mittelstand: Angebote, Kommunikation, Auswertung, Dokumentation. Ohne Hype.", img: "/standort/rollup.webp", hoch: true },
+  { t: "Organisieren statt ausprobieren", d: "Wie Sie KI in Abläufe, Rollen und Regeln einbauen – damit es im Alltag hält, nicht nur im Workshop.", img: "/standort/buero-2.webp", hoch: false },
+  { t: "Ihr Umsetzungsplan", d: "Sie gehen mit einem konkreten Plan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null, hoch: false },
 ];
 const fragen = [
   ["Wann findet der Workshop statt?", "Jeden zweiten Samstag in unserem Büro, Markt 40, 53721 Siegburg. Den nächsten freien Termin nennen wir Ihnen nach Ihrer Anfrage."],
@@ -88,8 +88,7 @@ export default function KiWorkshopSiegburg() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#0b1233]/40 to-[#0b1233]" aria-hidden />
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
-          <div className="mt-20 grid items-center gap-12 lg:grid-cols-[1fr_340px]">
-          <div className="max-w-[780px]">
+          <div className="mt-20 max-w-[780px]">
             <p className={label}>Vor Ort in Siegburg · jeden zweiten Samstag</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
               KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
@@ -103,15 +102,6 @@ export default function KiWorkshopSiegburg() {
               <a href={`tel:${TEL_LINK}`} className="text-[15px] text-[#c7d6f5] underline-offset-4 hover:underline">oder anrufen: {TEL}</a>
             </div>
             <p className="mt-6 text-[0.85rem] text-[#9aa8cc]">Kleine Gruppe · begrenzte Plätze · Markt 40, 53721 Siegburg</p>
-          </div>
-          {/* Abtei Michaelsberg, Foto: Daniel Tibi, 2005, gemeinfrei (Public Domain),
-              https://commons.wikimedia.org/wiki/File:Abtei_michaelsberg-2005_12_25.jpg */}
-          <figure className="hidden lg:block">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[28px] ring-1 ring-white/15 shadow-[0_40px_80px_-40px_rgba(0,0,0,.6)]">
-              <Image src="/standort/michaelsberg.webp" alt="Abtei Michaelsberg in Siegburg" fill className="object-cover object-[50%_40%]" sizes="340px" />
-            </div>
-            <figcaption className="mt-3 text-[0.78rem] text-[#9aa8cc]">Siegburg · Michaelsberg</figcaption>
-          </figure>
           </div>
         </div>
       </section>
@@ -171,8 +161,8 @@ export default function KiWorkshopSiegburg() {
             {ablauf.map((s, i) => (
               <div key={s.t} className={`grid items-center gap-10 ${s.img ? "md:grid-cols-2" : ""}`}>
                 {s.img && (
-                  <div className={`relative aspect-[4/3] overflow-hidden rounded-[28px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)] ${i % 2 ? "md:order-2" : ""}`}>
-                    <Image src={s.img} alt={`Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
+                  <div className={`relative overflow-hidden rounded-[28px] ${s.hoch ? "mx-auto aspect-[3/4] w-full max-w-[380px]" : "aspect-[4/3]"} shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)] ${i % 2 ? "md:order-2" : ""}`}>
+                    <Image src={s.img} alt={s.hoch ? "Ladouz Digital Roll-up im Büro Siegburg" : `Ladouz Digital Büro Siegburg – ${s.t}`} fill className="object-cover" sizes="(min-width:768px) 50vw, 100vw" />
                   </div>
                 )}
                 <div className={s.img ? "" : "max-w-[640px]"}>
