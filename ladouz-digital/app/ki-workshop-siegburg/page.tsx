@@ -51,7 +51,7 @@ const nachher = [
 ];
 const ablauf: { t: string; d: string; img: string | null; hoch: boolean; punkte?: string[] }[] = [
   { t: "Ankunft & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: "/standort/buero-1.webp", hoch: false, punkte: [
-    "Welchen Stand hat KI heute bei Ihnen?",
+    "Wo steht KI heute weltweit – und wo steht sie in Ihrem Unternehmen?",
     "Welche Geschäftsprozesse laufen bereits digital?",
     "Welche Systeme sind vorhanden: ERP, E-Mail, Branchensoftware?",
     "Wo gehen heute die meisten Stunden und Kosten verloren?",
