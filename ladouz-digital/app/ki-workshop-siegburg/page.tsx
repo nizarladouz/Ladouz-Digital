@@ -299,8 +299,8 @@ function GrafikAgenten() {
     <div className={`${karte} ${schatten} bg-[#0b1233] p-6 sm:p-8`} aria-hidden>
       <style>{kfStyles}</style>
       {/* weiche Lichtflächen */}
-      <div className="ld-anim pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#2f5bd7]/30 blur-3xl" style={{ animation: "ldglow 9s ease-in-out infinite" }} />
-      <div className="ld-anim pointer-events-none absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#8dc63f]/15 blur-3xl" style={{ animation: "ldglow 11s 2s ease-in-out infinite" }} />
+      <div className="ld-anim pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[#2f5bd7]/30 blur-3xl" style={{ animation: "ldglow 18s ease-in-out infinite" }} />
+      <div className="ld-anim pointer-events-none absolute -bottom-24 -left-10 h-56 w-56 rounded-full bg-[#8dc63f]/15 blur-3xl" style={{ animation: "ldglow 22s 4s ease-in-out infinite" }} />
       <div className="pointer-events-none absolute inset-0 rounded-[14px] ring-1 ring-inset ring-white/10" />
       <div className="relative">
         <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 text-[0.64rem] font-medium uppercase tracking-[0.18em] text-white/45 sm:gap-3">
@@ -313,16 +313,16 @@ function GrafikAgenten() {
             <div key={a} className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 sm:gap-3">
               <span className="rounded-[10px] bg-white/[0.05] px-3 py-2.5 text-[0.74rem] leading-tight text-white/75 ring-1 ring-inset ring-white/[0.08] backdrop-blur sm:text-[0.82rem]">{a}</span>
               <span className="relative block h-px w-8 bg-gradient-to-r from-white/5 via-white/20 to-white/5 sm:w-14" style={{ ["--w" as string]: "28px" }}>
-                <span className="ld-anim absolute -top-[2.5px] left-0 h-[6px] w-[6px] rounded-full bg-[#8dc63f] shadow-[0_0_10px_2px_rgba(141,198,63,.45)]" style={{ animation: `ldflow 3.6s ${k * 0.9}s cubic-bezier(.4,0,.2,1) infinite` }} />
+                <span className="ld-anim absolute -top-[2.5px] left-0 h-[6px] w-[6px] rounded-full bg-[#8dc63f] shadow-[0_0_10px_2px_rgba(141,198,63,.45)]" style={{ animation: `ldflow 7.2s ${k * 1.8}s cubic-bezier(.4,0,.2,1) infinite` }} />
               </span>
-              <span className="ld-anim flex items-center gap-2 rounded-[10px] bg-gradient-to-br from-[#8dc63f]/[0.16] to-[#8dc63f]/[0.04] px-3 py-2.5 text-[0.74rem] leading-tight text-white ring-1 ring-inset ring-[#8dc63f]/25 sm:text-[0.82rem]" style={{ animation: `ldpop 3.6s ${k * 0.9}s ease-in-out infinite` }}>
+              <span className="ld-anim flex items-center gap-2 rounded-[10px] bg-gradient-to-br from-[#8dc63f]/[0.16] to-[#8dc63f]/[0.04] px-3 py-2.5 text-[0.74rem] leading-tight text-white ring-1 ring-inset ring-[#8dc63f]/25 sm:text-[0.82rem]" style={{ animation: `ldpop 7.2s ${k * 1.8}s ease-in-out infinite` }}>
                 <span className="grid h-4 w-4 flex-none place-items-center rounded-full bg-[#8dc63f] text-[0.6rem] font-bold text-[#0b1233]">✓</span>{b}
               </span>
             </div>
           ))}
         </div>
         <p className="mt-7 flex items-center gap-2 text-[0.7rem] text-white/45 sm:mt-8">
-          <span className="ld-anim h-1.5 w-1.5 rounded-full bg-[#8dc63f]" style={{ animation: "ldglow 2.4s ease-in-out infinite" }} />
+          <span className="ld-anim h-1.5 w-1.5 rounded-full bg-[#8dc63f]" style={{ animation: "ldglow 4.8s ease-in-out infinite" }} />
           Läuft im Hintergrund – Stunde für Stunde.
         </p>
       </div>
@@ -344,7 +344,7 @@ function GrafikFramework() {
         </div>
         <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-7 sm:gap-3">
           {stufen.map(([n, t], k) => (
-            <div key={n} className="ld-anim rounded-[10px] bg-white p-3 ring-1 ring-inset ring-[#0b1233]/[0.07] shadow-[0_1px_2px_rgba(11,18,51,.04),0_6px_16px_-8px_rgba(11,18,51,.12)] sm:p-3.5" style={{ animation: `ldpop 4.5s ${k * 1.1}s ease-in-out infinite` }}>
+            <div key={n} className="ld-anim rounded-[10px] bg-white p-3 ring-1 ring-inset ring-[#0b1233]/[0.07] shadow-[0_1px_2px_rgba(11,18,51,.04),0_6px_16px_-8px_rgba(11,18,51,.12)] sm:p-3.5" style={{ animation: `ldpop 9s ${k * 2.2}s ease-in-out infinite` }}>
               <p className="font-[family-name:var(--font-jost)] text-[0.72rem] font-medium tracking-[0.08em] text-[#8dc63f]">{n}</p>
               <p className="mt-1.5 text-[0.76rem] font-medium leading-tight text-[#0b1233] sm:text-[0.84rem]">{t}</p>
             </div>
