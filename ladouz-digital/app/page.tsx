@@ -1061,7 +1061,7 @@ function Hero() {
       <span aria-hidden className="ld-hero-fuss absolute inset-x-0 bottom-0 -z-10 h-2/5" />
 
       <div className="mx-auto flex max-w-[1240px] flex-col justify-end px-6 pt-[108px] sm:min-h-[clamp(680px,94svh,1000px)] sm:pt-[clamp(150px,20vh,220px)]">
-        <div className="grid items-center gap-10 pb-12 sm:pb-[clamp(56px,8vh,96px)] lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-6">
+        <div className="grid items-center gap-10 pb-12 sm:pb-[clamp(56px,8vh,96px)] lg:gap-6">
           <div>
             <p className="flex items-start gap-4">
               <span aria-hidden className="ld-rule mt-[0.55em] block h-px w-10 flex-none bg-[#8dc63f]" />
@@ -1090,7 +1090,7 @@ function Hero() {
             </div>
           </div>
 
-          <HeroInstrument />
+          {/* Performance-Instrument vorübergehend ausgeblendet (Desktop ruhiger). Zum Reaktivieren: <HeroInstrument /> */}
         </div>
 
         {/* Kacheln im Stil des Signatur-Buttons: Glasfläche mit Verlauf,
@@ -1115,6 +1115,7 @@ function Hero() {
 
 /* Das Instrument liest --mx/--my vom Hero (Zeigerposition) und
    verschiebt sich leicht gegenläufig – ein ruhiger Tiefeneffekt. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function HeroInstrument() {
   const C = 280;
   const R = 214;
