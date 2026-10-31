@@ -1397,10 +1397,17 @@ function Wandel() {
           </Lead>
           <Lead className="!mt-5 font-semibold italic !text-[#0b1233]">
             <mark
-              className="box-decoration-clone rounded-[2px] px-1 text-inherit"
+              className="box-decoration-clone px-1.5 -mx-0.5 text-inherit"
               style={{
-                background:
-                  "linear-gradient(to bottom, transparent 38%, rgba(141,198,63,0.32) 38%, rgba(141,198,63,0.32) 92%, transparent 92%)",
+                backgroundColor: "transparent",
+                backgroundImage: [
+                  "linear-gradient(100deg, rgba(141,198,63,0) 0%, rgba(141,198,63,0.42) 1.2%, rgba(141,198,63,0.30) 18%, rgba(141,198,63,0.40) 45%, rgba(141,198,63,0.28) 72%, rgba(141,198,63,0.44) 97%, rgba(141,198,63,0) 100%)",
+                  "linear-gradient(176deg, transparent 40%, rgba(141,198,63,0.18) 44%, transparent 52%, transparent 78%, rgba(141,198,63,0.16) 86%, transparent 90%)",
+                ].join(","),
+                backgroundSize: "100% 58%, 100% 70%",
+                backgroundPosition: "0 62%, 0 58%",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "0.6em 0.25em 0.7em 0.3em / 0.4em 0.7em 0.35em 0.6em",
                 WebkitBoxDecorationBreak: "clone",
               }}
             >
