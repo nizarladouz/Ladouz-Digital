@@ -828,8 +828,8 @@ export default function Home() {
           <Laufband />
           <Leitgedanke />
           <Wandel />
-          <Bestandsaufnahme />
           <Leistungsfelder />
+          <Bestandsaufnahme />
           <Programm />
           <Messbarkeit />
           <Haltung />
