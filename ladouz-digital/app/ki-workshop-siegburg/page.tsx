@@ -183,13 +183,13 @@ export default function KiWorkshopSiegburg() {
                 {s.img === "stapel" && (
                   <div className="relative mx-auto aspect-[4/3] w-full max-w-[560px]">
                     <div className="absolute left-0 top-[8%] h-[84%] w-[62%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
-                      <Image src="/standort/buero-1.webp" alt="Ladouz Digital Office Siegburg – Arbeitsplatz am Fenster" fill className="object-cover" sizes="(min-width:768px) 32vw, 62vw" />
+                      <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – offener Workshop-Raum" fill className="object-cover" sizes="(min-width:768px) 32vw, 62vw" />
                     </div>
                     <div className="absolute right-[3%] top-0 h-[66%] w-[27%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
                       <Image src="/standort/rollup.webp" alt="Ladouz Digital Roll-up im Office Siegburg" fill className="object-cover object-top" sizes="(min-width:768px) 15vw, 27vw" />
                     </div>
                     <div className="absolute bottom-0 right-0 h-[40%] w-[46%] overflow-hidden rounded-[6px] shadow-[0_18px_40px_-24px_rgba(11,18,51,.28)]">
-                      <Image src="/standort/buero-2.webp" alt="Ladouz Digital Office Siegburg – Arbeitsbereich" fill className="object-cover" sizes="(min-width:768px) 24vw, 46vw" />
+                      <Image src="/standort/buero-1.webp" alt="Ladouz Digital Office Siegburg – Arbeitsplätze am Fenster" fill className="object-cover" sizes="(min-width:768px) 24vw, 46vw" />
                     </div>
                   </div>
                 )}
