@@ -827,6 +827,7 @@ export default function Home() {
           <Hero />
           <Laufband />
           <Leitgedanke />
+          <Standort />
           <Wandel />
           <Leistungsfelder />
           <Programm />
@@ -1375,6 +1376,30 @@ function Leitgedanke() {
             })}
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Standort() {
+  const bilder = [
+    { src: "/standort/standort-1.webp", alt: "Ladouz Digital Standort Siegburg", cls: "md:col-span-2 aspect-[16/9]" },
+    { src: "/standort/standort-2.webp", alt: "Beratungsraum in Siegburg", cls: "aspect-[4/5]" },
+    { src: "/standort/standort-3.webp", alt: "Workshop-Bereich in Siegburg", cls: "aspect-[4/5]" },
+  ];
+  return (
+    <section aria-label="Standort Siegburg" className="bg-white px-6 pb-[clamp(72px,9vw,120px)]">
+      <div className="mx-auto w-full max-w-[1192px]">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
+          {bilder.map((b) => (
+            <div key={b.src} className={`relative overflow-hidden rounded-[28px] bg-[#f7f9fc] shadow-[0_24px_60px_-32px_rgba(11,18,51,0.35)] ring-1 ring-[#e7ecf5] ${b.cls}`}>
+              <Image src={b.src} alt={b.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover" />
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 max-w-[60ch] text-[0.85rem] leading-[1.6] text-[#5b6480]">
+          In unserem Standort in Siegburg beraten wir Sie gerne vor Ort und halten Workshops zu KI-Strategien und Digitalem.
+        </p>
       </div>
     </section>
   );
