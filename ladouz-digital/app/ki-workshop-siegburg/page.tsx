@@ -50,16 +50,28 @@ const nachher = [
   "Sie wissen, welche Tools und welche Cases sich für Ihren Betrieb lohnen – messbar an Zeit, Kosten und Fehlern",
 ];
 const ablauf: { t: string; d: string; img: string | null; hoch: boolean; punkte?: string[] }[] = [
-  { t: "Ankunft & Bestandsaufnahme", d: "Wir empfangen Sie vor Ort in unserem Büro am Markt in Siegburg. Dann eine kurze Bestandsaufnahme: Welchen Stand hat KI heute in Ihrem Betrieb? Wir schauen auf Ihre Abläufe, nicht auf Folien. Unser Fokus liegt auf mittelständischen Betrieben, die bereits digital arbeiten – mit Kundenmails, ERP-System und bestehender Technik. Denn ein Grundmaß an Digitalisierung ist die Voraussetzung, damit KI greift. Gemeinsam identifizieren wir Ihre digitalen Geschäftsprozesse – und wo der größte Hebel sitzt.", img: "/standort/buero-1.webp", hoch: false },
+  { t: "Ankunft & Bestandsaufnahme", d: "Wir empfangen Sie in unserem Büro am Markt in Siegburg – und schauen auf Ihren Betrieb, nicht auf Folien:", img: "/standort/buero-1.webp", hoch: false, punkte: [
+    "Welchen Stand hat KI heute bei Ihnen?",
+    "Welche Geschäftsprozesse laufen bereits digital?",
+    "Welche Systeme sind vorhanden: ERP, E-Mail, Branchensoftware?",
+    "Wo gehen heute die meisten Stunden und Kosten verloren?",
+    "Wo sitzt der größte Hebel für KI und Automation?",
+  ] },
   { t: "Was heute noch Menschen machen – und nicht mehr müssen", d: "Welche Aufgaben werden bei Ihnen noch von Hand erledigt, die längst kein Mensch mehr machen muss – und die eine KI oft sogar präziser erledigt? Wir zeigen es live, an echten Beispielen:", img: "/standort/rollup.webp", hoch: true, punkte: [
-    "Buchhaltung: Belege erfassen, zuordnen, vorbereiten",
-    "Angebotserstellung: vom Anfrage-Eingang zum fertigen Angebot",
+    "Buchhaltung weitgehend automatisiert: Belege erfassen, kontieren, abgleichen",
+    "Angebotserstellung in Minuten: vom Anfrage-Eingang zum fertigen Angebot",
     "Management und Steuerung: Kennzahlen, Berichte, Entscheidungsvorlagen",
     "Kundenkommunikation: E-Mails vorsortieren, beantworten, nachfassen",
     "Dokumentation, Onboarding und Analysen",
     "Agentische Workflows: KI-Agenten, die mehrstufige Aufgaben selbstständig erledigen – bis hin zum Marketing",
   ] },
-  { t: "Ihr Umsetzungsprotokoll & Framework", d: "Wir übersetzen das Gesehene in Ihren Betrieb: ein klares Framework für den Weg zum AI-first- und Automation-first-Betrieb – genau dort, wo Aufgaben heute Kosten und Zeit fressen. Prozess zuerst, dann Automation, dann KI. Ohne Hype, nach klaren Grundprinzipien.", img: "/standort/buero-2.webp", hoch: false },
+  { t: "Ihr Umsetzungsprotokoll & Framework", d: "Wir übersetzen das Gesehene in Ihren Betrieb – AI-first und Automation-first dort, wo Aufgaben heute Zeit und Kosten fressen:", img: "/standort/buero-2.webp", hoch: false, punkte: [
+    "Ihre Prozesse priorisiert nach Zeit- und Kostenhebel",
+    "Die Reihenfolge: erst Prozess klären, dann automatisieren, dann KI einsetzen",
+    "Klare Zuständigkeiten: wer was ab Montag umsetzt",
+    "Regeln für Datenschutz und sicheren KI-Einsatz im Team",
+    "Kennzahlen, an denen Sie den Erfolg messen",
+  ] },
   { t: "Ihr Umsetzungsplan", d: "Sie gehen mit Ihrem konkreten Umsetzungsplan für die nächsten 30 Tage nach Hause. Montag kann es losgehen.", img: null, hoch: false },
 ];
 const fragen = [
