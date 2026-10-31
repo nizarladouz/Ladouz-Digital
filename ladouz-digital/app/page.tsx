@@ -1476,7 +1476,7 @@ function Bestandsaufnahme() {
       <div className="mx-auto grid max-w-[1000px] items-center gap-12 md:grid-cols-[300px_1fr]">
         <Reveal className="order-2 md:order-1">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] bg-[#0b1233] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
-            <Image src="/bestandsaufnahme.webp" alt="30 Minuten Videocall, kostenlos: Potenzialanalyse mit Ist-Analyse, Potenzialen und nächsten Schritten" fill className="object-cover" sizes="300px" />
+            <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Inhaber Ladouz Digital" fill className="object-cover" sizes="300px" />
           </div>
         </Reveal>
         <Reveal delay={100} className="order-1 md:order-2">
