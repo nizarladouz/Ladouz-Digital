@@ -2219,7 +2219,7 @@ function Kontakt() {
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Erstberatung</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
-                Sprechen wir über Ihr Wachstum.
+                Sprechen wir über Ihre digitale und KI-Infrastruktur.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
                 In der Erstberatung klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
