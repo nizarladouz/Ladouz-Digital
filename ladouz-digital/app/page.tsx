@@ -209,29 +209,54 @@ const kernsatz =
 /* Jede Zeile ist ein Paar: derselbe Bereich vorher und nachher. */
 const wandel = [
   {
+    bereich: "Strategie",
+    heute: "Kein gemeinsames Digital-/KI-Zielbild. Maßnahmen laufen nebeneinander.",
+    danach: "Ein Zielbild mit Prioritäten und Kennzahlen für die ganze Infrastruktur.",
+  },
+  {
+    bereich: "Systeme",
+    heute: "Tools ohne Verbindung. Medienbrüche überall.",
+    danach: "Systeme, die zusammengreifen — Grundlage für Automation und KI.",
+  },
+  {
+    bereich: "Daten",
+    heute: "Zahlen verteilt, keine Kette vom Kontakt bis Umsatz.",
+    danach: "Durchgängiges Tracking und eine gemeinsame Datenbasis.",
+  },
+  {
+    bereich: "Prozesse",
+    heute: "Wissen in Köpfen, Abläufe undokumentiert.",
+    danach: "Dokumentierte, agentenfähige Prozesse.",
+  },
+  {
+    bereich: "Automatisierung",
+    heute: "Wiederkehrende Arbeit von Hand.",
+    danach: "Workflows zwischen den Systemen, ohne Medienbruch.",
+  },
+  {
+    bereich: "KI & Agenten",
+    heute: "Ausprobiert, nicht orchestriert.",
+    danach: "KI-Agenten im Stundentakt an echten Aufgaben.",
+  },
+  {
     bereich: "Sichtbarkeit",
-    heute: "Gefunden wird, wer zufällig gut rankt. Neue Suchwege wie KI-Antworten bleiben unbeachtet.",
-    danach: "Eine Inhaltsarchitektur, die Sie dort sichtbar macht, wo Ihre Kunden suchen – in Google und in KI-Antworten.",
+    heute: "Zufälliges Ranking, KI-Suche unbeachtet.",
+    danach: "Inhaltsarchitektur für Google und KI-Antworten.",
   },
   {
-    bereich: "Marketing",
-    heute: "Budgets folgen Bauchgefühl oder Klickzahlen. Was davon zu Aufträgen wird, weiß niemand genau.",
-    danach: "Jeder Euro wird nach Anfragen, Aufträgen und Umsatz gesteuert.",
+    bereich: "Conversion",
+    heute: "Website informiert, führt nicht systematisch.",
+    danach: "Funnel und Seiten, die zu qualifizierten Anfragen führen.",
   },
   {
-    bereich: "Website",
-    heute: "Die Website informiert, aber sie verkauft nicht. Besucher kommen – und gehen wieder.",
-    danach: "Eine Website, die Besucher systematisch zu qualifizierten Anfragen führt.",
-  },
-  {
-    bereich: "Abläufe",
-    heute: "Wiederkehrende Arbeit bindet Ihr Team. Standardsoftware bildet die eigenen Abläufe nur teilweise ab.",
-    danach: "Software und KI-Agenten übernehmen, was sich wiederholt. Ihr Team gewinnt Zeit für das Wesentliche.",
+    bereich: "Marketing-Verfahren",
+    heute: "Kanäle und Budgets als Stückwerk.",
+    danach: "Ein ganzheitliches Verfahren von Budget bis Auftrag.",
   },
   {
     bereich: "Steuerung",
-    heute: "Daten liegen verteilt in Systemen. Entscheidungen beruhen vor allem auf Erfahrung.",
-    danach: "Ein gemeinsames Kennzahlensystem – vom ersten Kontakt bis zum Umsatz.",
+    heute: "Erfahrung statt Cockpit.",
+    danach: "Operating System für Digital- und KI-Strategie — laufende Hebel.",
   },
 ];
 
@@ -1433,7 +1458,7 @@ function Wandel() {
             <span />
             <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#5b6b8a]">Heute</span>
             <span />
-            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit einem Performance-System</span>
+            <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit Digital- &amp; KI-Infrastruktur</span>
           </div>
 
           <ol>
@@ -1449,7 +1474,7 @@ function Wandel() {
                 <span aria-hidden className="hidden h-11 w-11 items-center justify-center rounded-full bg-[#0b1233] text-[15px] text-[#8dc63f] lg:flex">→</span>
 
                 <p className="text-[1.12rem] font-medium leading-[1.45] tracking-[-0.012em] text-[#0b1233]">
-                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit einem Performance-System</span>
+                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit Digital- &amp; KI-Infrastruktur</span>
                   {w.danach}
                 </p>
               </Reveal>
