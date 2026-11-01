@@ -1531,12 +1531,12 @@ function Bestandsaufnahme() {
       <Reveal delay={150} className="mx-auto mt-14 max-w-[1000px]">
         <div className="relative grid items-center gap-6 overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-white px-7 py-8 shadow-[0_1px_2px_rgba(11,18,51,.05),0_24px_48px_-28px_rgba(11,18,51,.22)] sm:grid-cols-[1fr_200px] sm:gap-10 sm:px-10 sm:py-6">
           <div>
-            <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">Inklusive · gratis</p>
+            <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
             <p className="mt-3 text-[clamp(1.2rem,2vw,1.45rem)] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">
-              Nach dem Erstgespräch erhalten Sie Ihr individuelles Umsetzungsprotokoll.
+              Nach dem Gespräch erhalten Sie Ihr AI-first / Automation-first Umsetzungsprotokoll – individuell und kostenlos.
             </p>
             <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#43507a]">
-              Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur – schriftlich und kostenlos.
+              Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
             </p>
           </div>
           <button type="button" onClick={() => setGross(true)} aria-label="Umsetzungsprotokoll vergrößert ansehen" className="group relative mx-auto block w-[180px] cursor-zoom-in transition-transform duration-500 hover:-translate-y-1 sm:-my-2 sm:w-[200px]">
