@@ -1490,6 +1490,15 @@ function Wandel() {
    Kompakter Aufruf nach den Leistungsfeldern: kostenlose Potenzialanalyse,
    Bildsprache wie Schritt 01 der Workshop-Seite (Portrait links, Text + Checkliste rechts). */
 function Bestandsaufnahme() {
+  const [gross, setGross] = useState(false);
+  useEffect(() => {
+    if (!gross) return;
+    const zu = (e: KeyboardEvent) => { if (e.key === "Escape") setGross(false); };
+    window.addEventListener("keydown", zu);
+    const alt = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", zu); document.body.style.overflow = alt; };
+  }, [gross]);
   const punkte = [
     "Wo steht Ihr Unternehmen heute digital – und wo steht KI in Ihrem Unternehmen?",
     "Welche Systeme sind vorhanden und wie spielen sie zusammen?",
@@ -1530,11 +1539,18 @@ function Bestandsaufnahme() {
               Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur – schriftlich und kostenlos.
             </p>
           </div>
-          <div className="relative mx-auto w-[180px] sm:-my-2 sm:w-[200px]">
+          <button type="button" onClick={() => setGross(true)} aria-label="Umsetzungsprotokoll vergrößert ansehen" className="group relative mx-auto block w-[180px] cursor-zoom-in transition-transform duration-500 hover:-translate-y-1 sm:-my-2 sm:w-[200px]">
             <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="h-auto w-full" sizes="200px" />
-          </div>
+            <span className="absolute bottom-3 right-1 rounded-full bg-white/90 px-2.5 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-[#0b1233] opacity-0 shadow-sm transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">Vergrößern</span>
+          </button>
         </div>
       </Reveal>
+      {gross && (
+        <div role="dialog" aria-modal="true" aria-label="Umsetzungsprotokoll" onClick={() => setGross(false)} className="fixed inset-0 z-[100] flex cursor-zoom-out items-center justify-center bg-[#0b1233]/80 p-6 backdrop-blur-sm">
+          <button type="button" onClick={() => setGross(false)} aria-label="Schließen" className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-2xl leading-none text-white transition-colors hover:bg-white/20">×</button>
+          <Image src="/umsetzungsprotokoll-gross.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={1524} height={1904} className="h-auto max-h-[88vh] w-auto max-w-full object-contain" sizes="(min-width: 768px) 60vw, 92vw" onClick={(e) => e.stopPropagation()} />
+        </div>
+      )}
     </section>
   );
 }
