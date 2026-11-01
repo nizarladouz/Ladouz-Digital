@@ -16,7 +16,7 @@ export default function Footer({ basis = "" }: { basis?: string }) {
           <div>
             <Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[38px] w-auto" />
             <p className="ld-serif mt-6 max-w-[320px] text-[0.94rem] leading-[1.7]">
-              Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand.
+              Performance-getriebene digitale und KI-Dienstleistungen und Consulting für den Mittelstand.
               Präzise gedacht, präzise umgesetzt.
             </p>
             <address className="mt-6 text-[0.88rem] not-italic leading-[1.7]">
