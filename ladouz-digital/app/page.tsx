@@ -1533,10 +1533,10 @@ function Bestandsaufnahme() {
           <div>
             <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
             <p className="mt-3 text-[clamp(1.2rem,2vw,1.45rem)] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">
-              Nach dem Gespräch erhalten Sie Ihr AI-first / Automation-first Umsetzungsprotokoll – individuell und kostenlos.
+              Nach dem Gespräch erstellen wir Ihr AI-first / Automation-first Umsetzungsprotokoll – individuell für Sie und kostenlos.
             </p>
             <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#43507a]">
-              Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
+              Keine Vorlage von der Stange: Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
             </p>
           </div>
           <button type="button" onClick={() => setGross(true)} aria-label="Umsetzungsprotokoll vergrößert ansehen" className="group relative mx-auto block w-[180px] cursor-zoom-in transition-transform duration-500 hover:-translate-y-1 sm:-my-2 sm:w-[200px]">
