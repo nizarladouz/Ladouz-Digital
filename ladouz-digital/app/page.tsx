@@ -1563,7 +1563,7 @@ function Bestandsaufnahme() {
               Wir schenken Ihnen ein AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
             </p>
             <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#43507a]">
-              Keine Vorlage von der Stange: Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
+              Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
             </p>
             <ul className="mt-5 space-y-2.5">
               {[
