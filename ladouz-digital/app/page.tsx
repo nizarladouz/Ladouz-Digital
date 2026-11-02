@@ -1560,7 +1560,7 @@ function Bestandsaufnahme() {
           <div>
             <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
             <p className="mt-3 text-[clamp(1.2rem,2vw,1.45rem)] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">
-              Nach dem Gespräch schenken wir Ihnen Ihr AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
+              Wir schenken Ihnen ein AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
             </p>
             <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#43507a]">
               Keine Vorlage von der Stange: Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
