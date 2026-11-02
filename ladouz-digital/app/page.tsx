@@ -1105,8 +1105,8 @@ function Hero() {
             </h1>
 
             <p className="ld-serif ld-enter ld-d2 mt-5 max-w-[52ch] text-[1.02rem] leading-[1.58] text-[#c7d6f5] sm:mt-8 sm:text-[clamp(1.08rem,1.9vw,1.26rem)] sm:leading-[1.6]">
-              Performance-getriebene digitale und KI-Dienstleistungen sowie Consulting für den Mittelstand –
-              von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
+              Performance-getriebene Digital- und KI-Abteilung sowie Consulting – maßgeschneidert für Ihr Unternehmen.
+              Von Strategie und Marketing über Website, Software und KI bis zur Steuerung über Daten.
               Stetig verbessert und gemessen an dem, was zählt: Anfragen, Aufträge, Umsatz und Kundenzufriedenheit.
             </p>
 
