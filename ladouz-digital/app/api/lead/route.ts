@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       from: process.env.LEAD_FROM || "Ladouz Digital <onboarding@resend.dev>",
       to: [process.env.LEAD_TO || "management@ladouz.digital"],
       reply_to: email,
-      subject: `Neue Anfrage Erstberatung: ${name}`,
+      subject: `Neue Anfrage Bestandsaufnahme: ${name}`,
       text: `Neue Anfrage über ladouz.digital\n\nName: ${name}\nE-Mail: ${email}\n`,
       html: `<p>Neue Anfrage über ladouz.digital</p><p><b>Name:</b> ${esc(name)}<br><b>E-Mail:</b> ${esc(email)}</p>`,
     }),

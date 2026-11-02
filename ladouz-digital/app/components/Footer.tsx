@@ -5,7 +5,7 @@ const MAIL = "management@ladouz.digital";
 export default function Footer({ basis = "" }: { basis?: string }) {
   const spalten: { titel: string; links: [string, string][] }[] = [
     { titel: "Leistung", links: [["Leistungsfelder", `${basis}#leistungen`], ["Das Vorgehen", `${basis}#framework`], ["Messbarkeit", `${basis}#messbarkeit`], ["Ausgangslage & Ergebnis", `${basis}#system`]] },
-    { titel: "Unternehmen", links: [["Unsere Haltung", `${basis}#leitbild`], ["Für wen", `${basis}#branchen`], ["Perspektiven", `${basis}#publikationen`], ["Häufige Fragen", `${basis}#fragen`], ["Erstberatung", `${basis}#kontakt`]] },
+    { titel: "Unternehmen", links: [["Unsere Haltung", `${basis}#leitbild`], ["Für wen", `${basis}#branchen`], ["Perspektiven", `${basis}#publikationen`], ["Häufige Fragen", `${basis}#fragen`], ["Bestandsaufnahme", `${basis}#kontakt`]] },
     { titel: "Rechtliches", links: [["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
   ];
 

@@ -481,7 +481,7 @@ const fragen = [
   },
   {
     frage: "Wie beginnt eine Zusammenarbeit?",
-    antwort: "Mit einer Erstberatung. Darin klären wir, wo Ihr Unternehmen heute steht und ob eine Zusammenarbeit zu Ihnen passt – unverbindlich und konkret.",
+    antwort: "Mit einer Bestandsaufnahme. Darin klären wir, wo Ihr Unternehmen heute steht und ob eine Zusammenarbeit zu Ihnen passt – unverbindlich und konkret.",
   },
 ];
 
@@ -963,7 +963,7 @@ function Kopfbereich() {
 
             <a href={BOOKING_URL} target="_blank" rel="noopener" className={`ld-btn ld-pill group relative hidden items-center gap-2.5 overflow-hidden rounded-full px-5 py-[9px] text-[14px] font-medium tracking-[-0.005em] transition-[background-position,transform,color] duration-500 hover:-translate-y-0.5 sm:inline-flex ${dunkel ? "ld-pill-dunkel" : "ld-pill-hell"}`}>
               <Marke hell={dunkel} className="relative z-10 h-[15px] w-auto flex-none" />
-              <span className="relative z-10">Erstberatung</span>
+              <span className="relative z-10">Bestandsaufnahme</span>
               <span aria-hidden className="ld-sweep" />
             </a>
 
@@ -1033,7 +1033,7 @@ function Kopfbereich() {
             ))}
             <a href={BOOKING_URL} target="_blank" rel="noopener" onClick={close} className="ld-pill ld-pill-hell my-5 inline-flex items-center justify-center gap-3 rounded-full px-5 py-3.5 text-[15px] font-medium">
               <Marke className="h-[17px] w-auto flex-none" />
-              Erstberatung buchen
+              Bestandsaufnahme buchen
             </a>
           </nav>
         </div>
@@ -1111,7 +1111,7 @@ function Hero() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:mt-11 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
-              <CtaButton href={BOOKING_URL} auf="dunkel">Erstberatung vereinbaren</CtaButton>
+              <CtaButton href={BOOKING_URL} auf="dunkel">Bestandsaufnahme vereinbaren</CtaButton>
               <CtaButton href="#leistungen" variant="ghost">Leistungsfelder ansehen</CtaButton>
             </div>
           </div>
@@ -1554,7 +1554,7 @@ function Bestandsaufnahme() {
           <div className="mt-8"><CtaButton href={BOOKING_URL}>Bestandsaufnahme vereinbaren</CtaButton></div>
         </Reveal>
       </div>
-      {/* Erster Mehrwert: jedes Erstgespräch endet mit einem individuellen Umsetzungsprotokoll. */}
+      {/* Erster Mehrwert: jede Bestandsaufnahme endet mit einem individuellen Umsetzungsprotokoll. */}
       <Reveal delay={150} className="mx-auto mt-14 max-w-[1000px]">
         <div className="relative grid items-center gap-6 overflow-hidden rounded-[22px] border border-[#e7ecf5] bg-white px-7 py-8 shadow-[0_1px_2px_rgba(11,18,51,.05),0_24px_48px_-28px_rgba(11,18,51,.22)] sm:grid-cols-[1fr_200px] sm:gap-10 sm:px-10 sm:py-6">
           <div>
@@ -2060,10 +2060,10 @@ function Messbarkeit() {
                 Wo verliert Ihr Unternehmen heute Wachstum?
               </p>
               <p className="ld-serif mt-3 max-w-[50ch] text-[1.02rem] leading-[1.6] text-[#43507a]">
-                In der Erstberatung finden wir es gemeinsam heraus – unverbindlich und konkret.
+                In der Bestandsaufnahme finden wir es gemeinsam heraus – unverbindlich und konkret.
               </p>
             </div>
-            <CtaButton href={BOOKING_URL} className="flex-none">Erstberatung vereinbaren</CtaButton>
+            <CtaButton href={BOOKING_URL} className="flex-none">Bestandsaufnahme vereinbaren</CtaButton>
           </div>
         </Reveal>
       </div>
@@ -2232,7 +2232,7 @@ function Fragen() {
           <h2 id="fragen-titel" className="mt-6 max-w-[16ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
             Was Sie vorab wissen sollten.
           </h2>
-          <Lead>Und wenn Ihre Frage fehlt: In der Erstberatung ist Raum für alles Weitere.</Lead>
+          <Lead>Und wenn Ihre Frage fehlt: In der Bestandsaufnahme ist Raum für alles Weitere.</Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Frage stellen</CtaButton>
           </div>
@@ -2264,7 +2264,7 @@ function Fragen() {
 type Status = "idle" | "sending" | "success" | "error";
 
 function Kontakt() {
-  const mailAnfrage = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage Erstberatung")}&body=${encodeURIComponent("Hallo Nizar,\n\nich interessiere mich für eine Erstberatung.\n\nName:\nUnternehmen:\nTelefon:\n\n")}`;
+  const mailAnfrage = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage Bestandsaufnahme")}&body=${encodeURIComponent("Hallo Nizar,\n\nich interessiere mich für eine Bestandsaufnahme.\n\nName:\nUnternehmen:\nTelefon:\n\n")}`;
 
   return (
     <section id="kontakt" aria-labelledby="kontakt-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
@@ -2277,12 +2277,12 @@ function Kontakt() {
             </div>
 
             <div className="relative p-9 sm:p-14">
-              <Eyebrow tone="light">Erstberatung</Eyebrow>
+              <Eyebrow tone="light">Bestandsaufnahme</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
                 Sprechen wir über Ihre digitale und KI-Infrastruktur.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
-                In der Erstberatung klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
+                In der Bestandsaufnahme klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
                 ihn verliert – und ob eine Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
               </p>
               <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
