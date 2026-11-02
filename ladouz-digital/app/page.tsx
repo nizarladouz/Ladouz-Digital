@@ -1430,6 +1430,7 @@ function Kernsatz() {
    ═══════════════════════════════════════════════════════════ */
 
 function Wandel() {
+  const [offen, setOffen] = useState(false);
   return (
     <section id="system" aria-labelledby="wandel-titel" className="relative isolate overflow-hidden bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
       {/* Dezenter Berg-Schimmer aus dem Hero, aus dem Weiß heraus */}
@@ -1461,9 +1462,8 @@ function Wandel() {
             <span className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#2f5bd7]">Mit Digital- &amp; KI-Infrastruktur</span>
           </div>
 
-          <ol>
-            {wandel.map((w, i) => (
-              <Reveal as="li" key={w.bereich} delay={i * 70} className="grid gap-x-8 gap-y-4 border-b border-[#e2e8f2] py-8 lg:grid-cols-[12rem_1fr_3.5rem_1fr] lg:items-center lg:py-9">
+          <ol className={`ld-wandel-erste${offen ? "" : " is-zu"}`}>
+            {wandel.slice(0, 4).map((w, i) => (<Reveal as="li" key={w.bereich} delay={i * 70} className="grid gap-x-8 gap-y-4 border-b border-[#e2e8f2] py-8 lg:grid-cols-[12rem_1fr_3.5rem_1fr] lg:items-center lg:py-9">
                 <span className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#0b1233]">{w.bereich}</span>
 
                 <p className="ld-serif text-[1.02rem] leading-[1.6] text-[#5b6b8a]">
@@ -1477,9 +1477,41 @@ function Wandel() {
                   <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit Digital- &amp; KI-Infrastruktur</span>
                   {w.danach}
                 </p>
-              </Reveal>
-            ))}
+              </Reveal>))}
           </ol>
+          <div className={`ld-wandel-mehr${offen ? " is-offen" : ""}`} id="wandel-mehr">
+            <div className="min-h-0 overflow-hidden" inert={!offen}>
+              <ol start={5}>
+                {wandel.slice(4).map((w, j) => { const i = j + 4; return (<Reveal as="li" key={w.bereich} delay={i * 70} className="grid gap-x-8 gap-y-4 border-b border-[#e2e8f2] py-8 lg:grid-cols-[12rem_1fr_3.5rem_1fr] lg:items-center lg:py-9">
+                <span className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#0b1233]">{w.bereich}</span>
+
+                <p className="ld-serif text-[1.02rem] leading-[1.6] text-[#5b6b8a]">
+                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#5b6b8a] lg:hidden" style={{ fontFamily: "var(--font-jost), system-ui, sans-serif" }}>Heute</span>
+                  {w.heute}
+                </p>
+
+                <span aria-hidden className="hidden h-11 w-11 items-center justify-center rounded-full bg-[#0b1233] text-[15px] text-[#8dc63f] lg:flex">→</span>
+
+                <p className="text-[1.12rem] font-medium leading-[1.45] tracking-[-0.012em] text-[#0b1233]">
+                  <span className="mb-1 block text-[0.66rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7] lg:hidden">Mit Digital- &amp; KI-Infrastruktur</span>
+                  {w.danach}
+                </p>
+              </Reveal>); })}
+              </ol>
+            </div>
+          </div>
+          <div className="ld-wandel-toggle relative flex justify-center pt-10">
+            <button
+              type="button"
+              aria-expanded={offen}
+              aria-controls="wandel-mehr"
+              onClick={() => setOffen((o) => !o)}
+              className="group inline-flex items-center gap-3 rounded-full border border-[#d5ddec] bg-white/80 px-6 py-3 text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#0b1233] shadow-[0_1px_2px_rgba(11,18,51,.05),0_14px_30px_-20px_rgba(11,18,51,.35)] backdrop-blur transition-colors duration-300 hover:border-[#0b1233]"
+            >
+              {offen ? "Weniger anzeigen" : "Alle 10 Punkte anzeigen"}
+              <span aria-hidden className={`flex h-6 w-6 items-center justify-center rounded-full bg-[#0b1233] text-[11px] text-[#8dc63f] transition-transform duration-500 ${offen ? "rotate-180" : ""}`}>↓</span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -2498,7 +2530,12 @@ function GlobalStyles() {
     .ld-fuell-seq .ld-reveal.is-visible .ld-fuell:not(.is-voll)::before { animation: none; }
     .ld-fuell-seq .ld-reveal .ld-fuell.is-voll::before { animation-delay: 0s; animation-play-state: paused; }
     .ld-fuell-seq.ld-scrollt .ld-reveal .ld-fuell.is-voll::before { animation-play-state: running; }
-    @keyframes ldsilber { 0% { transform: translateX(-110%) skewX(-14deg); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(210%) skewX(-14deg); opacity: 0; } }
+    .ld-wandel-mehr { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .7s cubic-bezier(.22,1,.36,1), opacity .5s ease; }
+  .ld-wandel-mehr.is-offen { grid-template-rows: 1fr; opacity: 1; }
+  .ld-wandel-erste.is-zu { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 6.5rem), rgba(0,0,0,.18)); mask-image: linear-gradient(to bottom, #000 calc(100% - 6.5rem), rgba(0,0,0,.18)); }
+  @media (prefers-reduced-motion: reduce) { .ld-wandel-mehr { transition: none !important; } }
+  @media (scripting: none) { .ld-wandel-mehr { grid-template-rows: 1fr; opacity: 1; } .ld-wandel-toggle { display: none; } .ld-wandel-erste.is-zu { -webkit-mask-image: none; mask-image: none; } }
+  @keyframes ldsilber { 0% { transform: translateX(-110%) skewX(-14deg); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(210%) skewX(-14deg); opacity: 0; } }
 
     :focus-visible { outline: 2px solid #8dc63f; outline-offset: 3px; border-radius: 2px; }
 
