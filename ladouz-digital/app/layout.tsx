@@ -29,7 +29,7 @@ const dmSans = DM_Sans({
 });
 
 const SITE = "https://www.ladouz.digital";
-const TITEL = "Ladouz Digital – Ihre Abteilung für Digital- und KI-Strategie im Mittelstand";
+const TITEL = "Ladouz Digital – Abteilung für Digital- und KI-Strategie im Mittelstand";
 const BESCHREIBUNG =
   "Performance-getriebene Digitalberatung für den Mittelstand: Strategie, Marketing, Sichtbarkeit, Websites, Software, KI und Daten – gemessen an Anfragen, Aufträgen und Umsatz.";
 
