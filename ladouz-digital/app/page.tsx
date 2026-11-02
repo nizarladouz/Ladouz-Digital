@@ -1565,6 +1565,17 @@ function Bestandsaufnahme() {
             <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#43507a]">
               Keine Vorlage von der Stange: Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
             </p>
+            <ul className="mt-5 space-y-2.5">
+              {[
+                "Sie wissen genau, wo Ihr Unternehmen heute bei Digital und KI steht.",
+                "Was bereits vorhanden ist – und was daraus werden kann.",
+                "Die größten Hebel: kurzfristig, mittelfristig und langfristig.",
+                "Klare Empfehlungen für die nächsten Schritte.",
+              ].map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-[#0b1233]"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}
+            </ul>
+            <p className="mt-5 text-[1rem] font-medium leading-[1.5] tracking-[-0.01em] text-[#0b1233]">
+              Damit KI zum verlässlichsten Verbündeten Ihres Unternehmens wird.
+            </p>
           </div>
           <button type="button" onClick={() => setGross(true)} aria-label="Umsetzungsprotokoll vergrößert ansehen" className="group relative mx-auto block w-[180px] cursor-zoom-in transition-transform duration-500 hover:-translate-y-1 sm:-my-2 sm:w-[200px]">
             <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="h-auto w-full" sizes="200px" />
