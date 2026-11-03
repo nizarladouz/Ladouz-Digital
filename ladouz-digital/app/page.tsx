@@ -428,7 +428,12 @@ const prinzipien = [
   { titel: "Ein Team statt einer Person.", text: "Mit Ressourcen, Prozessen und Erfahrung, die eine Einzelstelle nicht hat." },
 ];
 
-const branchen = ["Dienstleistung", "Handwerk & Bau", "Industrie & B2B", "Handel"];
+/* Gleicher Wortlaut und gleiche Reihenfolge wie im Branchen-Menü der Navigation. */
+const branchen = [
+  "Maschinen- und Anlagenbau", "Handel & E-Commerce", "Logistik", "Handwerk & Bau",
+  "Beratung & Kanzleien", "Gesundheitswesen", "Finanzdienstleistung", "Bildung",
+  "Immobilienwirtschaft", "Energie", "Öffentlicher Sektor",
+];
 
 const perspektiven: { kicker: string; titel: string; text: string; bild: Motiv; pfad?: string }[] = [
   {
@@ -1905,17 +1910,8 @@ function ProgrammSzene() {
           </div>
 
           <div className="relative isolate flex items-end overflow-hidden border-l border-white/12">
-            {/* Cover: derselbe Hintergrund wie im Hero (CI-Grafik, Berg-Foto, Farbschleier), weich ins Dunkle auslaufend. */}
-            <div aria-hidden className="absolute inset-0 -z-20">
-              <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="(min-width: 1240px) 680px, 55vw" flat className="h-full w-full" />
-              {BILDER.hero.src && (
-                <div className="ld-hero-foto absolute inset-0 overflow-hidden">
-                  <Image src={BILDER.hero.src} alt="" fill sizes="(min-width: 1240px) 680px, 55vw" style={{ objectPosition: BILDER.hero.fokus }} className="ld-hero-zoom object-cover" />
-                </div>
-              )}
-            </div>
-            <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
-            <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#0b1233_0%,rgba(11,18,51,.85)_38%,rgba(11,18,51,0)_72%),linear-gradient(90deg,#0b1233_0%,rgba(11,18,51,0)_22%)]" />
+            <PhasenFeld aktiv={aktiv} />
+            <span aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(0deg,#0b1233_0%,rgba(11,18,51,.82)_36%,rgba(11,18,51,0)_70%)]" />
 
             <div key={`d-${aktiv}`} aria-live="polite" className="ld-swap relative p-10 xl:p-12">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">
@@ -1933,6 +1929,84 @@ function ProgrammSzene() {
       </div>
     </div>
   );
+}
+
+/* Phasen-Feld: feine Linien in CI-Farben, die einem Strömungsfeld folgen.
+   Bei jedem Phasenwechsel dreht das Feld in eine neue Richtung und beschleunigt kurz.
+   Leichtgewichtig (Canvas 2D), startet erst im Sichtbereich, pausiert außerhalb,
+   bei prefers-reduced-motion nur ein ruhiges Standbild. */
+const FELD_RICHTUNG = [-0.35, 0.95, 2.45, 4.05];
+
+function PhasenFeld({ aktiv }: { aktiv: number }) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const ziel = useRef({ winkel: FELD_RICHTUNG[0], impuls: 0 });
+  const reduziert = useReducedMotion();
+
+  useEffect(() => {
+    ziel.current.winkel = FELD_RICHTUNG[aktiv % FELD_RICHTUNG.length];
+    ziel.current.impuls = 1;
+  }, [aktiv]);
+
+  useEffect(() => {
+    const cv = canvasRef.current;
+    if (!cv) return;
+    const ctx = cv.getContext("2d");
+    if (!ctx) return;
+    let w = 0, h = 0, raf = 0, sichtbar = false;
+    let winkel = ziel.current.winkel, impuls = 0, t = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    type P = { x: number; y: number; px: number; py: number; leben: number; akzent: boolean };
+    let teile: P[] = [];
+    const neu = (): P => {
+      const x = Math.random() * w, y = Math.random() * h;
+      return { x, y, px: x, py: y, leben: 60 + Math.random() * 160, akzent: Math.random() < 0.07 };
+    };
+    const groesse = () => {
+      const r = cv.getBoundingClientRect();
+      w = r.width; h = r.height;
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const n = Math.round(Math.min(520, (w * h) / 900));
+      teile = Array.from({ length: n }, neu);
+      ctx.fillStyle = "#0b1233"; ctx.fillRect(0, 0, w, h);
+    };
+    const schritt = (frames: number) => {
+      for (let f = 0; f < frames; f++) {
+        const z = ziel.current;
+        let d = z.winkel - winkel;
+        d = Math.atan2(Math.sin(d), Math.cos(d));
+        winkel += d * 0.06;
+        impuls += (z.impuls - impuls) * 0.2;
+        z.impuls *= 0.94;
+        t += 0.004;
+        ctx.fillStyle = "rgba(11,18,51,0.09)";
+        ctx.fillRect(0, 0, w, h);
+        const tempo = 0.7 + impuls * 4.2;
+        ctx.lineWidth = 1;
+        for (const p of teile) {
+          const feld = winkel + Math.sin(p.x * 0.0042 + t) * 0.9 + Math.cos(p.y * 0.0051 - t * 1.3) * 0.7;
+          p.px = p.x; p.py = p.y;
+          p.x += Math.cos(feld) * tempo; p.y += Math.sin(feld) * tempo;
+          ctx.strokeStyle = p.akzent ? "rgba(141,198,63,0.75)" : "rgba(141,165,225,0.32)";
+          ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke();
+          if (--p.leben < 0 || p.x < -10 || p.x > w + 10 || p.y < -10 || p.y > h + 10) Object.assign(p, neu());
+        }
+      }
+    };
+    const loop = () => { schritt(1); raf = sichtbar ? requestAnimationFrame(loop) : 0; };
+    groesse();
+    if (reduziert) { schritt(140); return; }
+    const io = new IntersectionObserver(([e]) => {
+      sichtbar = e.isIntersecting;
+      if (sichtbar && !raf) raf = requestAnimationFrame(loop);
+    });
+    io.observe(cv);
+    const ro = new ResizeObserver(() => groesse());
+    ro.observe(cv);
+    return () => { io.disconnect(); ro.disconnect(); cancelAnimationFrame(raf); };
+  }, [reduziert]);
+
+  return <canvas ref={canvasRef} aria-hidden className="absolute inset-0 -z-20 h-full w-full" />;
 }
 
 /* Smartphone: angeheftetes Mini-Zifferblatt über den Phasenkarten.
@@ -2102,7 +2176,7 @@ function Haltung() {
 
           <Reveal delay={120}>
             <div className="mt-10 flex items-center gap-4">
-              <Image src="/nizar-portrait.webp" alt="" aria-hidden width={216} height={216} className="h-14 w-14 flex-none rounded-full object-cover" />
+              <Image src="/nizar-portrait-rund.webp" alt="" aria-hidden width={432} height={432} className="h-14 w-14 flex-none rounded-full object-cover" />
               <span>
                 <span className="block text-[0.98rem] font-semibold tracking-[-0.012em] text-[#0b1233]">Nizar Ladouz</span>
                 <span className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#5b6b8a]">Gründer, Ladouz Digital</span>
@@ -2127,8 +2201,7 @@ function Branchen() {
             Für den Mittelstand.
           </h2>
           <Lead>
-            Für Unternehmen, die effizienter, reibungsloser und einfacher arbeiten wollen – in Dienstleistung,
-            Handwerk &amp; Bau, Industrie &amp; B2B und Handel.
+            Für Unternehmen, die effizienter, reibungsloser und einfacher arbeiten wollen – in diesen Branchen:
           </Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Passt das zu uns?</CtaButton>
