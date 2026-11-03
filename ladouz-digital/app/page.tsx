@@ -55,6 +55,7 @@ import {
 } from "react";
 import Image from "next/image";
 import Footer from "./components/Footer";
+import { signatur } from "./signatur-font";
 
 const SITE = "https://www.ladouz.digital";
 const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
@@ -2179,7 +2180,7 @@ function Haltung() {
             <div className="mt-10 flex items-end gap-5">
               <Image src="/nizar-portrait-hoch.webp" alt="" aria-hidden width={480} height={640} className="h-[160px] w-[120px] flex-none rounded-xl object-cover shadow-[0_10px_30px_-12px_rgba(11,18,51,.35)]" />
               <span>
-                <span className="block text-[0.98rem] font-semibold tracking-[-0.012em] text-[#0b1233]">Nizar Ladouz</span>
+                <span className={`${signatur.className} block text-[2.6rem] leading-[1] text-[#0b1233]`}>Nizar Ladouz</span>
                 <span className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#5b6b8a]">Gründer, Ladouz Digital</span>
               </span>
             </div>

@@ -16,8 +16,8 @@ export default function Footer({ basis = "" }: { basis?: string }) {
           <div>
             <Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[38px] w-auto" />
             <p className="ld-serif mt-6 max-w-[320px] text-[0.94rem] leading-[1.7]">
-              Performance-getriebene digitale und KI-Dienstleistungen und Consulting für den Mittelstand.
-              Präzise gedacht, präzise umgesetzt.
+              Performance-getriebene Digital- und KI-Abteilung sowie Consulting – maßgeschneidert für Ihr Unternehmen.
+              Von der Strategie über Prozesse und Automatisierung bis zu KI-Agenten und Ihrer digitalen Infrastruktur.
             </p>
             <address className="mt-6 text-[0.88rem] not-italic leading-[1.7]">
               Markt 40 · 53721 Siegburg<br />
