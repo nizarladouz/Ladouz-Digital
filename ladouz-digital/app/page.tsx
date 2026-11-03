@@ -368,33 +368,33 @@ type Phase = {
 const phasen: Phase[] = [
   {
     nr: "01",
-    titel: "Analyse & Potenzial",
+    titel: "Bestandsaufnahme",
     stufe: "Verstehen",
-    text: "Wir erfassen, wo Ihr Unternehmen heute Umsatz gewinnt – und wo es ihn verliert: Sichtbarkeit, Marketing, Website, Abläufe und Daten.",
+    text: "Wo Ihr Betrieb heute steht, was vorhanden ist und welche Hebel kurz-, mittel- und langfristig wirken.",
     ergebnis: "Ein Zielbild mit Prioritäten, geordnet nach Wirkung.",
     bild: BILDER.phaseAnalyse,
   },
   {
     nr: "02",
-    titel: "Architektur & Plan",
+    titel: "Zielbild",
     stufe: "Strukturieren",
-    text: "Wir legen die Struktur fest: welche Kanäle, welche Systeme, welches Kennzahlensystem – und wer wofür verantwortlich ist.",
+    text: "Wie Ihr Betrieb in Zukunft arbeiten soll – und welche Schritte rückwärts dorthin führen.",
     ergebnis: "Ein dokumentierter Plan, auf dem jede Maßnahme aufbaut.",
     bild: BILDER.phaseArchitektur,
   },
   {
     nr: "03",
-    titel: "Umsetzung",
+    titel: "Umsetzungsprotokoll",
     stufe: "Umsetzen",
-    text: "Kampagnen, Website, Software und KI-Anwendungen gehen kontrolliert live – eingebettet in Ihre Prozesse und vom ersten Tag an gemessen.",
-    ergebnis: "Produktive Systeme statt Pilotprojekte.",
+    text: "Eine klare Checkliste von A nach B. Jeder Schritt mit Verantwortung und Reihenfolge.",
+    ergebnis: "Jede Umsetzung erfolgt systemkonform und geht erst nach Ihrer Freigabe live.",
     bild: BILDER.phaseUmsetzung,
   },
   {
     nr: "04",
-    titel: "Messen, Optimieren, Skalieren",
+    titel: "Steuerung als Partner",
     stufe: "Fortlaufend",
-    text: "Was wirkt, wird ausgebaut. Was nicht wirkt, wird ersetzt. Viele kleine Verbesserungen summieren sich – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens.",
+    text: "Wir setzen um, messen und verbessern laufend – mit einem ganzen Team, gespeicherten Prozessen und Erfahrungen aus anderen Mandaten.",
     ergebnis: "Ein System, das mit jeder Optimierung stärker wird.",
     bild: BILDER.phaseBetrieb,
   },
@@ -408,11 +408,12 @@ function phaseFuerAnteil(p: number) {
 /* Kennzahlenkette: von der Sichtbarkeit bis zum Umsatz.
    breite ist rein grafisch (Trichterform) und stellt keine Messwerte dar. */
 const kennzahlen = [
-  { stufe: "Sichtbarkeit", misst: "Rankings, Impressionen, Präsenz in KI-Antworten", breite: 1 },
-  { stufe: "Besuche", misst: "Qualifizierte Besucher je Kanal", breite: 0.8 },
-  { stufe: "Anfragen", misst: "Formulare, Anrufe, Terminbuchungen", breite: 0.6 },
-  { stufe: "Aufträge", misst: "Abschlüsse und Auftragswert", breite: 0.42 },
-  { stufe: "Umsatz", misst: "Umsatz, Deckungsbeitrag, Kosten je Auftrag", breite: 0.28 },
+  { stufe: "Qualität der Anfragen", misst: "", breite: 1 },
+  { stufe: "Abschlussquote und Kosten je Abschluss", misst: "", breite: 0.86 },
+  { stufe: "Durchlaufzeiten", misst: "", breite: 0.72 },
+  { stufe: "Automatisierungsgrad wiederkehrender Arbeit", misst: "", breite: 0.58 },
+  { stufe: "Zeitersparnis im Team", misst: "", breite: 0.44 },
+  { stufe: "Kundenzufriedenheit", misst: "", breite: 0.3 },
 ];
 
 const messprinzipien = [
@@ -422,17 +423,12 @@ const messprinzipien = [
 ];
 
 const prinzipien = [
-  { titel: "Wirkung vor Aktivität.", text: "Wir messen uns an Anfragen, Aufträgen und Umsatz – nicht an Stunden, Reichweite oder Klicks." },
-  { titel: "Umsetzung, nicht Empfehlung.", text: "Wir bauen, was wir planen. Strategie ohne Umsetzung bleibt eine Präsentation." },
-  { titel: "Partnerschaft, kein Projekt.", text: "Projekte enden. Verbesserung nicht – deshalb bleiben wir dauerhaft Teil Ihres Unternehmens." },
+  { titel: "Klarheit für die Geschäftsführung.", text: "Nur, was Ihrem Betrieb messbar weiterhilft." },
+  { titel: "Transparenz für die Geschäftsführung.", text: "Jederzeit nachvollziehbar, was passiert und warum." },
+  { titel: "Ein Team statt einer Person.", text: "Mit Ressourcen, Prozessen und Erfahrung, die eine Einzelstelle nicht hat." },
 ];
 
-const branchen = [
-  "Maschinen- und Anlagenbau", "Handel & E-Commerce", "Logistik & Transport",
-  "Handwerk & Bau", "Beratung & Kanzleien", "Gesundheitswesen",
-  "Finanzdienstleistung", "Immobilienwirtschaft", "Energie & Versorgung",
-  "Bildung & Weiterbildung", "Industriegüter", "Öffentlicher Sektor",
-];
+const branchen = ["Dienstleistung", "Handwerk & Bau", "Industrie & B2B", "Handel"];
 
 const perspektiven: { kicker: string; titel: string; text: string; bild: Motiv; pfad?: string }[] = [
   {
@@ -460,28 +456,20 @@ const perspektiven: { kicker: string; titel: string; text: string; bild: Motiv; 
    KI-Suchsysteme zitieren gern einzelne Absätze. */
 const fragen = [
   {
-    frage: "Was bedeutet performance-getrieben bei Ladouz Digital?",
-    antwort: "Jede Maßnahme – ob Kampagne, Website, Software oder KI-Anwendung – wird an ihrer Wirkung gemessen: an Sichtbarkeit, Anfragen, Aufträgen und Umsatz. Was nicht wirkt, wird verbessert oder ersetzt.",
+    frage: "Wie läuft die Bestandsaufnahme ab?",
+    antwort: "In Gesprächen und einer Sichtung Ihrer Systeme erfassen wir Ausgangslage, Vorhandenes und Hebel. Ergebnis ist ein klares Bild, wo Sie stehen.",
   },
   {
-    frage: "Für welche Unternehmen arbeitet Ladouz Digital?",
-    antwort: "Für mittelständische Unternehmen, die digitales Wachstum als dauerhafte Aufgabe verstehen – branchenübergreifend. Entscheidend ist die Struktur der Wertschöpfung, nicht das Etikett der Branche.",
+    frage: "Wann zeigen sich erste Ergebnisse?",
+    antwort: "Erste Hebel werden früh umgesetzt; wie schnell Wirkung sichtbar wird, hängt von Ausgangslage und Zielbild ab.",
   },
   {
-    frage: "Arbeiten Sie projektweise oder dauerhaft?",
-    antwort: "Dauerhaft. Wir bauen die Grundlage gemeinsam mit Ihnen auf und bleiben danach Teil Ihres Unternehmens: Wir steuern mit, messen und verbessern laufend im Detail.",
+    frage: "Wie arbeiten Sie mit unserem Team zusammen?",
+    antwort: "Wir ergänzen Ihr Team, binden Verantwortliche ein und übergeben Wissen, statt Abhängigkeiten zu schaffen.",
   },
   {
-    frage: "Übernehmen Sie auch die Umsetzung?",
-    antwort: "Ja. Wir planen nicht nur, wir setzen um – Kampagnen, Websites, Software, KI-Anwendungen und Tracking aus einer Hand.",
-  },
-  {
-    frage: "Wie wird der Erfolg gemessen?",
-    antwort: "Über ein gemeinsames Kennzahlensystem, das alle Kanäle verbindet – vom ersten Kontakt bis zum Auftrag. So wird sichtbar, welche Maßnahme welchen Beitrag zum Umsatz leistet.",
-  },
-  {
-    frage: "Wie beginnt eine Zusammenarbeit?",
-    antwort: "Mit einer Bestandsaufnahme. Darin klären wir, wo Ihr Unternehmen heute steht und ob eine Zusammenarbeit zu Ihnen passt – unverbindlich und konkret.",
+    frage: "Nutzen Sie eigene Tools oder unsere Systeme?",
+    antwort: "Wir bauen Ihr System auf.",
   },
 ];
 
@@ -1743,11 +1731,10 @@ function Programm() {
         <Reveal>
           <Eyebrow tone="light">Das Vorgehen</Eyebrow>
           <h2 id="programm-titel" className="mt-6 max-w-[20ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em]">
-            Vier Phasen. Ein Kreislauf, der Ergebnisse erzeugt.
+            Vier Phasen. Vom Zielbild her gedacht.
           </h2>
           <Lead tone="light">
-            Jede Phase baut auf der vorherigen auf. Die letzte endet nicht: Messen, Optimieren
-            und Skalieren laufen fortlaufend – so summieren sich kleine Verbesserungen zu messbarer Wirkung.
+            Wir beginnen nicht bei Maßnahmen, sondern beim Ziel – und planen von dort rückwärts.
           </Lead>
         </Reveal>
       </div>
@@ -1917,19 +1904,20 @@ function ProgrammSzene() {
             </ol>
           </div>
 
-          <div className="relative overflow-hidden rounded-[26px] ring-1 ring-white/10">
-            {phasen.map((x, i) => (
-              <Visual
-                key={x.nr}
-                motiv={x.bild}
-                sizes="(min-width: 1240px) 680px, 55vw"
-                flat
-                className={`absolute inset-0 transition-opacity duration-700 ${i === aktiv ? "opacity-100" : "opacity-0"}`}
-              />
-            ))}
-            <span aria-hidden className="absolute inset-0 bg-[linear-gradient(0deg,rgba(7,13,36,.94)_0%,rgba(7,13,36,.55)_42%,rgba(7,13,36,.05)_75%)]" />
+          <div className="relative isolate flex items-end overflow-hidden border-l border-white/12">
+            {/* Cover: derselbe Hintergrund wie im Hero (CI-Grafik, Berg-Foto, Farbschleier), weich ins Dunkle auslaufend. */}
+            <div aria-hidden className="absolute inset-0 -z-20">
+              <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="(min-width: 1240px) 680px, 55vw" flat className="h-full w-full" />
+              {BILDER.hero.src && (
+                <div className="ld-hero-foto absolute inset-0 overflow-hidden">
+                  <Image src={BILDER.hero.src} alt="" fill sizes="(min-width: 1240px) 680px, 55vw" style={{ objectPosition: BILDER.hero.fokus }} className="ld-hero-zoom object-cover" />
+                </div>
+              )}
+            </div>
+            <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+            <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#0b1233_0%,rgba(11,18,51,.85)_38%,rgba(11,18,51,0)_72%),linear-gradient(90deg,#0b1233_0%,rgba(11,18,51,0)_22%)]" />
 
-            <div key={`d-${aktiv}`} aria-live="polite" className="ld-swap absolute inset-x-0 bottom-0 p-10 xl:p-12">
+            <div key={`d-${aktiv}`} aria-live="polite" className="ld-swap relative p-10 xl:p-12">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">
                 Phase {ph.nr} · {ph.stufe}
               </p>
@@ -1978,7 +1966,6 @@ function ProgrammMobil() {
         {phasen.map((x, i) => (
           <li key={x.nr} ref={(el) => { karten.current[i] = el; }}>
             <article className="overflow-hidden rounded-[22px] border border-white/10 bg-white/[0.04]">
-              <Visual motiv={x.bild} sizes="100vw" className="aspect-[4/3] w-full" />
               <div className="p-7">
                 <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Phase {x.nr} · {x.stufe}</p>
                 <h3 className="mt-3 text-[1.5rem] font-medium leading-[1.15] tracking-[-0.026em]">{x.titel}</h3>
@@ -2011,11 +1998,11 @@ function Messbarkeit() {
           <Reveal>
             <Eyebrow>Messbarkeit</Eyebrow>
             <h2 id="mess-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-              Jede Maßnahme hat eine Kennzahl.
+              Gesteuert wird, was den Betrieb bewegt.
             </h2>
             <Lead>
-              Wir berichten nicht über Aktivität, sondern über Wirkung. Dafür verbinden wir alle
-              Kanäle in einem durchgängigen Kennzahlensystem – vom ersten Kontakt bis zum Auftrag.
+              Wir versprechen keine Zahlen. Wir legen fest, woran sich Wirkung messen lässt – und machen
+              sie für die Geschäftsführung sichtbar.
             </Lead>
 
             <ol className="mt-12 border-t border-[#e7ecf5]">
@@ -2068,13 +2055,13 @@ function Messbarkeit() {
           <div className="mt-20 flex flex-col gap-7 rounded-[22px] border border-[#e7ecf5] bg-[#f7f9fc] p-9 sm:p-12 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="max-w-[26ch] text-[clamp(1.4rem,2.6vw,2rem)] font-medium leading-[1.15] tracking-[-0.026em] text-[#0b1233]">
-                Wo verliert Ihr Unternehmen heute Wachstum?
+                Wo verliert Ihr Betrieb heute Zeit und Wirkung?
               </p>
               <p className="ld-serif mt-3 max-w-[50ch] text-[1.02rem] leading-[1.6] text-[#43507a]">
                 In der Bestandsaufnahme finden wir es gemeinsam heraus – unverbindlich und konkret.
               </p>
             </div>
-            <CtaButton href={BOOKING_URL} className="flex-none">Bestandsaufnahme vereinbaren</CtaButton>
+            <CtaButton href={BOOKING_URL} className="flex-none">Bestandsaufnahme anfragen</CtaButton>
           </div>
         </Reveal>
       </div>
@@ -2087,21 +2074,17 @@ function Messbarkeit() {
 function Haltung() {
   return (
     <section id="leitbild" aria-labelledby="haltung-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
-      <div className="mx-auto grid max-w-[1192px] grid-cols-1 items-stretch gap-14 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-20">
-        <Reveal className="order-2 lg:order-1">
-          <Visual motiv={BILDER.haltung} sizes="(max-width: 1024px) 100vw, 580px" className="aspect-[4/5] h-full w-full rounded-[26px]" />
-        </Reveal>
-
-        <div className="order-1 flex flex-col justify-center lg:order-2">
+      <div className="mx-auto max-w-[1192px]">
+        <div className="flex max-w-[720px] flex-col justify-center">
           <Reveal>
             <Eyebrow>Unsere Haltung</Eyebrow>
             <h2 id="haltung-titel" className="mt-6 text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.0] tracking-[-0.04em] text-[#0b1233]">
-              Präzise denken.<br />Präzise handeln.
+              Klarheit als Priorität.
             </h2>
             <Lead>
-              Unser Anspruch: die performancestärksten digitalen Services für den Mittelstand.
-              Wir sind Umsetzungspartner, nicht Folienlieferant – was wir mit Ihnen planen,
-              bauen wir mit Ihnen auf und bleiben Teil davon.
+              Eine interne Digital-Leitung zu führen und zu messen, ist für die Geschäftsführung allein
+              kaum möglich. Wir arbeiten als Partner für Ihre individuelle Digital- und KI-Abteilung, zeigen
+              offen, wie diese Abteilung für Ihren Betrieb aussieht, und lassen das Wissen in Ihrem Unternehmen.
             </Lead>
           </Reveal>
 
@@ -2141,12 +2124,11 @@ function Branchen() {
         <Reveal>
           <Eyebrow>Für wen</Eyebrow>
           <h2 id="branchen-titel" className="mt-6 max-w-[14ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-            Mittelstand. Branchenübergreifend.
+            Für den Mittelstand.
           </h2>
           <Lead>
-            Für Sie und Ihren Betrieb, wenn Sie digitales Wachstum nicht dem Zufall
-            überlassen wollen. Entscheidend ist die Struktur Ihrer Wertschöpfung,
-            nicht das Etikett Ihrer Branche.
+            Für Unternehmen, die effizienter, reibungsloser und einfacher arbeiten wollen – in Dienstleistung,
+            Handwerk &amp; Bau, Industrie &amp; B2B und Handel.
           </Lead>
           <div className="mt-9">
             <CtaButton href="#kontakt" variant="dark">Passt das zu uns?</CtaButton>
@@ -2179,7 +2161,7 @@ function Perspektiven() {
             <div>
               <Eyebrow>Perspektiven</Eyebrow>
               <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-                Wie wir über Performance denken.
+                L Digital Insights
               </h2>
             </div>
             <a href="#newsletter" className="inline-flex items-center gap-2 border-b-2 border-[#8dc63f] pb-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#0b1233] transition-colors hover:text-[#2f5bd7]">
@@ -2188,25 +2170,6 @@ function Perspektiven() {
           </div>
         </Reveal>
       </div>
-
-      <ul className="ld-rail ld-rail-inset mt-14 flex gap-6 overflow-x-auto pb-4">
-        {perspektiven.map((x, i) => (
-          <li key={x.titel} className="ld-rail-item w-[min(82vw,400px)] flex-none">
-            <article className="group relative flex h-full flex-col">
-              <div className="overflow-hidden rounded-[18px]">
-                <Visual motiv={x.bild} sizes="(max-width: 640px) 82vw, 400px" className="aspect-[16/10] w-full transition-transform duration-[900ms] group-hover:scale-[1.03]" />
-              </div>
-              <p className="ld-num mt-6 text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#2f5bd7]">
-                {String(i + 1).padStart(2, "0")} · {x.kicker}
-              </p>
-              <h3 className="mt-3 text-[1.26rem] font-medium leading-[1.25] tracking-[-0.02em] text-[#0b1233]">
-                {x.pfad ? <a href={x.pfad} className="after:absolute after:inset-0 after:content-['']">{x.titel}</a> : x.titel}
-              </h3>
-              <p className="ld-serif mt-3 text-[1rem] leading-[1.6] text-[#43507a]">{x.text}</p>
-            </article>
-          </li>
-        ))}
-      </ul>
 
       {/* Newsletter – bewusst ohne vorgetäuschte Bestätigung. Solange kein
           Versanddienst angebunden ist, läuft die Aufnahme per E-Mail. */}
@@ -2281,22 +2244,38 @@ function Kontakt() {
     <section id="kontakt" aria-labelledby="kontakt-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
       <div className="mx-auto max-w-[1192px]">
         <Reveal>
-          <div className="grid overflow-hidden rounded-[28px] bg-[#0b1233] text-white lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="relative min-h-[280px]">
-              <Visual motiv={BILDER.kontakt} sizes="(max-width: 1024px) 100vw, 520px" flat className="absolute inset-0 h-full w-full" />
-              <span aria-hidden className="absolute inset-0 bg-[linear-gradient(90deg,transparent_55%,#0b1233_100%)] max-lg:bg-[linear-gradient(0deg,#0b1233_0%,transparent_50%)]" />
-            </div>
-
+          <div className="relative isolate grid overflow-hidden rounded-[28px] bg-[#0b1233] text-white">
+            {/* Hero-Berg scheint dezent durch (gleiches Motiv wie im Hero), Text bleibt gut lesbar. */}
+            {BILDER.hero.src && (
+              <div aria-hidden className="absolute inset-0 -z-20 opacity-40">
+                <Image src={BILDER.hero.src} alt="" fill sizes="(min-width: 1240px) 1192px, 100vw" style={{ objectPosition: BILDER.hero.fokus }} className="ld-hero-zoom object-cover" />
+              </div>
+            )}
+            <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+            <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#0b1233_0%,rgba(11,18,51,.88)_45%,rgba(11,18,51,.35)_100%)]" />
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Bestandsaufnahme</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
-                Sprechen wir über Ihre digitale und KI-Infrastruktur.
+                Beginnen wir mit der Bestandsaufnahme.
               </h2>
               <p className="ld-serif mt-6 max-w-[46ch] text-[1.1rem] leading-[1.64] text-[#c7d6f5]">
-                In der Bestandsaufnahme klären wir, wo Ihr Unternehmen heute Umsatz gewinnt und wo es
-                ihn verliert – und ob eine Zusammenarbeit zu Ihnen passt. Unverbindlich und konkret.
+                In einem ersten Gespräch klären wir, wo Ihr Betrieb steht und ob eine Zusammenarbeit passt.
               </p>
-              <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Termin direkt wählen</CtaButton></div>
+              <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Bestandsaufnahme anfragen</CtaButton></div>
+
+              {/* AI-first-Protokoll: gleicher Wortlaut wie der Teaser unter der Bestandsaufnahme. */}
+              <div className="mt-12 grid max-w-[760px] items-center gap-6 border-t border-white/15 pt-9 sm:grid-cols-[1fr_140px] sm:gap-10">
+                <div>
+                  <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
+                  <p className="mt-3 text-[clamp(1.15rem,1.9vw,1.4rem)] font-medium leading-[1.25] tracking-[-0.02em] text-white">
+                    Wir schenken Ihnen ein AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
+                  </p>
+                  <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#c7d6f5]">
+                    Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
+                  </p>
+                </div>
+                <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="mx-auto h-auto w-[140px]" sizes="140px" />
+              </div>
 
               <div className="mt-12 border-t border-white/15 pt-9">
                 <p className="text-[1.05rem] font-bold tracking-[-0.018em]">Oder kurz schreiben</p>
