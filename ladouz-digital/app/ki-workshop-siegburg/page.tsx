@@ -244,7 +244,7 @@ export default function KiWorkshopSiegburg() {
       <section className="px-6 py-24">
         <div className="mx-auto grid max-w-[1000px] items-center gap-12 md:grid-cols-[300px_1fr]">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-[300px] overflow-hidden rounded-[28px] shadow-[0_30px_60px_-34px_rgba(11,18,51,.45)]">
-            <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Geschäftsführer Ladouz Digital" fill className="object-cover" sizes="300px" />
+            <Image src="/nizar-portrait.webp" alt="Nizar Ladouz, Inhaber Ladouz Digital" fill className="object-cover" sizes="300px" />
           </div>
           <div>
             <p className={label}>Wer den Workshop leitet</p>
@@ -254,7 +254,7 @@ export default function KiWorkshopSiegburg() {
               und meinen Arbeitsalltag spürbar vereinfachen, weiß ich: Das ist in jeder Branche genauso möglich – gerade dort, wo die fachliche KI-Expertise fehlt.
               Wir onboarden KI-Agenten und passen sie an Ihren Case an, damit Sie wirklich davon profitieren.“
             </p>
-            <p className="mt-4 text-[0.9rem] text-[#9aa8cc]">Geschäftsführer, Ladouz Digital · Siegburg</p>
+            <p className="mt-4 text-[0.9rem] text-[#9aa8cc]">Inhaber, Ladouz Digital · Siegburg</p>
           </div>
         </div>
       </section>
