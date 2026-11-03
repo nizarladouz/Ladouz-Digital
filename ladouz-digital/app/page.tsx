@@ -1912,7 +1912,18 @@ function ProgrammSzene() {
             </ol>
           </div>
 
-          <div className="relative flex items-end border-l border-white/12">
+          <div className="relative isolate flex items-end overflow-hidden border-l border-white/12">
+            {/* Cover: derselbe Hintergrund wie im Hero (CI-Grafik, Berg-Foto, Farbschleier), weich ins Dunkle auslaufend. */}
+            <div aria-hidden className="absolute inset-0 -z-20">
+              <Visual motiv={{ ...BILDER.hero, src: undefined }} sizes="(min-width: 1240px) 680px, 55vw" flat className="h-full w-full" />
+              {BILDER.hero.src && (
+                <div className="ld-hero-foto absolute inset-0 overflow-hidden">
+                  <Image src={BILDER.hero.src} alt="" fill sizes="(min-width: 1240px) 680px, 55vw" style={{ objectPosition: BILDER.hero.fokus }} className="ld-hero-zoom object-cover" />
+                </div>
+              )}
+            </div>
+            <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+            <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#0b1233_0%,rgba(11,18,51,.85)_38%,rgba(11,18,51,0)_72%),linear-gradient(90deg,#0b1233_0%,rgba(11,18,51,0)_22%)]" />
 
             <div key={`d-${aktiv}`} aria-live="polite" className="ld-swap relative p-10 xl:p-12">
               <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">
