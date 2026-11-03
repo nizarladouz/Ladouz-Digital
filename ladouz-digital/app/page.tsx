@@ -392,7 +392,7 @@ const phasen: Phase[] = [
   },
   {
     nr: "04",
-    titel: "Steuerung als Jahrespartner",
+    titel: "Steuerung als Partner",
     stufe: "Fortlaufend",
     text: "Wir setzen um, messen und verbessern laufend – mit einem ganzen Team, gespeicherten Prozessen und Erfahrungen aus anderen Mandaten.",
     ergebnis: "Ein System, das mit jeder Optimierung stärker wird.",
