@@ -2264,17 +2264,23 @@ function Kontakt() {
               <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Bestandsaufnahme anfragen</CtaButton></div>
 
               {/* AI-first-Protokoll: gleicher Wortlaut wie der Teaser unter der Bestandsaufnahme. */}
-              <div className="mt-12 grid max-w-[760px] items-center gap-6 border-t border-white/15 pt-9 sm:grid-cols-[1fr_140px] sm:gap-10">
+              <div className="mt-14 grid items-center gap-10 border-t border-white/15 py-12 sm:py-16 lg:grid-cols-[1fr_400px] lg:gap-20">
                 <div>
                   <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
-                  <p className="mt-3 text-[clamp(1.15rem,1.9vw,1.4rem)] font-medium leading-[1.25] tracking-[-0.02em] text-white">
+                  <p className="mt-4 max-w-[24ch] text-[clamp(1.5rem,2.6vw,2.1rem)] font-medium leading-[1.15] tracking-[-0.026em] text-white">
                     Wir schenken Ihnen ein AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
                   </p>
                   <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#c7d6f5]">
                     Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
                   </p>
+                  <ul className="mt-6 space-y-2.5">
+                    {["Prioritäten", "Reihenfolge", "Nächste Schritte für Ihre digitale und KI-Infrastruktur"].map((x) => <li key={x} className="flex gap-3 text-[0.98rem] text-white"><span className="flex-none text-[#8dc63f]">✓</span>{x}</li>)}
+                  </ul>
                 </div>
-                <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="mx-auto h-auto w-[140px]" sizes="140px" />
+                <div className="relative mx-auto w-[min(72vw,300px)] lg:w-[400px]">
+                  <span aria-hidden className="absolute inset-[-18%] -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(141,198,63,.28),rgba(47,91,215,.24)_55%,transparent)] blur-2xl" />
+                  <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="relative h-auto w-full drop-shadow-[0_40px_60px_rgba(0,0,0,.55)]" sizes="(min-width: 1024px) 400px, 72vw" />
+                </div>
               </div>
 
               <div className="mt-12 border-t border-white/15 pt-9">
