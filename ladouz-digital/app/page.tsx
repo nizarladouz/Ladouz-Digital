@@ -2058,9 +2058,9 @@ function ProgrammMobil() {
 }
 
 /* ══════════════════════════ Messbarkeit ══════════════════════════
-   Die Kennzahlenkette als Trichter. Die Balken füllen sich beim
-   Erscheinen; ihre Länge ist Gestaltung, keine Messung – das steht
-   deshalb ausdrücklich daneben ("Schematisch").
+   Die Kennzahlenkette als ruhige Haarlinien-Liste. Je Zeile zieht
+   sich beim Erscheinen eine feine Linie ein; Akzent nur am Ende der
+   Kette. "Schematisch" bleibt als Hinweis stehen.
    ═══════════════════════════════════════════════════════════ */
 
 function Messbarkeit() {
@@ -2100,25 +2100,26 @@ function Messbarkeit() {
                 <span className="rounded-full border border-white/15 px-3 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.2em] text-[#9aa8cc]">Schematisch</span>
               </figcaption>
 
-              <ol className="relative mt-9 space-y-6">
+              <ol className="relative mt-8 border-t border-white/[0.08]">
                 {kennzahlen.map((k, i) => (
-                  <li key={k.stufe}>
-                    <p className="flex items-baseline gap-3">
-                      <span className="ld-num text-[0.74rem] font-semibold text-[#8695bd]">{String(i + 1).padStart(2, "0")}</span>
-                      <span className={`text-[1.1rem] font-medium tracking-[-0.014em] ${i === letzte ? "text-white" : "text-[#dfe7f8]"}`}>{k.stufe}</span>
-                    </p>
-                    <div className="mt-2.5 h-[10px] overflow-hidden rounded-full bg-white/[0.07]">
-                      <span
-                        className={`ld-bar block h-full rounded-full ${i === letzte ? "bg-[#8dc63f]" : "bg-[linear-gradient(90deg,#2f5bd7,#4b7ce8)]"}`}
-                        style={{ "--w": k.breite, transitionDelay: `${250 + i * 130}ms` } as CSSProperties}
-                      />
+                  <li key={k.stufe} className="relative grid grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-3 py-[18px]">
+                    <span className="ld-num text-[0.72rem] font-medium tracking-[0.06em] text-[#7f8db5]">{String(i + 1).padStart(2, "0")}</span>
+                    <div>
+                      <p className={`text-[1.04rem] font-medium tracking-[-0.012em] ${i === letzte ? "text-white" : "text-[#e3e9f8]"}`}>{k.stufe}</p>
+                      {k.misst && <p className="ld-serif mt-1 text-[0.9rem] leading-[1.5] text-[#94a2c8]">{k.misst}</p>}
                     </div>
-                    <p className="ld-serif mt-2 text-[0.92rem] leading-[1.5] text-[#9aa8cc]">{k.misst}</p>
+                    <span aria-hidden className={`h-[5px] w-[5px] self-center rounded-full ${i === letzte ? "bg-[#8dc63f] shadow-[0_0_0_4px_rgba(141,198,63,.12)]" : "border border-white/25"}`} />
+                    <span aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-white/[0.08]" />
+                    <span
+                      aria-hidden
+                      className={`ld-bar absolute inset-x-0 bottom-0 h-px ${i === letzte ? "bg-[linear-gradient(90deg,rgba(141,198,63,.7),rgba(141,198,63,0))]" : "bg-[linear-gradient(90deg,rgba(255,255,255,.34),rgba(255,255,255,0))]"}`}
+                      style={{ "--w": 1, transitionDelay: `${300 + i * 140}ms` } as CSSProperties}
+                    />
                   </li>
                 ))}
               </ol>
 
-              <p className="relative mt-10 border-t border-white/15 pt-6 text-[1.02rem] font-medium leading-[1.45]">
+              <p className="relative mt-8 text-[1.02rem] font-medium leading-[1.45]">
                 Eine Logik für alle Kanäle. <span className="text-[#9aa8cc]">Damit klar ist, was wirkt – und was nicht.</span>
               </p>
             </figure>
