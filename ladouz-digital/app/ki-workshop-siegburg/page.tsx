@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "../components/Footer";
+import Countdown from "./Countdown";
+import { naechsterTermin } from "./termin";
+
+export const revalidate = 86400; // täglich neu bauen, damit das Termindatum stimmt
+const istProduktion = process.env.VERCEL_ENV === "production";
 
 /* /ki-workshop-siegburg – Vor-Ort KI-Workshop im Büro Siegburg.
    Aufbau (Problem → Wendepunkt → Weg → Ergebnis → Angebot → Einwände → Aufruf):
@@ -16,11 +20,12 @@ const BOOKING_URL = "https://zeeg.me/management75/erstberatung";
 const ANFRAGE = `mailto:${MAIL}?subject=${encodeURIComponent("Anfrage KI-Workshop Siegburg")}&body=${encodeURIComponent("Guten Tag Herr Ladouz,\n\nwir interessieren uns für den KI-Workshop vor Ort in Siegburg.\n\nName:\nUnternehmen:\nBranche / Mitarbeiterzahl:\nTeilnehmer (Anzahl):\nWunschtermin (Samstag):\nTelefon:\n\n")}`;
 
 export const metadata: Metadata = {
-  title: "KI-Workshop Siegburg & Bonn – vor Ort für den Mittelstand im Rhein-Sieg-Kreis",
+  title: { absolute: "KI Workshop Siegburg für Unternehmer | Ladouz Digital" },
   description:
-    "KI-Workshop für Siegburg & Bonn: Jeden zweiten Samstag vor Ort in unserem Büro in Siegburg, 20 Minuten von Bonn, für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Keine Spielereien – nur KI, die Zeit, Nerven und Geld spart. Mit Umsetzungsplan für Montag.",
+    "KI Workshop in Siegburg für selbstständige Unternehmer: sauber und sicher mit KI einsteigen, ohne Vorwissen. Jetzt Platz sichern bei Ladouz Digital.",
+  robots: istProduktion ? { index: true, follow: true } : { index: false, follow: false },
   alternates: { canonical: "/ki-workshop-siegburg" },
-  openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg & Bonn | ladouz.digital", images: ["/standort/buero-1.webp"] },
+  openGraph: { url: "/ki-workshop-siegburg", title: "KI Workshop Siegburg für Unternehmer | Ladouz Digital", images: ["/standort/buero-1.webp"] },
 };
 
 const serif = "font-[family-name:var(--font-source-serif)]";
@@ -83,15 +88,15 @@ const fragen = [
 ] as const;
 
 export default function KiWorkshopSiegburg() {
+  const termin = naechsterTermin();
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Event", name: "KI-Workshop Siegburg & Bonn für den Mittelstand", eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        "@type": "Event", name: "KI Workshop Siegburg für selbstständige Unternehmer", startDate: termin.iso, eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled", description: metadata.description,
         location: { "@type": "Place", name: "Ladouz Digital – Büro Siegburg", address: { "@type": "PostalAddress", streetAddress: "Markt 40", postalCode: "53721", addressLocality: "Siegburg", addressRegion: "NRW", addressCountry: "DE" } },
         organizer: { "@type": "Organization", name: "Ladouz Digital", url: SITE }, url: `${SITE}/ki-workshop-siegburg`,
-        eventSchedule: { "@type": "Schedule", repeatFrequency: "P2W", byDay: "https://schema.org/Saturday" },
       },
       { "@type": "FAQPage", mainEntity: fragen.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
     ],
@@ -99,6 +104,7 @@ export default function KiWorkshopSiegburg() {
 
   return (
     <main className="bg-white text-[#0b1233]">
+      <Countdown start={termin} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Hero */}
@@ -108,19 +114,18 @@ export default function KiWorkshopSiegburg() {
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
           <div className="mt-20 max-w-[780px]">
-            <p className={label}>Vor Ort in Siegburg · Region Bonn/Rhein-Sieg · ca. 20 Minuten von Bonn</p>
+            <p className={label}>Nächster Termin: {termin.kurz} in Siegburg · Markt 40</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
-              KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
+              KI Workshop Siegburg für selbstständige Unternehmer
             </h1>
             <p className={`${serif} mt-7 max-w-[56ch] text-[clamp(1.05rem,1.6vw,1.22rem)] leading-[1.65] text-[#c7d6f5]`}>
-              Für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Ein Samstag in unserem Büro – und Sie wissen genau,
-              wo KI in Ihrem Betrieb Zeit, Nerven, Ressourcen und Geld spart. Und wie Sie es ab Montag organisieren.
+              Sauber, sicher und ohne Vorwissen mit KI starten: Sie lernen, wie Sie KI in Ihrem Unternehmen richtig und datenschutzbewusst einsetzen, Schritt für Schritt.
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <Cta hell />
               <a href={`tel:${TEL_LINK}`} className="text-[15px] text-[#c7d6f5] underline-offset-4 hover:underline">oder anrufen: {TEL}</a>
             </div>
-            <p className="mt-6 text-[0.85rem] text-[#9aa8cc]">Kleine Gruppe · begrenzte Plätze · Markt 40, 53721 Siegburg</p>
+            <p className="mt-6 text-[0.85rem] text-[#9aa8cc]">Vor Ort in unserem Büro · Markt 40, 53721 Siegburg</p>
           </div>
         </div>
       </section>
@@ -274,7 +279,17 @@ export default function KiWorkshopSiegburg() {
           <p className="mt-8 text-[0.9rem] text-[#9aa8cc]">{MAIL} · {TEL} · Markt 40, 53721 Siegburg</p>
         </div>
       </section>
-      <Footer basis="/" />
+      <footer className="bg-[#070c24] px-6 py-10 text-[#9aa8cc]">
+        <div className="mx-auto flex max-w-[1192px] flex-col items-center justify-between gap-6 text-[0.88rem] md:flex-row">
+          <span>© {new Date().getFullYear()} Ladouz Digital · Markt 40, 53721 Siegburg</span>
+          <nav aria-label="Footer" className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <a href="/" className="hover:text-white">Startseite</a>
+            <a href="#anfrage" className="hover:text-white">Termin anfragen</a>
+            <a href="/impressum" className="hover:text-white">Impressum</a>
+            <a href="/datenschutz" className="hover:text-white">Datenschutz</a>
+          </nav>
+        </div>
+      </footer>
     </main>
   );
 }
