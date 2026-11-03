@@ -387,7 +387,7 @@ const phasen: Phase[] = [
     titel: "Umsetzungsprotokoll",
     stufe: "Umsetzen",
     text: "Eine klare Checkliste von A nach B. Jeder Schritt mit Verantwortung und Reihenfolge.",
-    ergebnis: "Produktive Systeme statt Pilotprojekte.",
+    ergebnis: "Jede Umsetzung erfolgt systemkonform und geht erst nach Ihrer Freigabe live.",
     bild: BILDER.phaseUmsetzung,
   },
   {
@@ -423,7 +423,7 @@ const messprinzipien = [
 ];
 
 const prinzipien = [
-  { titel: "Klarheit statt Hype.", text: "Nur, was Ihrem Betrieb wirklich nutzt." },
+  { titel: "Klarheit für die Geschäftsführung.", text: "Nur, was Ihrem Betrieb messbar weiterhilft." },
   { titel: "Transparenz für die Geschäftsführung.", text: "Jederzeit nachvollziehbar, was passiert und warum." },
   { titel: "Ein Team statt einer Person.", text: "Mit Ressourcen, Prozessen und Erfahrung, die eine Einzelstelle nicht hat." },
 ];
@@ -468,16 +468,8 @@ const fragen = [
     antwort: "Wir ergänzen Ihr Team, binden Verantwortliche ein und übergeben Wissen, statt Abhängigkeiten zu schaffen.",
   },
   {
-    frage: "Wie gehen Sie mit Datenschutz um?",
-    antwort: "Wir arbeiten DSGVO-konform und mit Einwilligung zuerst. Eine Rechtsberatung ersetzt das nicht.",
-  },
-  {
     frage: "Nutzen Sie eigene Tools oder unsere Systeme?",
-    antwort: "Wir bauen auf Ihren bestehenden Systemen auf und ergänzen nur, wo es Ihrem Betrieb wirklich hilft.",
-  },
-  {
-    frage: "Wie lange läuft eine Partnerschaft?",
-    antwort: "Wir arbeiten als Jahrespartner, weil sich Wirkung durch laufende Steuerung und Verbesserung aufbaut.",
+    antwort: "Wir bauen Ihr System auf.",
   },
 ];
 
@@ -2087,12 +2079,12 @@ function Haltung() {
           <Reveal>
             <Eyebrow>Unsere Haltung</Eyebrow>
             <h2 id="haltung-titel" className="mt-6 text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[1.0] tracking-[-0.04em] text-[#0b1233]">
-              Klarheit statt Hype.<br />Transparenz statt Blackbox.
+              Klarheit als Priorität.
             </h2>
             <Lead>
-              Eine interne Digital-Leitung sinnvoll zu führen und zu messen, ist für die Geschäftsführung
-              kaum möglich. Wir arbeiten als Ihre ausgelagerte Digital- und KI-Abteilung und zeigen offen,
-              wie diese Abteilung für Ihren Betrieb aussieht.
+              Eine interne Digital-Leitung zu führen und zu messen, ist für die Geschäftsführung allein
+              kaum möglich. Wir arbeiten als Partner für Ihre individuelle Digital- und KI-Abteilung, zeigen
+              offen, wie diese Abteilung für Ihren Betrieb aussieht, und lassen das Wissen in Ihrem Unternehmen.
             </Lead>
           </Reveal>
 
@@ -2169,7 +2161,7 @@ function Perspektiven() {
             <div>
               <Eyebrow>Perspektiven</Eyebrow>
               <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-                Wie wir über Performance denken.
+                L Digital Insights
               </h2>
             </div>
             <a href="#newsletter" className="inline-flex items-center gap-2 border-b-2 border-[#8dc63f] pb-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#0b1233] transition-colors hover:text-[#2f5bd7]">
@@ -2252,7 +2244,15 @@ function Kontakt() {
     <section id="kontakt" aria-labelledby="kontakt-titel" className="bg-[#f7f9fc] px-6 py-[clamp(88px,11vw,140px)]">
       <div className="mx-auto max-w-[1192px]">
         <Reveal>
-          <div className="grid overflow-hidden rounded-[28px] bg-[#0b1233] text-white">
+          <div className="relative isolate grid overflow-hidden rounded-[28px] bg-[#0b1233] text-white">
+            {/* Hero-Berg scheint dezent durch (gleiches Motiv wie im Hero), Text bleibt gut lesbar. */}
+            {BILDER.hero.src && (
+              <div aria-hidden className="absolute inset-0 -z-20 opacity-40">
+                <Image src={BILDER.hero.src} alt="" fill sizes="(min-width: 1240px) 1192px, 100vw" style={{ objectPosition: BILDER.hero.fokus }} className="ld-hero-zoom object-cover" />
+              </div>
+            )}
+            <span aria-hidden className="ld-hero-veil absolute inset-0 -z-10" />
+            <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#0b1233_0%,rgba(11,18,51,.88)_45%,rgba(11,18,51,.35)_100%)]" />
             <div className="relative p-9 sm:p-14">
               <Eyebrow tone="light">Bestandsaufnahme</Eyebrow>
               <h2 id="kontakt-titel" className="mt-6 max-w-[16ch] text-[clamp(2rem,3.8vw,3rem)] font-medium leading-[1.06] tracking-[-0.032em]">
@@ -2262,6 +2262,20 @@ function Kontakt() {
                 In einem ersten Gespräch klären wir, wo Ihr Betrieb steht und ob eine Zusammenarbeit passt.
               </p>
               <div className="mt-9"><CtaButton href={BOOKING_URL} auf="dunkel">Bestandsaufnahme anfragen</CtaButton></div>
+
+              {/* AI-first-Protokoll: gleicher Wortlaut wie der Teaser unter der Bestandsaufnahme. */}
+              <div className="mt-12 grid max-w-[760px] items-center gap-6 border-t border-white/15 pt-9 sm:grid-cols-[1fr_140px] sm:gap-10">
+                <div>
+                  <p className="font-[family-name:var(--font-dm-sans)] text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#8dc63f]">AI-first · Automation-first</p>
+                  <p className="mt-3 text-[clamp(1.15rem,1.9vw,1.4rem)] font-medium leading-[1.25] tracking-[-0.02em] text-white">
+                    Wir schenken Ihnen ein AI-first / Automation-first Umsetzungsprotokoll – individuell für Ihren Betrieb erstellt.
+                  </p>
+                  <p className="ld-serif mt-3 max-w-[52ch] text-[1rem] leading-[1.65] text-[#c7d6f5]">
+                    Prioritäten, Reihenfolge und nächste Schritte für Ihre digitale und KI-Infrastruktur.
+                  </p>
+                </div>
+                <Image src="/umsetzungsprotokoll.webp" alt="Individuelles Umsetzungsprotokoll & Framework von Ladouz Digital" width={640} height={800} className="mx-auto h-auto w-[140px]" sizes="140px" />
+              </div>
 
               <div className="mt-12 border-t border-white/15 pt-9">
                 <p className="text-[1.05rem] font-bold tracking-[-0.018em]">Oder kurz schreiben</p>
