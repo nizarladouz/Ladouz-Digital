@@ -31,7 +31,7 @@ const dmSans = DM_Sans({
 const SITE = "https://www.ladouz.digital";
 const TITEL = "Ladouz Digital – Abteilung für Digital- und KI-Strategie im Mittelstand";
 const BESCHREIBUNG =
-  "Ihre ausgelagerte Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für mehr Effizienz und Abschlüsse.";
+  "Ihre Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für maximale Effizienz.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

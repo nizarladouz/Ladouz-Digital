@@ -404,7 +404,7 @@ const strukturDaten = {
       logo: `${SITE}/logo-navy.png`,
       email: MAIL,
       telephone: TEL_LINK,
-      description: "Ihre ausgelagerte Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für mehr Effizienz und Abschlüsse.",
+      description: "Ihre Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für maximale Effizienz.",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Markt 40",
