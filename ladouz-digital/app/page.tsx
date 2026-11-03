@@ -498,7 +498,7 @@ const strukturDaten = {
       logo: `${SITE}/logo-navy.png`,
       email: MAIL,
       telephone: TEL_LINK,
-      description: "Performance-getriebene digitale Dienstleistungen und Consulting für den Mittelstand.",
+      description: "Ihre Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für mehr Effizienz und Abschlüsse.",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Markt 40",
