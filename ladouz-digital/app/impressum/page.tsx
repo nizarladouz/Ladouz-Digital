@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Impressum",
   alternates: { canonical: "/impressum" },
   openGraph: { url: "/impressum" },
+  robots: { index: false, follow: true },
 };
 
 export default function Impressum() {

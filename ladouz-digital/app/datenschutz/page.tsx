@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Datenschutz",
   alternates: { canonical: "/datenschutz" },
   openGraph: { url: "/datenschutz" },
+  robots: { index: false, follow: true },
 };
 
 export default function Datenschutz() {
