@@ -31,13 +31,15 @@ const dmSans = DM_Sans({
 const SITE = "https://www.ladouz.digital";
 const TITEL = "Ladouz Digital – Abteilung für Digital- und KI-Strategie im Mittelstand";
 const BESCHREIBUNG =
-  "Ihre Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für maximale Effizienz.";
+  "Ihre ausgelagerte Digital- und KI-Abteilung für den Mittelstand: von der Bestandsaufnahme bis zur laufenden Steuerung – für mehr Effizienz und Abschlüsse.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: { default: TITEL, template: "%s · Ladouz Digital" },
   description: BESCHREIBUNG,
   alternates: { canonical: "/" },
+  /* noindex nur außerhalb der Produktion (Vercel-Previews, lokal). Produktion unverändert. */
+  ...(process.env.VERCEL_ENV !== "production" ? { robots: { index: false, follow: false } } : {}),
   openGraph: {
     type: "website",
     locale: "de_DE",
