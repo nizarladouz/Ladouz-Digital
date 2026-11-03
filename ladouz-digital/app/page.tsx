@@ -2175,8 +2175,8 @@ function Haltung() {
           </ol>
 
           <Reveal delay={120}>
-            <div className="mt-10 flex items-center gap-4">
-              <Image src="/nizar-portrait-rund.webp" alt="" aria-hidden width={432} height={432} className="h-14 w-14 flex-none rounded-full object-cover" />
+            <div className="mt-10 flex items-end gap-5">
+              <Image src="/nizar-portrait-hoch.webp" alt="" aria-hidden width={480} height={640} className="h-[160px] w-[120px] flex-none rounded-xl object-cover shadow-[0_10px_30px_-12px_rgba(11,18,51,.35)]" />
               <span>
                 <span className="block text-[0.98rem] font-semibold tracking-[-0.012em] text-[#0b1233]">Nizar Ladouz</span>
                 <span className="block text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#5b6b8a]">Gründer, Ladouz Digital</span>
@@ -2234,7 +2234,7 @@ function Perspektiven() {
             <div>
               <Eyebrow>Perspektiven</Eyebrow>
               <h2 id="perspektiven-titel" className="mt-6 max-w-[18ch] text-[clamp(2.1rem,4.2vw,3.4rem)] font-medium leading-[1.05] tracking-[-0.034em] text-[#0b1233]">
-                L Digital Insights
+                Ladouz Digital Insights
               </h2>
             </div>
             <a href="#newsletter" className="inline-flex items-center gap-2 border-b-2 border-[#8dc63f] pb-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[#0b1233] transition-colors hover:text-[#2f5bd7]">
@@ -2250,7 +2250,7 @@ function Perspektiven() {
         <Reveal>
           <div className="flex flex-col gap-6 rounded-[22px] bg-[#0b1233] p-9 text-white sm:p-12 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Ladouz Insights</p>
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.26em] text-[#9fc65f]">Ladouz Digital Insights</p>
               <p className="mt-3 max-w-[30ch] text-[clamp(1.35rem,2.4vw,1.8rem)] font-medium leading-[1.2] tracking-[-0.024em]">
                 Neue Perspektiven, wenn sie erscheinen.
               </p>
