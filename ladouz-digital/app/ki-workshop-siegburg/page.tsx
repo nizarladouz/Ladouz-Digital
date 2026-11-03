@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title: "KI-Workshop Siegburg & Bonn – vor Ort für den Mittelstand im Rhein-Sieg-Kreis",
   description:
     "KI-Workshop für Siegburg & Bonn: Jeden zweiten Samstag vor Ort in unserem Büro in Siegburg, 20 Minuten von Bonn, für mittelständische Unternehmen aus dem Rhein-Sieg-Kreis. Keine Spielereien – nur KI, die Zeit, Nerven und Geld spart. Mit Umsetzungsplan für Montag.",
+  ...(process.env.VERCEL_ENV !== "production" ? { robots: { index: false, follow: false } } : {}),
   alternates: { canonical: "/ki-workshop-siegburg" },
   openGraph: { url: "/ki-workshop-siegburg", title: "KI-Workshop Siegburg & Bonn | ladouz.digital", images: ["/standort/buero-1.webp"] },
 };
@@ -108,7 +109,7 @@ export default function KiWorkshopSiegburg() {
         <div className="relative mx-auto max-w-[1192px]">
           <Link href="/"><Image src="/logo-white.png" alt="ladouz.digital" width={560} height={280} className="h-[34px] w-auto" /></Link>
           <div className="mt-20 max-w-[780px]">
-            <p className={label}>Vor Ort in Siegburg · Region Bonn/Rhein-Sieg · ca. 20 Minuten von Bonn</p>
+            <p className={label}>Für selbstständige Unternehmer, die KI sauber einführen wollen</p>
             <h1 className="mt-5 font-[family-name:var(--font-jost)] text-[clamp(2.3rem,5.4vw,4rem)] font-medium leading-[1.05] tracking-[-0.025em]">
               KI-Workshop Siegburg: Ihr Betrieb, zehnmal effizienter – ohne Spielereien.
             </h1>
